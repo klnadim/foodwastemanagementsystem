@@ -1,35 +1,57 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/admin_panel.dart';
+import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/card_dashboard.dart';
 
-class DonarDashboardScreen extends StatelessWidget {
-  DonarDashboardScreen({Key? key}) : super(key: key);
+class DonarDashboardScreen extends StatefulWidget {
+  DonarDashboardScreen({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  State<DonarDashboardScreen> createState() => _DonarDashboardScreenState();
+}
+
+class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
   String? name;
+
   Image? image;
+
+  // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    User? user = FirebaseAuth.instance.currentUser;
+    print(user);
+
+    super.initState();
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blueGrey[100],
         appBar: AppBar(
           title: Text(
-            "Hello Nadim",
+            "Hello ",
             style: textstyle(),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          actions: const [
-           
-          ],
+          actions: const [],
         ),
         drawer: Drawer(
           child: ListView(
@@ -52,7 +74,7 @@ class DonarDashboardScreen extends StatelessWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text("klnadim27@gmail.com")
+                        Text("")
                       ],
                     ),
                   ),
@@ -62,14 +84,28 @@ class DonarDashboardScreen extends StatelessWidget {
               const Divider(
                 color: Colors.black26,
               ),
-              
-              Card(child: listtile("Notification", Icons.dashboard)),
+              InkWell(
+                  onTap: (() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminPanelScreen(),
+                        ));
+                  }),
+                  child:
+                      Card(child: listtile("Notification", Icons.dashboard))),
               const Divider(
                 color: Colors.black26,
               ),
-              
-             
-              Card(child: listtile("Profile", Icons.dashboard)),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfile(userId: user!.uid),
+                        ));
+                  },
+                  child: Card(child: listtile("Profile", Icons.dashboard))),
             ],
           ),
         ),
@@ -79,12 +115,9 @@ class DonarDashboardScreen extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 30,
             mainAxisSpacing: 20,
-          
             children: [
               singleCard(Icons.food_bank_outlined, 'Add Food'),
               singleCard(Icons.list_alt_rounded, 'Donated List'),
-             
-              
             ],
           ),
         ),

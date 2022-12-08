@@ -41,6 +41,9 @@ dependencies:
   sizer: ^2.0.15
   google_fonts: ^3.0.1
   form_builder_file_picker: ^2.3.0
+  flutter_svg: ^1.1.6
+  image_picker: ^0.8.6
+  firebase_storage: ^11.0.6
 
 dev_dependencies:
   flutter_test:

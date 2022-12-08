@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/utils/styles.dart';
 import 'login_screen.dart';
 // import 'model.dart';
 
@@ -19,25 +20,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formkey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
 
-  final TextEditingController passwordController = new TextEditingController();
-  final TextEditingController confirmpassController =
-      new TextEditingController();
-  final TextEditingController name = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController mobile = new TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpassController = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobile = TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
- 
-  
-  var rool = "NGO";
 
-  String  dropdownValue = 'NGO';
+  // var rool = "NGO";
+  String? selectedUserType;
+  // String dropdownValue = 'NGO';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: allbgcolor,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -60,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           "SignUP",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.blueGrey,
                             fontSize: 40,
                           ),
                         ),
@@ -77,15 +76,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             hintText: 'Email',
                             enabled: true,
+                            // contentPadding: const EdgeInsets.only(
+                            //     left: 14.0, bottom: 8.0, top: 8.0),
+                            // focusedBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.white),
+                            //   borderRadius: BorderRadius.circular(20),
+                            // ),
+                            // enabledBorder: UnderlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.white),
+                            //   borderRadius: BorderRadius.circular(20),
+                            // ),
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -123,19 +132,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             hintText: 'Password',
                             enabled: true,
+                            // contentPadding: const EdgeInsets.only(
+                            //     left: 14.0, bottom: 8.0, top: 15.0),
+                            // focusedBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.white),
+                            //   borderRadius: BorderRadius.circular(20),
+                            // ),
+                            // enabledBorder: UnderlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.white),
+                            //   borderRadius: BorderRadius.circular(20),
+                            // ),
                             contentPadding: const EdgeInsets.only(
-                                left: 14.0, bottom: 8.0, top: 15.0),
+                                left: 14.0, bottom: 8.0, top: 8.0),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
-                            RegExp regex = new RegExp(r'^.{6,}$');
+                            RegExp regex = RegExp(r'^.{6,}$');
                             if (value!.isEmpty) {
                               return "Password cannot be empty";
                             }
@@ -168,14 +187,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintText: 'Confirm Password',
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
-                                left: 14.0, bottom: 8.0, top: 15.0),
+                                left: 14.0, bottom: 8.0, top: 8.0),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.white),
-                              borderRadius: new BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black45),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -221,8 +240,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         //           ),
                         //         );
                         //       }).toList(),
-                        //       onChanged: (newValueSelected) {
-                        //         setState(() {
+                        //
+                        //         setSonChanged: (newValueSelected) {tate(() {
                         //           _currentItemSelected = newValueSelected!;
                         //           rool = newValueSelected;
                         //         });
@@ -265,70 +284,93 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         //       });
                         //     }),
 
-                        SizedBox(
-                          width: 150,
-                          child: DropdownButtonFormField(
-                            
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                //<-- SEE HERE
-                                borderSide:  BorderSide(color: Colors.white),
-                                borderRadius:  BorderRadius.circular(20),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:  BorderSide(color: Colors.white),
-                                borderRadius:  BorderRadius.circular(20),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            dropdownColor: Colors.white,
-                            isDense: true,
+                        //           SizedBox(
+                        //             // height: 45,
+                        //             width: 100,
+                        //             child: DropdownButtonFormField(
+                        //               // itemHeight: 50,
 
-                            // isExpanded: true,
-                            value: dropdownValue,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            items: <String>['NGO', 'DONAR', ]
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
+                        //               decoration: InputDecoration(
+                        //                 enabledBorder: OutlineInputBorder(
+                        //                   borderSide: BorderSide(color: Colors.white),
+                        //                   borderRadius: BorderRadius.circular(20),
+                        //                 ),
+                        //                 focusedBorder: UnderlineInputBorder(
+                        //                   borderSide: BorderSide(color: Colors.white),
+                        //                   borderRadius: BorderRadius.circular(20),
+                        //                 ),
+                        //                 filled: true,
+                        //                 fillColor: Colors.white,
+                        //               ),
+                        //               dropdownColor: Colors.white,
+                        //               isDense: true,
+                        //               onChanged: (salutation) =>
+                        //     setState(() => selectedSalutation = salutation),
+                        // validator: (value) => value == null ? 'field required' : null,
 
-                                value: value,
-                                onTap: (){
+                        //               // isExpanded: true,
+                        //               value: dropdownValue,
+                        //               onChanged: (String? newValue) {
+                        //                 setState(() {
+                        //                   dropdownValue = newValue!;
+                        //                 });
+                        //               },
+                        //               items: <String>[
+                        //                 'NGO',
+                        //                 'DONAR',
+                        //               ].map<DropdownMenuItem<String>>((String value) {
+                        //                 return DropdownMenuItem<String>(
+                        //                   value: value,
+                        //                   onTap: () {
+                        //                     rool = value.toUpperCase();
+                        //                     print(rool);
+                        //                   },
+                        //                   child: Text(
+                        //                     value,
+                        //                     style: TextStyle(fontSize: 15),
+                        //                   ),
+                        //                 );
+                        //               }).toList(),
+                        //             ),
+                        //           ),
 
-                                  rool = value.toUpperCase();
-                                  print(rool);
-                                },
-                                
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                
-                              );
-                              
-                            }).toList(),
-                            
+                        DropdownButtonFormField<String>(
+                          value: selectedUserType,
+                          hint: Text(
+                            'User Type',
                           ),
+                          onChanged: (usertype) =>
+                              setState(() => selectedUserType = usertype!),
+                          validator: (value) =>
+                              value == null ? 'field required' : null,
+                          items: ['NGO', 'DONAR']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                         ),
-                        
-                        
+
                         const SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            MaterialButton(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              elevation: 5.0,
-                              height: 40,
+                            ElevatedButton(
+                              // shape: const RoundedRectangleBorder(
+                              //     borderRadius:
+                              //         BorderRadius.all(Radius.circular(20.0))),
+                              // elevation: 5.0,
+                              // height: 40,
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(5),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(255, 58, 93, 109)),
+                                // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))))
+                              ),
                               onPressed: () {
                                 const CircularProgressIndicator();
                                 Navigator.push(
@@ -344,28 +386,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   fontSize: 20,
                                 ),
                               ),
-                              color: Colors.white,
                             ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              elevation: 5.0,
-                              height: 40,
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(5),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(255, 58, 93, 109)),
+                                // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))))
+                              ),
+                              // shape: RoundedRectangleBorder(
+                              //     borderRadius:
+                              //         BorderRadius.all(Radius.circular(20.0))),
+                              // elevation: 5.0,
+                              // height: 40,
                               onPressed: () {
                                 setState(() {
                                   showProgress = true;
                                 });
                                 signUp(emailController.text,
-                                    passwordController.text, rool);
+                                    passwordController.text, selectedUserType!);
                               },
                               child: Text(
-                                "Register",
+                                "SignUp",
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
                               ),
-                              color: Colors.white,
+                              // color: Colors.white,
                             ),
                           ],
                         ),
