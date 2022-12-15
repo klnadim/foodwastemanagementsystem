@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/admin_panel.dart';
 import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
+import 'package:food_waste_management_system/utils/methods.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,6 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          ElevatedButton(
+              onPressed: () => logOut(context), child: Text("LogOut"))
+        ],
         title: const Text(
           "Homepage",
         ),

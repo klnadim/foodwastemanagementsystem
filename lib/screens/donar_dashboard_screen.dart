@@ -8,8 +8,11 @@ import 'package:food_waste_management_system/screens/admin_panel.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../utils/methods.dart';
 import '../widgets/card_dashboard.dart';
+import '../widgets/circleindegator.dart';
 
 class DonarDashboardScreen extends StatefulWidget {
   DonarDashboardScreen({
@@ -25,17 +28,44 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
 
   Image? image;
 
+  //user profile data get and set varibale
+  Map? listData;
+  String? pGetImageUrl;
+  String? pMobileNumber;
+  String? pFullName;
+
   // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
 
   @override
   void initState() {
-    // TODO: implement initState
-
     User? user = FirebaseAuth.instance.currentUser;
-    print(user);
+    // print(user);
 
     super.initState();
+    pGet();
   }
+
+  pGet() async {
+    var li = await retriveProfileData();
+
+    if (li != null) {
+      setState(() {
+        listData = li;
+
+        pGetImageUrl = listData![0]['photoUrl'];
+        pFullName = listData![0]['fullName'];
+        pMobileNumber = listData![0]['number'];
+      });
+    } else {
+      print("unable data retrive");
+    }
+  }
+
+  // ImageProvider imagePro= getImageUrl != null
+  //                               ? Image.network("$getImageUrl")
+  //                               : Image.network(
+  //                                       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
+  //                                   .image);
 
   User? user = FirebaseAuth.instance.currentUser;
 
@@ -46,7 +76,7 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
         backgroundColor: Colors.blueGrey[100],
         appBar: AppBar(
           title: Text(
-            "Hello ",
+            "Hello $pFullName ",
             style: textstyle(),
           ),
           backgroundColor: Colors.transparent,
@@ -67,10 +97,16 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                     child: Column(
                       children: [
                         CircleAvatar(
-                            radius: 45,
-                            backgroundImage:
-                                Image.asset("assets/images/testimage.JPG")
-                                    .image),
+                          radius: 45,
+                          backgroundImage: pGetImageUrl != null
+                              ? NetworkImage("$pGetImageUrl")
+                              : NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+
+                          // Image.network(
+                          //             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
+                          //         .image
+                        ),
                         const SizedBox(
                           height: 5,
                         ),
@@ -86,11 +122,11 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
               ),
               InkWell(
                   onTap: (() {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AdminPanelScreen(),
-                        ));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => AdminPanelScreen(),
+                    //     ));
                   }),
                   child:
                       Card(child: listtile("Notification", Icons.dashboard))),
@@ -106,6 +142,8 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                         ));
                   },
                   child: Card(child: listtile("Profile", Icons.dashboard))),
+              ElevatedButton(
+                  onPressed: () => logOut(context), child: Text("LogOut"))
             ],
           ),
         ),
@@ -116,8 +154,17 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
             crossAxisSpacing: 30,
             mainAxisSpacing: 20,
             children: [
+              // InkWell()
               singleCard(Icons.food_bank_outlined, 'Add Food'),
               singleCard(Icons.list_alt_rounded, 'Donated List'),
+
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      pGet();
+                    });
+                  },
+                  child: Text("Click"))
             ],
           ),
         ),

@@ -19,11 +19,20 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  TextEditingController fullNameCon = TextEditingController();
+  final fullNameCon = TextEditingController(text: "init");
   TextEditingController addressCon = TextEditingController();
   TextEditingController mobileCon = TextEditingController();
 
+  TextEditingController testCon = TextEditingController();
+
   Uint8List? _image;
+
+  //user profile data get and set varibale
+  Map? listData;
+  String? pGetImageUrl;
+  String? pMobileNumber;
+  String? pFullName;
+  String? pAddress;
 
   void selectImage(ImageSource source) async {
     Uint8List im = await pickImageMethod(ImageSource.gallery);
@@ -40,6 +49,30 @@ class _UserProfileState extends State<UserProfile> {
     fullNameCon.dispose();
     addressCon.dispose();
     mobileCon.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // pGet();
+  }
+
+  pGet() async {
+    var li = await retriveProfileData();
+
+    if (li != null) {
+      setState(() {
+        listData = li;
+
+        pGetImageUrl = listData![0]['photoUrl'];
+        pFullName = listData![0]['fullName'];
+        pMobileNumber = listData![0]['number'];
+        pAddress = listData![0]['address'];
+        print(listData);
+      });
+    } else {
+      print("unable data retrive");
+    }
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -72,10 +105,12 @@ class _UserProfileState extends State<UserProfile> {
                                   radius: 64,
                                   backgroundImage: MemoryImage(_image!),
                                 )
-                              : const CircleAvatar(
+                              : CircleAvatar(
                                   radius: 64,
-                                  backgroundImage: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+                                  backgroundImage: pGetImageUrl != null
+                                      ? NetworkImage(pGetImageUrl!)
+                                      : NetworkImage(
+                                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
                                 ),
                           Positioned(
                             bottom: 8,
@@ -95,7 +130,8 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 25,
                       ),
-                      MyFormField(
+                      myFormField(
+                        pFullName ?? "",
                         fullNameCon,
                         "Full Name",
                         TextInputType.name,
@@ -109,50 +145,61 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 20,
                       ),
-                      MyFormField(
-                        addressCon,
-                        "Address",
-                        TextInputType.name,
-                        (valueKey) {
-                          if (valueKey!.isEmpty || valueKey.length < 3) {
-                            return "This field is required and cannot be empty";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      MyFormField(
-                        mobileCon,
-                        "Mobile Number",
-                        TextInputType.number,
-                        (valueKey) {
-                          if (valueKey!.isEmpty || valueKey.length < 3) {
-                            return "This field is required and cannot be empty";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              userProfileSave(
-                                  fullName: fullNameCon.text,
-                                  address: addressCon.text,
-                                  number: mobileCon.text,
-                                  uid: widget.userId,
-                                  file: _image!);
+                      TextFormField(
+                        initialValue: pFullName ?? "",
+                        decoration: InputDecoration(
+                            labelText: "Full Name",
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                      )
 
-                              
-                              
-
-                            });
-                          },
-                          child: Text("Save"))
+                      // MyFormField(
+                      //   pAddress ?? "",
+                      //   addressCon,
+                      //   "Address",
+                      //   TextInputType.name,
+                      //   (valueKey) {
+                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
+                      //       return "This field is required and cannot be empty";
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // MyFormField(
+                      //   pMobileNumber ?? "",
+                      //   mobileCon,
+                      //   "Mobile Number",
+                      //   TextInputType.number,
+                      //   (valueKey) {
+                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
+                      //       return "This field is required and cannot be empty";
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         userProfileSave(
+                      //             fullName: fullNameCon.text,
+                      //             address: addressCon.text,
+                      //             number: mobileCon.text,
+                      //             uid: widget.userId,
+                      //             file: _image!);
+                      //       });
+                      //     },
+                      //     child: Text("Save"))
                     ],
                   ))
             ],

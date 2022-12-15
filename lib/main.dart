@@ -11,6 +11,7 @@ import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
 import 'package:food_waste_management_system/screens/signup_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
+import 'package:food_waste_management_system/utils/methods.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
-      home: HomeScreen(),
+      // home: HomeScreen(),
+      home: UserProfile(userId: getUserId()),
     );
   }
 }

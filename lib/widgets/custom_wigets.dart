@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget MyFormField(TextEditingController controller, String lText,
-    TextInputType? inputType, String? Function(String?)? valiDator) {
+Widget myFormField(
+    String? iniValue,
+    TextEditingController controller,
+    String lText,
+    TextInputType? inputType,
+    String? Function(String?)? valiDator) {
   return TextFormField(
+    initialValue: iniValue ?? "",
     controller: controller,
     keyboardType: inputType,
     decoration: InputDecoration(
