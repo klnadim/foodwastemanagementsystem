@@ -5,12 +5,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/models/add_food_model.dart';
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+Stream<dynamic> getFoodData() {
+  Stream documentStream = FirebaseFirestore.instance
+      .collection('addFood')
+      .doc(_firebaseAuth.currentUser!.uid)
+      .snapshots();
+
+  return documentStream;
+}
 
 getUserId() {
   return _firebaseAuth.currentUser!.uid;
@@ -67,7 +77,42 @@ Future<void> userProfileSave({
   }
 }
 
-Future retriveProfileData() async {
+Future<void> userProfileUpdate({
+  required String fullName,
+  // required String address,
+  // required String number,
+  required String uid,
+  // required Uint8List file,
+}) async {
+// CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+// Future<void> updateUser() {
+//   return users
+//     .doc('ABC123')
+//     .update({'info.address.location': GeoPoint(53.483959, -2.244644)})
+//     .then((value) => print("User Updated"))
+//     .catchError((error) => print("Failed to update user: $error"));
+// }
+
+  var msg = "Some error occured";
+  try {
+    // String imageUrl = await uploadToStorage("PorfilePic", file);
+
+    await _firestore.collection('profileData').doc(uid).update({
+      'fullName': "SOikat",
+      // 'address': address,
+      // 'number': number,
+      // 'uid': uid,
+      // 'photoUrl': imageUrl
+    });
+
+    msg = "Success";
+  } catch (e) {
+    msg = e.toString();
+  }
+}
+
+Future retriveProfileData(String pUserId) async {
   // var _getdata = await FirebaseFirestore.instance
   //     .collection('profileData')
   //     .doc(_firebaseAuth.currentUser!.uid)
@@ -98,7 +143,11 @@ Future retriveProfileData() async {
   try {
     final CollectionReference profileData =
         FirebaseFirestore.instance.collection('profileData');
-    await profileData.get().then((QuerySnapshot) {
+
+    await profileData
+        .where('uid', isEqualTo: pUserId)
+        .get()
+        .then((QuerySnapshot) {
       for (var element in QuerySnapshot.docs) {
         getProfileData.add(element.data());
       }
@@ -108,6 +157,34 @@ Future retriveProfileData() async {
   }
 
   return getProfileData.asMap();
+}
+
+Future<void> addFoodSubmit(
+  String foodItems,
+  String description,
+  String address,
+  String city,
+  String foodValidation,
+  int foodPerson,
+  String contactNumber,
+  String uid,
+) async {
+  var msg = "Some error occured";
+
+  try {
+    await _firestore.collection('addFood').doc().set({
+      'fooditems': foodItems,
+      'description': description,
+      'address': address,
+      'city': city,
+      'foodValidation': foodValidation,
+      'foodperson': foodPerson,
+      'contact': contactNumber,
+      'uid': uid
+    });
+  } catch (e) {
+    msg = e.toString();
+  }
 }
 
 void logOut(BuildContext context) async {

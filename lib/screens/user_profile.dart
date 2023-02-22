@@ -19,13 +19,14 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  final fullNameCon = TextEditingController(text: "init");
+  TextEditingController fullNameCon = TextEditingController(text: "");
   TextEditingController addressCon = TextEditingController();
   TextEditingController mobileCon = TextEditingController();
 
   TextEditingController testCon = TextEditingController();
 
   Uint8List? _image;
+  bool saveUpdate = false;
 
   //user profile data get and set varibale
   Map? listData;
@@ -33,6 +34,7 @@ class _UserProfileState extends State<UserProfile> {
   String? pMobileNumber;
   String? pFullName;
   String? pAddress;
+  String? pUser;
 
   void selectImage(ImageSource source) async {
     Uint8List im = await pickImageMethod(ImageSource.gallery);
@@ -54,22 +56,36 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    // pGet();
+
+    if (pGet() != false) {
+      pGet();
+    }
+    // print(pFullName);
   }
 
   pGet() async {
-    var li = await retriveProfileData();
+    var li = await retriveProfileData(widget.userId);
+
+    print(li);
 
     if (li != null) {
-      setState(() {
-        listData = li;
+      listData = li;
 
-        pGetImageUrl = listData![0]['photoUrl'];
-        pFullName = listData![0]['fullName'];
-        pMobileNumber = listData![0]['number'];
-        pAddress = listData![0]['address'];
-        print(listData);
-      });
+      pGetImageUrl = listData![0]['photoUrl'];
+      pFullName = listData![0]['fullName'];
+      pMobileNumber = listData![0]['number'];
+      pAddress = listData![0]['address'];
+      pUser = listData![0]['uid'];
+
+      if (listData != null) {
+        fullNameCon.text = pFullName!;
+        mobileCon.text = pMobileNumber!;
+        addressCon.text = pAddress!;
+        setState(() {
+          fullNameCon.text = pFullName!;
+          saveUpdate = true;
+        });
+      }
     } else {
       print("unable data retrive");
     }
@@ -131,7 +147,6 @@ class _UserProfileState extends State<UserProfile> {
                         height: 25,
                       ),
                       myFormField(
-                        pFullName ?? "",
                         fullNameCon,
                         "Full Name",
                         TextInputType.name,
@@ -145,61 +160,70 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                        initialValue: pFullName ?? "",
-                        decoration: InputDecoration(
-                            labelText: "Full Name",
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
-                              borderSide:
-                                  BorderSide(color: Colors.grey, width: 0.0),
-                            ),
-                            border: OutlineInputBorder()),
-                      )
+                      myFormField(
+                        addressCon,
+                        "Address",
+                        TextInputType.name,
+                        (valueKey) {
+                          if (valueKey!.isEmpty || valueKey.length < 3) {
+                            return "This field is required and cannot be empty";
+                          }
+                          return null;
+                        },
+                      ),
 
-                      // MyFormField(
-                      //   pAddress ?? "",
-                      //   addressCon,
-                      //   "Address",
-                      //   TextInputType.name,
-                      //   (valueKey) {
-                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
-                      //       return "This field is required and cannot be empty";
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // MyFormField(
-                      //   pMobileNumber ?? "",
-                      //   mobileCon,
-                      //   "Mobile Number",
-                      //   TextInputType.number,
-                      //   (valueKey) {
-                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
-                      //       return "This field is required and cannot be empty";
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         userProfileSave(
-                      //             fullName: fullNameCon.text,
-                      //             address: addressCon.text,
-                      //             number: mobileCon.text,
-                      //             uid: widget.userId,
-                      //             file: _image!);
-                      //       });
-                      //     },
-                      //     child: Text("Save"))
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      myFormField(
+                        mobileCon,
+                        "Mobile Number",
+                        TextInputType.name,
+                        (valueKey) {
+                          if (valueKey!.isEmpty || valueKey.length < 3) {
+                            return "This field is required and cannot be empty";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            if (saveUpdate != false) {
+                              // userProfileUpdate(
+                              //     fullName: fullNameCon.text,
+                              //     address: addressCon.text,
+                              //     number: mobileCon.text,
+                              //     uid: widget.userId,
+                              //     file: _image!);
+                              // try {} catch (e) {
+                              //   setState(() {
+                              //     userProfileUpdate(
+                              //         fullName: "Soikat", uid: widget.userId);
+
+                              //     print(e.toString());
+                              //   });
+                              // }
+                              // print("Update");
+                              // print(widget.userId);
+                            } else {
+                              userProfileSave(
+                                  fullName: fullNameCon.text,
+                                  address: addressCon.text,
+                                  number: mobileCon.text,
+                                  uid: widget.userId,
+                                  file: _image!);
+                            }
+                          });
+                        },
+                        child:
+                            saveUpdate != true ? Text("Save") : Text("Update"),
+                      ),
                     ],
                   ))
             ],

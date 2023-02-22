@@ -4,18 +4,15 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/admin_panel.dart';
+
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../utils/methods.dart';
 import '../widgets/card_dashboard.dart';
-import '../widgets/circleindegator.dart';
 
 class DonarDashboardScreen extends StatefulWidget {
-  DonarDashboardScreen({
+  const DonarDashboardScreen({
     Key? key,
   }) : super(key: key);
 
@@ -46,7 +43,7 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
   }
 
   pGet() async {
-    var li = await retriveProfileData();
+    var li = await retriveProfileData(getUserId());
 
     if (li != null) {
       setState(() {
