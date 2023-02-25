@@ -22,8 +22,16 @@ Stream<dynamic> getFoodData() {
   return documentStream;
 }
 
+loginPage(BuildContext context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ));
+}
+
 getUserId() {
-  return _firebaseAuth.currentUser!.uid;
+  return _firebaseAuth.currentUser?.uid;
 }
 
 pickImageMethod(ImageSource source) async {

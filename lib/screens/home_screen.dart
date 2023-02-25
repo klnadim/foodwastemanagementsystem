@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donnar_add_food.dart';
+import 'package:food_waste_management_system/screens/login_screen.dart';
 
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen({
+    Key? key,
+  }) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-
   // Stream<DocumentSnapshot<Map<String, dynamic>>> documentStream =
   //     FirebaseFirestore.instance
   //         .collection('addFood')
@@ -40,6 +43,44 @@ class _HomeScreenState extends State<HomeScreen> {
   );
   Color myColor = Colors.green;
 
+  void checkLoginOrNot() {
+    if (getUserId().isEmpty) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ));
+    }
+  }
+
+  @override
+  void initState() {
+    // checkLoginOrNot();
+    super.initState();
+
+    // Future.delayed(Duration(seconds: 3));
+    // var vUserId = user!.uid;
+    // if (vUserId.isEmpty) {
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => LoginScreen(),
+    //       ));
+    // } else {
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => HomeScreen(),
+    //       ));
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     // DataColumn columnsName = [];
@@ -48,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-              onPressed: () => logOut(context), child: Text("LogOut"))
+              // ignore: unnecessary_null_comparison
+              onPressed: () => logOut(context),
+              child: Text(getUserId() == null ? "Login" : "Logout"))
         ],
         title: const Text(
           "Homepage",
@@ -59,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Home Page Of the APP"),
-            Text("SignIn with \n ${user!.uid}"),
+            Text("SignIn with \n ${getUserId() ?? 'null'}"),
             TextButton(
                 onPressed: () {
                   basedOfLogin();
@@ -307,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void basedOfLogin() {
     // print(user!.uid);
-    FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then(
+    FirebaseFirestore.instance.collection('users').doc(getUserId()).get().then(
       (value) {
         // if (value.get('rool') == 'Admin') {
         //   return AdminPanelScreen();

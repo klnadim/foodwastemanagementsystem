@@ -302,12 +302,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => DonarDashboardScreen(),
               ));
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => HomeScreen(),
+          //   ),
+          // );
         }
       } else {
         print('Document does not exist on the database');

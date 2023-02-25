@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
       home: HomeScreen(),
+      // routes: {
+      //   '/login': (context) => LoginScreen(),
+      //   // '/home': (context) => HomeScreen(),
+      // },
       // home: UserProfile(userId: getUserId()),
     );
   }
