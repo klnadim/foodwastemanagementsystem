@@ -34,6 +34,22 @@ getUserId() {
   return _firebaseAuth.currentUser?.uid;
 }
 
+final ImagePicker imgpicker = ImagePicker();
+List<XFile>? imagefiles;
+pickMultiImag(ImageSource source) async {
+  try {
+    var pickedfiles = await imgpicker.pickMultiImage();
+    //you can use ImageCourse.camera for Camera capture
+    if (pickedfiles != null) {
+      imagefiles = pickedfiles;
+    } else {
+      print("No image is selected.");
+    }
+  } catch (e) {
+    print("error while picking file.");
+  }
+}
+
 pickImageMethod(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
 
