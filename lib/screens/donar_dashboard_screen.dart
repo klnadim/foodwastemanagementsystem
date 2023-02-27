@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/donnar_add_food.dart';
+import 'package:food_waste_management_system/screens/home_screen.dart';
 
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
@@ -152,16 +154,37 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
             mainAxisSpacing: 20,
             children: [
               // InkWell()
-              singleCard(Icons.food_bank_outlined, 'Add Food'),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ));
+                },
+                child: singleCard(Icons.home, 'Home'),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DonnarAddFood(),
+                      ));
+                },
+                child: singleCard(Icons.food_bank_outlined, 'Add Food'),
+              ),
               singleCard(Icons.list_alt_rounded, 'Donated List'),
 
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      pGet();
-                    });
-                  },
-                  child: Text("Click"))
+              // ElevatedButton(
+              //     onPressed: () {
+              //       setState(() {
+              //         pGet();
+              //       });
+              //     },
+              //     child: Text("Click"))
             ],
           ),
         ),

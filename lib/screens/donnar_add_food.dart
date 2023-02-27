@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
+import 'package:image_picker/image_picker.dart';
 
 class DonnarAddFood extends StatefulWidget {
   const DonnarAddFood({Key? key}) : super(key: key);
@@ -19,16 +21,62 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
   TextEditingController validityHourCon = TextEditingController();
   TextEditingController foodPersonCon = TextEditingController();
   TextEditingController contactCon = TextEditingController();
-  TextEditingController foodImageCon = TextEditingController();
+  // TextEditingController foodImageCon = TextEditingController();
 
   String foodItem = "";
   String descriotion = "";
   String bodyTemp = "";
+  // Uint8List<List> _image = [];
+
   var measure;
 
   String? selectedPerson;
 
-  void _submit() {
+  //Multiple Image Pick
+
+  final ImagePicker imgpicker = ImagePicker();
+  List<XFile>? imagefiles;
+  List<String> imgUrls = [];
+  openImages() async {
+    try {
+      var pickedfiles = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (pickedfiles != null) {
+        imagefiles = pickedfiles;
+        setState(() {});
+        print("Picked");
+        print(imagefiles!.length);
+      } else {
+        print("No image is selected.");
+      }
+    } catch (e) {
+      print("error while picking file.");
+    }
+  }
+
+  //
+
+  // void selectMultImg(ImageSource source) async {
+  //   Uint8List im = await pickMultiImag(ImageSource.gallery);
+  //   setState(() {
+  //     _images = im as List<XFile>;
+  //     print("PickedImg");
+  //   });
+  // }
+
+  // void savePhoto() async {
+  //   List<String> imgUrls = [];
+
+  //   for (int i = 0; i < images.length; i++) {
+  //     String urls = await uploadToStorageMultiImg("fffff", images[i]);
+
+  //     print(urls);
+  //     // imgUrls.add(urls.toString());
+  //   }
+  //   // print(imgUrls);
+  // }
+
+  void _submit(List<XFile> images) async {
     // showDialog<void>(
     //   context: context,
     //   barrierDismissible: true, // user can tap anywhere to close the pop up
@@ -104,6 +152,15 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
     // );
 
     User? user = FirebaseAuth.instance.currentUser;
+
+    List<String> imgUrls = [];
+
+    for (int i = 0; i < images.length; i++) {
+      String urls = await uploadToStorageMultiImg("addFoodImage", images[i]);
+
+      imgUrls.add(urls);
+    }
+
     addFoodSubmit(
         foodItemCon.text,
         descriotionCon.text,
@@ -112,9 +169,10 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         validityHourCon.text,
         int.parse(foodPersonCon.text),
         contactCon.text,
+        imgUrls,
         user!.uid);
 
-    foodImageCon.clear();
+    foodItemCon.clear();
     descriotionCon.clear();
     addressCon.clear();
     cityCon.clear();
@@ -125,7 +183,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
 
   @override
   void dispose() {
-    foodImageCon.dispose();
+    // foodImageCon.dispose();
     descriotionCon.dispose();
     addressCon.dispose();
     cityCon.dispose();
@@ -476,14 +534,43 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                     const SizedBox(
                       height: 20,
                     ),
+                    TextButton.icon(
+                        onPressed: () {
+                          openImages();
+                        },
+                        icon: Icon(Icons.image),
+                        label: Text("Select Images")),
+
+                    imagefiles != null
+                        ? Wrap(
+                            children: imagefiles!.map((imageone) {
+                              return Container(
+                                  child: Card(
+                                child: Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.file(File(imageone.path)),
+                                ),
+                              ));
+                            }).toList(),
+                          )
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    const SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(60)),
-                      onPressed: () {
+                      onPressed: () async {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          _submit();
+                          _submit(imagefiles!);
                         }
+                        // savePhoto(imagefiles!);
                       },
                       child: const Text("Submit"),
                     ),

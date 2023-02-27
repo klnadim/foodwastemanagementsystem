@@ -17,7 +17,7 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("${widget.id}"),
+          title: Text(widget.id),
         ),
         body: FutureBuilder(
           future: FirebaseFirestore.instance
@@ -38,172 +38,173 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
 
             var vData = AddFoodModel.fromDocument(data);
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    color: Colors.brown,
-                    height: 150,
-                    width: double.infinity,
-                    child: Center(child: Text("Photos SHow")),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Items:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.foodItems),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Desciption:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.description),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Address:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.address),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("City:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.city),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Validity:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.foodValidation),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Persons:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.foodPerson.toString()),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Card(
-                                shadowColor: Colors.black,
-                                color: Colors.grey,
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Contact:"),
-                                ),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(vData.contactNumber),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
+            return Text("data");
+            // return Column(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: Container(
+            //         color: Colors.brown,
+            //         height: 150,
+            //         width: double.infinity,
+            //         child: Center(child: Text("Photos SHow")),
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: Column(
+            //         children: [
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Items:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.foodItems),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Desciption:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.description),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Address:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.address),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("City:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.city),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Validity:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.foodValidation),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Persons:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.foodPerson.toString()),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Row(
+            //                 children: [
+            //                   Card(
+            //                     shadowColor: Colors.black,
+            //                     color: Colors.grey,
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(5.0),
+            //                       child: Text("Contact:"),
+            //                     ),
+            //                   ),
+            //                   Card(
+            //                     child: Padding(
+            //                       padding: const EdgeInsets.all(5.0),
+            //                       child: Text(vData.contactNumber),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // );
           },
         ));
   }

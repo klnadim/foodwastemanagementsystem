@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,20 +35,17 @@ getUserId() {
   return _firebaseAuth.currentUser?.uid;
 }
 
-final ImagePicker imgpicker = ImagePicker();
-List<XFile>? imagefiles;
-pickMultiImag(ImageSource source) async {
-  try {
-    var pickedfiles = await imgpicker.pickMultiImage();
-    //you can use ImageCourse.camera for Camera capture
-    if (pickedfiles != null) {
-      imagefiles = pickedfiles;
-    } else {
-      print("No image is selected.");
-    }
-  } catch (e) {
-    print("error while picking file.");
-  }
+Future<String> uploadToStorageMultiImg(String childName, XFile images) async {
+  Reference ref = _firebaseStorage.ref().child(childName).child(images.name);
+
+  UploadTask uploadTask = ref.putFile(File(images.path));
+
+  // TaskSnapshot snapshot = await uploadTask;
+  // await uploadTask.whenComplete(() => print(ref.getDownloadURL()));
+  TaskSnapshot snapshot = await uploadTask;
+  String downloadlink = await snapshot.ref.getDownloadURL();
+
+  return downloadlink;
 }
 
 pickImageMethod(ImageSource source) async {
@@ -191,6 +189,7 @@ Future<void> addFoodSubmit(
   String foodValidation,
   int foodPerson,
   String contactNumber,
+  List<String> imagesUrls,
   String uid,
 ) async {
   var msg = "Some error occured";
@@ -204,6 +203,7 @@ Future<void> addFoodSubmit(
       'foodValidation': foodValidation,
       'foodperson': foodPerson,
       'contact': contactNumber,
+      'imagesUrls': imagesUrls,
       'uid': uid
     });
   } catch (e) {
