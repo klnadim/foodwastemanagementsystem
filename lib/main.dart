@@ -11,6 +11,7 @@ import 'package:food_waste_management_system/screens/home_screen.dart';
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
 import 'package:food_waste_management_system/screens/signup_screen.dart';
+import 'package:food_waste_management_system/screens/splash_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
@@ -39,11 +40,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
-      home: HomeScreen(),
-      // routes: {
-      //   '/login': (context) => LoginScreen(),
-      //   // '/home': (context) => HomeScreen(),
-      // },
+      theme: ThemeData(fontFamily: 'Lato'),
+      home: SplashScreen(),
+
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => HomeScreen(),
+        '/addFood': (context) => DonnarAddFood(),
+      },
       // home: UserProfile(userId: getUserId()),
     );
   }

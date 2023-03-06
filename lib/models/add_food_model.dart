@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddFoodModel {
@@ -7,10 +8,12 @@ class AddFoodModel {
   String address;
   String city;
   String foodValidation;
-  int foodPerson;
+  int? foodPerson;
   String contactNumber;
+  String publicOrPrivate;
+  DateTime dateTime;
   String uid;
-  List<XFile> files;
+  List<XFile>? files;
 
   AddFoodModel({
     required this.foodItems,
@@ -20,20 +23,56 @@ class AddFoodModel {
     required this.foodValidation,
     required this.foodPerson,
     required this.contactNumber,
-    required this.files,
+    required this.publicOrPrivate,
+    required this.dateTime,
     required this.uid,
+    this.files,
   });
 
-  factory AddFoodModel.fromDocument(DocumentSnapshot doc) {
+  // factory AddFoodModel.fromDocument(DocumentSnapshot doc) {
+  //   return AddFoodModel(
+  //       foodItems: doc['fooditems'],
+  //       description: doc['description'],
+  //       address: doc['address'],
+  //       city: doc['city'],
+  //       foodValidation: doc['foodValidation'],
+  //       foodPerson: doc['foodperson'],
+  //       contactNumber: doc['contact'],
+  //       files: doc['images'],
+  //       // dateTime: doc['dateTime'],
+  //       uid: doc['uid']);
+  // }
+
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     "foodItems": foodItems,
+  //     "description": description,
+  //     "address": address,
+  //     "city": city,
+  //     "foodValidation": foodValidation,
+  //     "foodPerson": foodPerson,
+  //     "contactNumber": contactNumber,
+  //     "files": files,
+  //     // "dateTime": dateTime,
+  //     "uid": uid,
+  //   };
+  // }
+
+  factory AddFoodModel.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+    final data = documentSnapshot.data()!;
+
     return AddFoodModel(
-        foodItems: doc['fooditems'],
-        description: doc['description'],
-        address: doc['address'],
-        city: doc['city'],
-        foodValidation: doc['foodValidation'],
-        foodPerson: doc['foodperson'],
-        contactNumber: doc['contact'],
-        files: doc['images'],
-        uid: doc['uid']);
+        foodItems: data['foodItems'],
+        description: data['description'],
+        address: data['address'],
+        city: data['city'],
+        foodValidation: data['foodValidation'],
+        foodPerson: data['foodPerson'],
+        contactNumber: data['contactNumber'],
+        files: data['imageUrls'],
+        publicOrPrivate: data['publicOrPrivate'],
+        dateTime: DateTime.fromMicrosecondsSinceEpoch(data['timeDate'] * 1000),
+        uid: data['uid']);
   }
 }

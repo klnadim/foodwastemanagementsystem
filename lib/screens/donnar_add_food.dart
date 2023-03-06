@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
+import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DonnarAddFood extends StatefulWidget {
@@ -28,15 +29,26 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
   String bodyTemp = "";
   // Uint8List<List> _image = [];
 
-  var measure;
+  // var measure;
 
   String? selectedPerson;
+
+  String publicOrPrivate = 'public';
+
+  // BuildContext? dcontext;
+
+  // dismissDailog() {
+  //   if (dcontext != null) {
+  //     Navigator.pop(dcontext!);
+  //   }
+  // }
 
   //Multiple Image Pick
 
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles;
   List<String> imgUrls = [];
+
   openImages() async {
     try {
       var pickedfiles = await imgpicker.pickMultiImage();
@@ -169,16 +181,12 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         validityHourCon.text,
         int.parse(foodPersonCon.text),
         contactCon.text,
+        publicOrPrivate,
+        DateTime.now(),
         imgUrls,
         user!.uid);
 
-    foodItemCon.clear();
-    descriotionCon.clear();
-    addressCon.clear();
-    cityCon.clear();
-    validityHourCon.clear();
-    foodPersonCon.clear();
-    contactCon.clear();
+    clearAllField();
   }
 
   @override
@@ -190,6 +198,8 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
     validityHourCon.dispose();
     foodPersonCon.dispose();
     contactCon.dispose();
+    imagefiles!.clear();
+
     super.dispose();
   }
 
@@ -562,17 +572,101 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(60)),
-                      onPressed: () async {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          _submit(imagefiles!);
-                        }
-                        // savePhoto(imagefiles!);
-                      },
-                      child: const Text("Submit"),
+                    Column(children: [
+                      Text(
+                        "Will you donated privately or publicly?",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Divider(),
+                      RadioListTile(
+                        title: Text("Public"),
+                        value: "public",
+                        groupValue: publicOrPrivate,
+                        onChanged: (value) {
+                          setState(() {
+                            publicOrPrivate = value.toString();
+                          });
+                        },
+                      ),
+                      RadioListTile(
+                        title: Text("Private"),
+                        value: "private",
+                        groupValue: publicOrPrivate,
+                        onChanged: (value) {
+                          setState(() {
+                            publicOrPrivate = value.toString();
+                          });
+                        },
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          // style: ElevatedButton.styleFrom(
+                          //     minimumSize: const Size.fromHeight(60)),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.purple,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 35, vertical: 15),
+                              textStyle: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w400)),
+
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(' Confrimation'),
+                                    content: Text(
+                                        'Are you sure to Donating this food?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                          onPressed: () async {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              _submit(imagefiles!);
+                                            }
+
+                                            Navigator.pushNamed(
+                                                context, '/addFood');
+                                            // Navigator.push(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           DonnarAddFood(),
+                                            //     ));
+                                          },
+                                          child: Text('Confirm')),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context); //close Dialog
+                                        },
+                                        child: Text('Cancel'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: const Text("Submit"),
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueGrey,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 35, vertical: 15),
+                              textStyle: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w400),
+                            ),
+                            onPressed: () {
+                              setState(() {});
+                              clearAllField();
+                            },
+                            child: Text("Clear"))
+                      ],
                     ),
                   ],
                 ),
@@ -582,6 +676,17 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         ),
       ),
     ));
+  }
+
+  void clearAllField() {
+    foodItemCon.clear();
+    descriotionCon.clear();
+    addressCon.clear();
+    cityCon.clear();
+    validityHourCon.clear();
+    foodPersonCon.clear();
+    contactCon.clear();
+    imagefiles!.clear();
   }
 }
 
