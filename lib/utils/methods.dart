@@ -1,17 +1,36 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/add_food_model.dart';
+
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+//Request For Food 'donatedfoodview'
+
+Future<void> requiestForFood(String docsID, String userId) async {
+  CollectionReference reference =
+      FirebaseFirestore.instance.collection('users');
+  return await reference
+      .add({
+        'docsId': docsID,
+        'userId': userId,
+        'dateTime': DateTime.now(),
+      })
+      .then((value) => print("User Added"))
+      .catchError(() => print("Failed to added"));
+}
+
+//Fetch all data from firebase firestore addFood document
 
 Stream<dynamic> getFoodData() {
   Stream documentStream = FirebaseFirestore.instance
@@ -22,8 +41,30 @@ Stream<dynamic> getFoodData() {
   return documentStream;
 }
 
+loginPage(BuildContext context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ));
+}
+
 getUserId() {
-  return _firebaseAuth.currentUser!.uid;
+  var userID = _firebaseAuth.currentUser?.uid;
+  return userID ?? 'null';
+}
+
+Future<String> uploadToStorageMultiImg(String childName, XFile images) async {
+  Reference ref = _firebaseStorage.ref().child(childName).child(images.name);
+
+  UploadTask uploadTask = ref.putFile(File(images.path));
+
+  // TaskSnapshot snapshot = await uploadTask;
+  // await uploadTask.whenComplete(() => print(ref.getDownloadURL()));
+  TaskSnapshot snapshot = await uploadTask;
+  String downloadlink = await snapshot.ref.getDownloadURL();
+
+  return downloadlink;
 }
 
 pickImageMethod(ImageSource source) async {
@@ -167,19 +208,25 @@ Future<void> addFoodSubmit(
   String foodValidation,
   int foodPerson,
   String contactNumber,
+  String publicOrPrivate,
+  DateTime dateTime,
+  List<String> imagesUrls,
   String uid,
 ) async {
   var msg = "Some error occured";
 
   try {
     await _firestore.collection('addFood').doc().set({
-      'fooditems': foodItems,
+      'foodItems': foodItems,
       'description': description,
       'address': address,
       'city': city,
       'foodValidation': foodValidation,
-      'foodperson': foodPerson,
-      'contact': contactNumber,
+      'foodPerson': foodPerson,
+      'contactNumber': contactNumber,
+      'publicOrPrivate': publicOrPrivate,
+      'timeDate': dateTime,
+      'imagesUrls': imagesUrls,
       'uid': uid
     });
   } catch (e) {

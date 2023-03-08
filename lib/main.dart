@@ -11,12 +11,23 @@ import 'package:food_waste_management_system/screens/home_screen.dart';
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
 import 'package:food_waste_management_system/screens/signup_screen.dart';
+import 'package:food_waste_management_system/screens/splash_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      // options: FirebaseOptions(
+      //     apiKey: "AIzaSyCW1ePGZ59uspUs_dlinhOz9yzeb1BW6l0",
+      //     authDomain: "fwms-d6bd4.firebaseapp.com",
+      //     projectId: "fwms-d6bd4",
+      //     storageBucket: "fwms-d6bd4.appspot.com",
+      //     messagingSenderId: "506712614677",
+      //     appId: "1:506712614677:web:c92747caaa9ab99c6a6b1c",
+      //     measurementId: "G-XTM0P7ESC0"),
+
+      );
 
   runApp(const MyApp());
 }
@@ -29,7 +40,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
-      home: HomeScreen(),
+      theme: ThemeData(fontFamily: 'Lato'),
+      home: SplashScreen(),
+
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => HomeScreen(),
+        '/addFood': (context) => DonnarAddFood(),
+      },
       // home: UserProfile(userId: getUserId()),
     );
   }
