@@ -15,6 +15,21 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+//Request For Food 'donatedfoodview'
+
+Future<void> requiestForFood(String docsID, String userId) async {
+  CollectionReference reference =
+      FirebaseFirestore.instance.collection('users');
+  return await reference
+      .add({
+        'docsId': docsID,
+        'userId': userId,
+        'dateTime': DateTime.now(),
+      })
+      .then((value) => print("User Added"))
+      .catchError(() => print("Failed to added"));
+}
+
 //Fetch all data from firebase firestore addFood document
 
 Stream<dynamic> getFoodData() {
@@ -35,7 +50,8 @@ loginPage(BuildContext context) {
 }
 
 getUserId() {
-  return _firebaseAuth.currentUser?.uid;
+  var userID = _firebaseAuth.currentUser?.uid;
+  return userID ?? 'null';
 }
 
 Future<String> uploadToStorageMultiImg(String childName, XFile images) async {

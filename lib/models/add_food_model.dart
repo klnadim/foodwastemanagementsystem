@@ -58,21 +58,28 @@ class AddFoodModel {
   //   };
   // }
 
-  factory AddFoodModel.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
-    final data = documentSnapshot.data()!;
+  // factory AddFoodModel.fromSnapshot(
+  //     DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+  //   final data = documentSnapshot.data()!;
 
-    return AddFoodModel(
-        foodItems: data['foodItems'],
-        description: data['description'],
-        address: data['address'],
-        city: data['city'],
-        foodValidation: data['foodValidation'],
-        foodPerson: data['foodPerson'],
-        contactNumber: data['contactNumber'],
-        files: data['imageUrls'],
-        publicOrPrivate: data['publicOrPrivate'],
-        dateTime: DateTime.fromMicrosecondsSinceEpoch(data['timeDate'] * 1000),
-        uid: data['uid']);
-  }
+  //   // var timeStamp = data['timeDate'];
+
+  //   DateTime updateDateTime = DateTime.fromMillisecondsSinceEpoch(
+  //       data['timeDate'].millisecondsSinceEpoch);
+
+  //   var imageLink = List.castFrom(data['imagesUrls']);
+
+  //   return AddFoodModel(
+  //       foodItems: data['foodItems'],
+  //       description: data['description'],
+  //       address: data['address'],
+  //       city: data['city'],
+  //       foodValidation: data['foodValidation'],
+  //       foodPerson: data['foodPerson'],
+  //       contactNumber: data['contactNumber'],
+  //       files: XFile(imageLink.path),
+  //       publicOrPrivate: data['publicOrPrivate'],
+  //       dateTime: updateDateTime,
+  //       uid: data['uid']);
+  // }
 }
