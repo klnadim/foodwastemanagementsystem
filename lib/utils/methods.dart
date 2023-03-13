@@ -120,10 +120,10 @@ Future<void> userProfileSave({
 
 Future<void> userProfileUpdate({
   required String fullName,
-  // required String address,
-  // required String number,
+  required String address,
+  required String number,
   required String uid,
-  // required Uint8List file,
+  required Uint8List file,
 }) async {
 // CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -137,14 +137,14 @@ Future<void> userProfileUpdate({
 
   var msg = "Some error occured";
   try {
-    // String imageUrl = await uploadToStorage("PorfilePic", file);
+    String imageUrl = await uploadToStorage("PorfilePic", file);
 
     await _firestore.collection('profileData').doc(uid).update({
-      'fullName': "SOikat",
-      // 'address': address,
-      // 'number': number,
-      // 'uid': uid,
-      // 'photoUrl': imageUrl
+      'fullName': fullName,
+      'address': address,
+      'number': number,
+      'uid': uid,
+      'photoUrl': imageUrl
     });
 
     msg = "Success";
@@ -154,32 +154,6 @@ Future<void> userProfileUpdate({
 }
 
 Future retriveProfileData(String pUserId) async {
-  // var _getdata = await FirebaseFirestore.instance
-  //     .collection('profileData')
-  //     .doc(_firebaseAuth.currentUser!.uid)
-  //     .get().then((value) => null);
-
-  // return getdata = FirebaseFirestore.instance
-  //     .collection('profileData')
-  //     .doc(_firebaseAuth.currentUser!.uid)
-  //     .get()
-  //     .then((DocumentSnapshot documentSnapshot) {
-  //   if (documentSnapshot.exists) {
-  //     return documentSnapshot.data();
-  //   } else {
-  //     print('User profile doesn\'t updated Yet/');
-  //   }
-  // });
-
-  // var _data = _getdata.data();
-
-  // Map<String, dynamic> map = {
-  //   'fullname': _data!['fullName'],
-  //   'address': _data['address'],
-  //   'mobileNumber': _data['number'],
-  //   'photoUrl': _data['photoUrl'],
-  // };
-
   List getProfileData = [];
   try {
     final CollectionReference profileData =

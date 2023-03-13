@@ -4,12 +4,16 @@ import 'package:food_waste_management_system/models/add_food_model.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/arguments_return.dart';
 import '../utils/methods.dart';
 
 class DonatedFoodView extends StatefulWidget {
-  final String id;
+  // final String id;
 
-  const DonatedFoodView({Key? key, required this.id}) : super(key: key);
+  const DonatedFoodView({
+    Key? key,
+  }) : super(key: key);
+  static const routeName = '/donatedFoodView';
 
   @override
   State<DonatedFoodView> createState() => _DonatedFoodViewState();
@@ -21,6 +25,8 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
   Widget build(BuildContext context) {
     CollectionReference users =
         FirebaseFirestore.instance.collection('addFood');
+
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 208, 214, 246),
         appBar: AppBar(
@@ -28,7 +34,7 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
           centerTitle: true,
         ),
         body: FutureBuilder<DocumentSnapshot>(
-          future: users.doc(widget.id).get(),
+          future: users.doc(args.documentId).get(),
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -254,7 +260,7 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                           padding: EdgeInsets.all(0.0),
                         ),
                         onPressed: () {
-                          requiestForFood(widget.id, getUserId());
+                          requiestForFood(args.documentId, getUserId());
                           Navigator.pushNamed(context, '/home');
                         },
                         child: Ink(

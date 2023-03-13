@@ -7,6 +7,7 @@ class AddFoodModel {
   String description;
   String address;
   String city;
+
   String foodValidation;
   int? foodPerson;
   String contactNumber;

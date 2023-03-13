@@ -2,16 +2,81 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:awesome_icons/awesome_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/card_dashboard.dart';
 import 'package:food_waste_management_system/widgets/list_title.dart';
 
-class AdminPanelScreen extends StatelessWidget {
-  AdminPanelScreen({Key? key}) : super(key: key);
+import '../utils/methods.dart';
+import 'user_profile.dart';
 
+class AdminPanelScreen extends StatefulWidget {
+  const AdminPanelScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AdminPanelScreen> createState() => _AdminPanelScreenState();
+}
+
+class _AdminPanelScreenState extends State<AdminPanelScreen> {
   String? name;
+
   Image? image;
+
+  //user profile data get and set varibale
+  Map? listData;
+  String? pGetImageUrl;
+  String? pMobileNumber;
+  String? pFullName;
+
+  // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
+
+  @override
+  void initState() {
+    User? user = FirebaseAuth.instance.currentUser;
+    // print(user);
+
+    super.initState();
+    pGet();
+  }
+
+  pGet() async {
+    var li = await retriveProfileData(getUserId());
+
+    try {
+      if (li == null) {
+        setState(() {
+          pGetImageUrl = listData![0][''];
+          pFullName = listData![0][''];
+          pMobileNumber = listData![0][''];
+        });
+      } else {
+        setState(() {
+          listData = li;
+
+          pGetImageUrl = listData![0]['photoUrl'];
+          pFullName = listData![0]['fullName'];
+          pMobileNumber = listData![0]['number'];
+        });
+      }
+    } catch (e) {
+      Text(e.toString());
+    }
+
+    // if (li != null) {
+    //   setState(() {
+    //     listData = li;
+
+    //     pGetImageUrl = listData![0]['photoUrl'];
+    //     pFullName = listData![0]['fullName'];
+    //     pMobileNumber = listData![0]['number'];
+    //   });
+    // } else {
+    //   print("unable data retrive");
+    // }
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +85,18 @@ class AdminPanelScreen extends StatelessWidget {
         backgroundColor: Colors.blueGrey[100],
         appBar: AppBar(
           title: Text(
-            "Hello Admin",
+            "Hello $pFullName ",
             style: textstyle(),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          actions: const [
-            // Text("Hello Nadim"),
-            // PopupMenuButton(itemBuilder: (context) {
-            //   return [const PopupMenuItem(child: Text("Dashboard")),const PopupMenuItem(child: Text("Dashboard")),];
-            // },)
+          actions: [
+            TextButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+                icon: Icon(Icons.home),
+                label: Text(""))
           ],
         ),
         drawer: Drawer(
@@ -46,14 +113,20 @@ class AdminPanelScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         CircleAvatar(
-                            radius: 45,
-                            backgroundImage:
-                                Image.asset("assets/images/testimage.JPG")
-                                    .image),
+                          radius: 45,
+                          backgroundImage: pGetImageUrl != null
+                              ? NetworkImage("$pGetImageUrl")
+                              : NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+
+                          // Image.network(
+                          //             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
+                          //         .image
+                        ),
                         const SizedBox(
                           height: 5,
                         ),
-                        Text("admin@gmail.com")
+                        Text("")
                       ],
                     ),
                   ),
@@ -63,11 +136,23 @@ class AdminPanelScreen extends StatelessWidget {
               const Divider(
                 color: Colors.black26,
               ),
-              
-              
-              
-              
-              Card(child: listtile("Profile", Icons.person_outline_outlined)),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserProfile(userId: user!.uid),
+                      ));
+                },
+                child: Card(
+                  child: listtile("Profile", Icons.person_outline_outlined),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () => logOut(context), child: Text("LogOut"))
             ],
           ),
         ),
@@ -78,7 +163,16 @@ class AdminPanelScreen extends StatelessWidget {
             crossAxisSpacing: 30,
             mainAxisSpacing: 20,
             childAspectRatio: 10 / 9,
-            children: [singleCard(Icons.done_all_outlined, "Donated Foods"),singleCard(Icons.request_page, "Request"),singleCard(Icons.close, "Rejected")],
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/donatedFoodView');
+                },
+                child: singleCard(Icons.done_all_outlined, "Donated Foods"),
+              ),
+              singleCard(Icons.request_page, "Request"),
+              singleCard(Icons.close, "Rejected")
+            ],
           ),
         ),
       ),

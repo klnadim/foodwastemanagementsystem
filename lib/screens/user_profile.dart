@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/custom_wigets.dart';
+import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/styles.dart';
@@ -22,8 +23,6 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController fullNameCon = TextEditingController(text: "");
   TextEditingController addressCon = TextEditingController();
   TextEditingController mobileCon = TextEditingController();
-
-  TextEditingController testCon = TextEditingController();
 
   Uint8List? _image;
   bool saveUpdate = false;
@@ -45,7 +44,6 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
 
     fullNameCon.dispose();
@@ -59,8 +57,13 @@ class _UserProfileState extends State<UserProfile> {
 
     if (pGet() != false) {
       pGet();
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserProfile(userId: widget.userId),
+          ));
     }
-    // print(pFullName);
   }
 
   pGet() async {
@@ -81,8 +84,8 @@ class _UserProfileState extends State<UserProfile> {
         fullNameCon.text = pFullName!;
         mobileCon.text = pMobileNumber!;
         addressCon.text = pAddress!;
+
         setState(() {
-          fullNameCon.text = pFullName!;
           saveUpdate = true;
         });
       }
@@ -191,39 +194,63 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            if (saveUpdate != false) {
-                              // userProfileUpdate(
-                              //     fullName: fullNameCon.text,
-                              //     address: addressCon.text,
-                              //     number: mobileCon.text,
-                              //     uid: widget.userId,
-                              //     file: _image!);
-                              // try {} catch (e) {
-                              //   setState(() {
-                              //     userProfileUpdate(
-                              //         fullName: "Soikat", uid: widget.userId);
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       CustomDialogBox(
+                      //         title: "Are you Sure?",
+                      //         contains: saveUpdate != true
+                      //             ? "For Save"
+                      //             : "For Update",
+                      //         button1: () {
+                      //           if (saveUpdate != true) {
+                      //             userProfileSave(
+                      //                 fullName: fullNameCon.text,
+                      //                 address: addressCon.text,
+                      //                 number: mobileCon.text,
+                      //                 uid: widget.userId,
+                      //                 file: _image!);
+                      //           } else {
+                      //             userProfileUpdate(
+                      //                 fullName: fullNameCon.text,
+                      //                 address: addressCon.text,
+                      //                 number: mobileCon.text,
+                      //                 uid: widget.userId,
+                      //                 file: _image!);
+                      //           }
+                      //         },
+                      //       );
+                      //     });
+                      //   },
+                      //   child:
+                      //       saveUpdate != true ? Text("Save") : Text("Update"),
+                      // ),
 
-                              //     print(e.toString());
-                              //   });
-                              // }
-                              // print("Update");
-                              // print(widget.userId);
-                            } else {
-                              userProfileSave(
-                                  fullName: fullNameCon.text,
-                                  address: addressCon.text,
-                                  number: mobileCon.text,
-                                  uid: widget.userId,
-                                  file: _image!);
-                            }
-                          });
-                        },
-                        child:
-                            saveUpdate != true ? Text("Save") : Text("Update"),
-                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            showMyDialog(context, "Are you Sure?",
+                                saveUpdate != true ? "For Save" : "For Update",
+                                () {
+                              if (saveUpdate != true) {
+                                userProfileSave(
+                                    fullName: fullNameCon.text,
+                                    address: addressCon.text,
+                                    number: mobileCon.text,
+                                    uid: widget.userId,
+                                    file: _image!);
+                              } else {
+                                userProfileUpdate(
+                                    fullName: fullNameCon.text,
+                                    address: addressCon.text,
+                                    number: mobileCon.text,
+                                    uid: widget.userId,
+                                    file: _image!);
+                              }
+                            });
+                          },
+                          child: saveUpdate != true
+                              ? Text("Save")
+                              : Text("Update")),
                     ],
                   ))
             ],

@@ -343,7 +343,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               setState(() => selectedUserType = usertype!),
                           validator: (value) =>
                               value == null ? 'field required' : null,
-                          items: ['NGO', 'DONAR']
+                          items: ['NGO', 'DONAR', 'ADMIN']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
