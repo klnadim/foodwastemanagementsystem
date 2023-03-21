@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/arguments_return.dart';
 
 import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/donated_food_view.dart';
-import 'package:food_waste_management_system/screens/donnar_add_food.dart';
+
 import 'package:food_waste_management_system/screens/login_screen.dart';
 
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
@@ -444,7 +443,6 @@ class _HomeScreenState extends State<HomeScreen> {
         // } else if (value.get('rool') == 'DONAR') {
         //   return DonarDashboardScreen();
         // }
-        print(value.get('rool'));
 
         if (value.get('rool') == "ADMIN") {
           Navigator.pushReplacement(

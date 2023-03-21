@@ -1,7 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/donnar_add_food.dart';
@@ -176,7 +172,13 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                 },
                 child: singleCard(Icons.food_bank_outlined, 'Add Food'),
               ),
-              singleCard(Icons.list_alt_rounded, 'Donated List'),
+
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/indivisualDonatedList');
+                },
+                child: singleCard(Icons.list_alt_rounded, 'Donated List'),
+              ),
 
               // ElevatedButton(
               //     onPressed: () {

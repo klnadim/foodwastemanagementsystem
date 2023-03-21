@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/models/add_food_model.dart';
 
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +13,23 @@ import 'package:image_picker/image_picker.dart';
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+//Request button in Food Donar View
+
+Future<void> requestForFood(String uid, String docId, DateTime dateTime) {
+  CollectionReference users =
+      FirebaseFirestore.instance.collection('foodRequest');
+
+  return users
+      .doc('ABC123')
+      .set({
+        'uid': uid,
+        'documentId': docId,
+        'dateTime': dateTime,
+      })
+      .then((value) => print("Request Successfully"))
+      .catchError((error) => print("Failed to : $error"));
+}
 
 //Request For Food 'donatedfoodview'
 

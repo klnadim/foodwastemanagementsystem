@@ -19,7 +19,31 @@ class DonatedFoodView extends StatefulWidget {
   State<DonatedFoodView> createState() => _DonatedFoodViewState();
 }
 
+bool isDonar = false;
+
 class _DonatedFoodViewState extends State<DonatedFoodView> {
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(getUserId())
+        .get()
+        .then((value) {
+      if (value.get('rool') == 'DONAR') {
+        setState(() {
+          isDonar = true;
+          print(isDonar);
+        });
+      } else {
+        setState(() {
+          isDonar = false;
+          print(isDonar);
+        });
+      }
+    });
+    super.initState();
+  }
+
   bool dataAvailable = false;
   @override
   Widget build(BuildContext context) {
@@ -250,44 +274,46 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    Container(
+                    SizedBox(
                       width: 300.00,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80.0)),
-                          elevation: 0.0,
-                          padding: EdgeInsets.all(0.0),
-                        ),
-                        onPressed: () {
-                          requiestForFood(args.documentId, getUserId());
-                          Navigator.pushNamed(context, '/home');
-                        },
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
-                                colors: const [
-                                  Color.fromARGB(68, 238, 190, 102),
-                                  Color.fromARGB(255, 149, 204, 66)
-                                ]),
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: 300.0, minHeight: 50.0),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Request",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 26.0,
-                                  fontWeight: FontWeight.w300),
+                      child: isDonar == true
+                          ? Container()
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                elevation: 0.0,
+                                padding: EdgeInsets.all(0.0),
+                              ),
+                              onPressed: () {
+                                requiestForFood(args.documentId, getUserId());
+                                Navigator.pushNamed(context, '/home');
+                              },
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerRight,
+                                      end: Alignment.centerLeft,
+                                      colors: const [
+                                        Color.fromARGB(68, 238, 190, 102),
+                                        Color.fromARGB(255, 149, 204, 66)
+                                      ]),
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth: 300.0, minHeight: 50.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Request",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 26.0,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                     ),
                     SizedBox(
                       height: 15.0,

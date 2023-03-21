@@ -9,6 +9,7 @@ import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart
 import 'package:food_waste_management_system/screens/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donnar_add_food.dart';
 import 'package:food_waste_management_system/screens/home_screen.dart';
+import 'package:food_waste_management_system/screens/indivisual_donated_list.dart';
 
 import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/addFood': (context) => DonnarAddFood(),
+        '/indivisualDonatedList': (context) => IndivisualDonatedList(),
         // '/donatedFoodView': ((context) => DonatedFoodView(id: ,)),
         DonatedFoodView.routeName: (context) => DonatedFoodView()
       },
