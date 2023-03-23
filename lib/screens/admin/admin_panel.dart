@@ -8,8 +8,8 @@ import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/card_dashboard.dart';
 import 'package:food_waste_management_system/widgets/list_title.dart';
 
-import '../utils/methods.dart';
-import 'user_profile.dart';
+import '../../utils/methods.dart';
+import '../user_profile.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({Key? key}) : super(key: key);

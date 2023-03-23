@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_waste_management_system/screens/admin_panel.dart';
-import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
+import 'package:food_waste_management_system/screens/admin/admin_panel.dart';
+
 import 'package:food_waste_management_system/screens/home_screen.dart';
-import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
+import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
 import 'package:food_waste_management_system/screens/signup_screen.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
+
+import 'donar/donar_dashboard_screen.dart';
 // import 'Student.dart';
 // import 'Teacher.dart';
 // import 'register.dart';

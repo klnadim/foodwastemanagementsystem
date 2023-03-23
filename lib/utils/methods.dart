@@ -14,9 +14,22 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+//Profile completion check
+
+checkProfileComplete() {
+  var profileData = FirebaseFirestore.instance.collection('profileData');
+
+  if (profileData.id.contains(FirebaseAuth.instance.currentUser!.uid)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 //Request button in Food Donar View
 
-Future<void> requestForFood(String uid, String docId, DateTime dateTime) {
+Future<void> requestForFood(String uid, String docId, DateTime dateTime,
+    String email, String userRool) {
   CollectionReference users =
       FirebaseFirestore.instance.collection('foodRequest');
 
@@ -26,6 +39,7 @@ Future<void> requestForFood(String uid, String docId, DateTime dateTime) {
         'uid': uid,
         'documentId': docId,
         'dateTime': dateTime,
+        'email': email,
       })
       .then((value) => print("Request Successfully"))
       .catchError((error) => print("Failed to : $error"));

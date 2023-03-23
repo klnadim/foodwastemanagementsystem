@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 import '../models/arguments_return.dart';
-import '../screens/donated_food_view.dart';
 
 class DonatedList extends StatefulWidget {
   const DonatedList({Key? key}) : super(key: key);

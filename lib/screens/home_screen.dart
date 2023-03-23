@@ -3,15 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/arguments_return.dart';
 
-import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
-import 'package:food_waste_management_system/screens/donated_food_view.dart';
-
 import 'package:food_waste_management_system/screens/login_screen.dart';
 
-import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
+import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
-import 'admin_panel.dart';
+import 'admin/admin_panel.dart';
+import 'donar/donar_dashboard_screen.dart';
+import 'donar/donated_food_view.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({

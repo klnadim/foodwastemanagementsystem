@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/add_food_model.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
+import 'package:food_waste_management_system/widgets/custom_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../models/arguments_return.dart';
-import '../utils/methods.dart';
+import '../../models/arguments_return.dart';
+import '../../utils/methods.dart';
 
 class DonatedFoodView extends StatefulWidget {
   // final String id;
@@ -318,6 +319,24 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     SizedBox(
                       height: 15.0,
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (checkProfileComplete() == true) {
+                            AlertDialog(
+                              content:
+                                  Text("Successfully Your Request Added.."),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              snackBar(
+                                  "You does not Request Right now.Please complete your profile First.!",
+                                  "Profile", () {
+                                Navigator.pushNamed(context, '/profile');
+                              }),
+                            );
+                          }
+                        },
+                        child: Text("Check"))
                   ],
                 ),
               );

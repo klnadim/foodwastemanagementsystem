@@ -2,21 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/admin_donated_food_view.dart';
-import 'package:food_waste_management_system/screens/admin_panel.dart';
+
 import 'package:food_waste_management_system/screens/dashboard/dashboard_screen2.dart';
-import 'package:food_waste_management_system/screens/donar_dashboard_screen.dart';
-import 'package:food_waste_management_system/screens/donated_food_view.dart';
-import 'package:food_waste_management_system/screens/donnar_add_food.dart';
+import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
+
 import 'package:food_waste_management_system/screens/home_screen.dart';
-import 'package:food_waste_management_system/screens/indivisual_donated_list.dart';
 
 import 'package:food_waste_management_system/screens/login_screen.dart';
-import 'package:food_waste_management_system/screens/ngo_dashboard.dart';
+import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
 import 'package:food_waste_management_system/screens/signup_screen.dart';
 import 'package:food_waste_management_system/screens/splash_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
+
+import 'screens/donar/donnar_add_food.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +39,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var DonatedFoodView;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
@@ -52,7 +52,10 @@ class MyApp extends StatelessWidget {
         '/addFood': (context) => DonnarAddFood(),
         '/indivisualDonatedList': (context) => IndivisualDonatedList(),
         // '/donatedFoodView': ((context) => DonatedFoodView(id: ,)),
-        DonatedFoodView.routeName: (context) => DonatedFoodView()
+        DonatedFoodView.routeName: (context) => DonatedFoodView(),
+
+        '/profile': (context) =>
+            UserProfile(userId: FirebaseAuth.instance.currentUser!.uid)
       },
       // home: UserProfile(userId: getUserId()),
     );
