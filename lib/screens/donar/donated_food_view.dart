@@ -1,8 +1,11 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/add_food_model.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/custom_snackbar.dart';
+import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/arguments_return.dart';
@@ -22,6 +25,19 @@ class DonatedFoodView extends StatefulWidget {
 
 bool isDonar = false;
 
+Map? listData;
+String? vNgoName;
+String? vEmail;
+String? vProfilePic;
+String? vAddress;
+String? vCity;
+String? vMobile;
+String? vStatus;
+
+vUserInfo() {
+  getUsersInfo(getUserId());
+}
+
 class _DonatedFoodViewState extends State<DonatedFoodView> {
   @override
   void initState() {
@@ -30,19 +46,53 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
         .doc(getUserId())
         .get()
         .then((value) {
-      if (value.get('rool') == 'DONAR') {
+      if (value.get('rool') == 'DONAR' || value.get('rool') == 'ADMIN') {
         setState(() {
           isDonar = true;
-          print(isDonar);
         });
       } else {
         setState(() {
           isDonar = false;
-          print(isDonar);
         });
       }
     });
+
+    gUserData();
+    if (pGet() != false) {
+      pGet();
+    } else {
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => UserProfile(userId: widget.userId),
+      //     ));
+    }
     super.initState();
+  }
+
+  gUserData() async {
+    var getUserInfoNGO = await getUsersInfo(getUserId());
+
+    if (getUserInfoNGO != null) {
+      vEmail = getUserInfoNGO[0]['email'];
+    }
+  }
+
+  pGet() async {
+    var li = await retriveProfileData(getUserId());
+
+    print(li);
+
+    if (li != null) {
+      listData = li;
+
+      vProfilePic = listData![0]['photoUrl'];
+      vNgoName = listData![0]['fullName'];
+      vMobile = listData![0]['number'];
+      vAddress = listData![0]['address'];
+
+      vCity = listData![0]['city'];
+    }
   }
 
   bool dataAvailable = false;
@@ -223,9 +273,9 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     Container(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 30.0, horizontal: 16.0),
+                            vertical: 15.0, horizontal: 10.0),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
@@ -278,7 +328,18 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     SizedBox(
                       width: 300.00,
                       child: isDonar == true
-                          ? Container()
+                          ? Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {}, child: Text("Confirm")),
+                                  ElevatedButton(
+                                      onPressed: () {}, child: Text("Reject")),
+                                ],
+                              ),
+                            )
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -287,8 +348,21 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                 padding: EdgeInsets.all(0.0),
                               ),
                               onPressed: () {
-                                requiestForFood(args.documentId, getUserId());
-                                Navigator.pushNamed(context, '/home');
+                                showMyDialog(context, "Request!!!!",
+                                    "Are you sure to Request?", () async {
+                                  await requestForFood(
+                                          uid: getUserId(),
+                                          docId: args.documentId,
+                                          dateTime: DateTime.now(),
+                                          emailAddress: vEmail!,
+                                          mobileNumber: vMobile!,
+                                          profilePicLink: vProfilePic!,
+                                          city: vCity,
+                                          status: '')
+                                      .then((value) {
+                                    Navigator.pushNamed(context, '/home');
+                                  });
+                                });
                               },
                               child: Ink(
                                 decoration: BoxDecoration(
@@ -319,24 +393,27 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          if (checkProfileComplete() == true) {
-                            AlertDialog(
-                              content:
-                                  Text("Successfully Your Request Added.."),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar(
-                                  "You does not Request Right now.Please complete your profile First.!",
-                                  "Profile", () {
-                                Navigator.pushNamed(context, '/profile');
-                              }),
-                            );
-                          }
-                        },
-                        child: Text("Check"))
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       var ffff = checkProfileComplete();
+                    //       print(ffff);
+
+                    //       if (checkProfileComplete() == true) {
+                    //         AlertDialog(
+                    //           content:
+                    //               Text("Successfully Your Request Added.."),
+                    //         );
+                    //       } else if (checkProfileComplete() == false) {
+                    //         ScaffoldMessenger.of(context).showSnackBar(
+                    //           snackBar(
+                    //               "You does not Request Right now.Please complete your profile First.!",
+                    //               "Profile", () {
+                    //             Navigator.pushNamed(context, '/profile');
+                    //           }),
+                    //         );
+                    //       }
+                    //     },
+                    //     child: Text("Check"))
                   ],
                 ),
               );

@@ -30,6 +30,10 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
   String? pMobileNumber;
   String? pFullName;
 
+  //get from user info
+  String? pEmailAddress;
+  String? pRoolOfUser;
+
   // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
 
   @override
@@ -39,6 +43,7 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
 
     super.initState();
     pGet();
+    gUserData();
   }
 
   pGet() async {
@@ -54,6 +59,16 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
       });
     } else {
       print("unable data retrive");
+    }
+  }
+
+  gUserData() async {
+    var getUserInfoNGO = await getUsersInfo(getUserId());
+
+    if (getUserInfoNGO != null) {
+      pEmailAddress = getUserInfoNGO[0]['email'];
+
+      pRoolOfUser = getUserInfoNGO[0]['rool'];
     }
   }
 
@@ -106,10 +121,19 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text("")
+                        Text(
+                          pEmailAddress ?? "",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ],
                     ),
                   ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  pRoolOfUser ?? "",
+                  style: TextStyle(color: Colors.deepPurple),
                 ),
               ),
               Card(child: listtile("Dashboard", Icons.dashboard)),

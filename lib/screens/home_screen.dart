@@ -36,8 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
     print(ffff);
   }
 
-  final Stream<QuerySnapshot> _foodCollection =
-      FirebaseFirestore.instance.collection('addFood').snapshots();
+  final Stream<QuerySnapshot> _foodCollection = FirebaseFirestore.instance
+      .collection('addFood')
+      .where('publicOrPrivate', isEqualTo: 'public')
+      .snapshots();
   bool foodDataAvailble = false;
   TextStyle myText = TextStyle(
     fontSize: 18,
@@ -449,19 +451,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(builder: (context) => AdminPanelScreen()),
           );
         } else if (value.get('rool') == 'NGO') {
-          return Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NgoDashboardScreen(),
-            ),
-          );
+          return Navigator.pushNamed(context, 'ngoDashboard');
         } else if (value.get('rool') == 'DONAR') {
-          return Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DonarDashboardScreen(),
-            ),
-          );
+          return Navigator.pushNamed(context, 'donarDashboard');
         } else {
           return Text("No Profile found");
         }

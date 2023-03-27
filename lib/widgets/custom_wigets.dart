@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 TextFormField myFormField(
     // String? iniValue,
-    TextEditingController controller,
-    String lText,
+
+    {required TextEditingController controller,
+    required String lText,
     TextInputType? inputType,
-    String? Function(String?)? valiDator) {
+    int? maxLenth,
+    String? Function(String?)? valiDator}) {
   return TextFormField(
     // initialValue: iniValue,
     controller: controller,
     keyboardType: inputType,
+    maxLength: maxLenth,
     decoration: InputDecoration(
         labelText: lText,
         enabledBorder: OutlineInputBorder(

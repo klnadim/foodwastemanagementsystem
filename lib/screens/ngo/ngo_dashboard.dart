@@ -27,9 +27,13 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
 
   //user profile data get and set varibale
   Map? listData;
+  Map<String, dynamic>? listUserData;
   String? pGetImageUrl;
   String? pMobileNumber;
   String? pFullName;
+//get from user info
+  String? pEmailAddress;
+  String? pRoolOfUser;
 
   // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
 
@@ -37,9 +41,19 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
   void initState() {
     User? user = FirebaseAuth.instance.currentUser;
     // print(user);
-
-    super.initState();
     pGet();
+    gUserData();
+    super.initState();
+  }
+
+  gUserData() async {
+    var getUserInfoNGO = await getUsersInfo(getUserId());
+
+    if (getUserInfoNGO != null) {
+      pEmailAddress = getUserInfoNGO[0]['email'];
+
+      pRoolOfUser = getUserInfoNGO[0]['rool'];
+    }
   }
 
   pGet() async {
@@ -48,14 +62,23 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
     if (li != null) {
       setState(() {
         listData = li;
+        // listUserData = getUser;
 
         pGetImageUrl = listData![0]['photoUrl'];
         pFullName = listData![0]['fullName'];
         pMobileNumber = listData![0]['number'];
+
+        // pEmailAddress = listUserData![0]['email'];
+        // pEmailAddress = listUserData![0]['rool'];
       });
     } else {
       print("unable data retrive");
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   // ImageProvider imagePro= getImageUrl != null
@@ -107,11 +130,23 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text("")
+                        Text(
+                          pEmailAddress ?? "",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ],
                     ),
                   ),
                 ),
+              ),
+              Center(
+                child: Text(
+                  pRoolOfUser ?? "",
+                  style: TextStyle(color: Colors.deepPurple),
+                ),
+              ),
+              const Divider(
+                color: Colors.black26,
               ),
               Card(child: listtile("Dashboard", Icons.dashboard)),
               const Divider(
@@ -166,11 +201,11 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
 
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DonnarAddFood(),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => DonnarAddFood(),
+                  //     ));
                 },
                 child: singleCard(Icons.food_bank_outlined, 'Approved List'),
               ),
@@ -199,8 +234,6 @@ class _NgoDashboardScreenState extends State<NgoDashboardScreen> {
   ListTile listtile(String text, IconData iconData) =>
       ListTile(title: Text("$text"), leading: Icon(iconData));
 }
-
-
 
 // class NgoDashboardScreen extends StatelessWidget {
 //   NgoDashboardScreen({Key? key}) : super(key: key);

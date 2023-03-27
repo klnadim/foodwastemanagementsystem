@@ -1,8 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_waste_management_system/screens/admin/admin_panel.dart';
+import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
+import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/custom_wigets.dart';
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
@@ -24,6 +28,8 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController addressCon = TextEditingController();
   TextEditingController mobileCon = TextEditingController();
 
+  TextEditingController cityCon = TextEditingController();
+
   Uint8List? _image;
   bool saveUpdate = false;
 
@@ -34,6 +40,12 @@ class _UserProfileState extends State<UserProfile> {
   String? pFullName;
   String? pAddress;
   String? pUser;
+  String? pCity;
+
+  //email,rool
+
+  String? pEmailAddress;
+  String? pRoolOfUser;
 
   void selectImage(ImageSource source) async {
     Uint8List im = await pickImageMethod(ImageSource.gallery);
@@ -49,11 +61,13 @@ class _UserProfileState extends State<UserProfile> {
     fullNameCon.dispose();
     addressCon.dispose();
     mobileCon.dispose();
+    cityCon.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    gUserData();
 
     if (pGet() != false) {
       pGet();
@@ -79,11 +93,12 @@ class _UserProfileState extends State<UserProfile> {
       pMobileNumber = listData![0]['number'];
       pAddress = listData![0]['address'];
       pUser = listData![0]['uid'];
-
+      pCity = listData![0]['city'];
       if (listData != null) {
         fullNameCon.text = pFullName!;
         mobileCon.text = pMobileNumber!;
         addressCon.text = pAddress!;
+        cityCon.text = pCity!;
 
         setState(() {
           saveUpdate = true;
@@ -91,6 +106,16 @@ class _UserProfileState extends State<UserProfile> {
       }
     } else {
       print("unable data retrive");
+    }
+  }
+
+  gUserData() async {
+    var getUserInfoNGO = await getUsersInfo(getUserId());
+
+    if (getUserInfoNGO != null) {
+      pEmailAddress = getUserInfoNGO[0]['email'];
+
+      pRoolOfUser = getUserInfoNGO[0]['rool'];
     }
   }
 
@@ -149,45 +174,123 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 25,
                       ),
-                      myFormField(
-                        fullNameCon,
-                        "Full Name",
-                        TextInputType.name,
-                        (valueKey) {
-                          if (valueKey!.isEmpty || valueKey.length < 3) {
-                            return "This field is required and cannot be empty";
+                      // myFormField(
+                      //   fullNameCon,
+                      //   "Full Name",
+                      //   TextInputType.name,
+
+                      //   (valueKey) {
+                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
+                      //       return "This field is required and cannot be empty";
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+
+                      TextFormField(
+                        controller: fullNameCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Full Name',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
                           }
-                          return null;
                         },
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      myFormField(
-                        addressCon,
-                        "Address",
-                        TextInputType.name,
-                        (valueKey) {
-                          if (valueKey!.isEmpty || valueKey.length < 3) {
-                            return "This field is required and cannot be empty";
+                      // myFormField(
+                      //   addressCon,
+                      //   "Address",
+                      //   TextInputType.name,
+                      //   (valueKey) {
+                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
+                      //       return "This field is required and cannot be empty";
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+
+                      TextFormField(
+                        controller: addressCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Address',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
                           }
-                          return null;
                         },
                       ),
-
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: cityCon,
+                        decoration: const InputDecoration(
+                            labelText: 'City',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
+                          }
+                        },
+                      ),
                       SizedBox(
                         height: 20,
                       ),
 
-                      myFormField(
-                        mobileCon,
-                        "Mobile Number",
-                        TextInputType.name,
-                        (valueKey) {
-                          if (valueKey!.isEmpty || valueKey.length < 3) {
-                            return "This field is required and cannot be empty";
+                      // myFormField(
+                      //   mobileCon,
+                      //   "Mobile Number",
+                      //   TextInputType.name,
+                      //   (valueKey) {
+                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
+                      //       return "This field is required and cannot be empty";
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+
+                      TextFormField(
+                        maxLength: 11,
+                        controller: mobileCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Mobile Number',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.contains(RegExp(r'^[a-zA-Z\-]'))) {
+                            return 'Use only numbers!';
                           }
-                          return null;
                         },
                       ),
 
@@ -233,18 +336,104 @@ class _UserProfileState extends State<UserProfile> {
                                 () {
                               if (saveUpdate != true) {
                                 userProfileSave(
-                                    fullName: fullNameCon.text,
-                                    address: addressCon.text,
-                                    number: mobileCon.text,
-                                    uid: widget.userId,
-                                    file: _image!);
+                                        fullName: fullNameCon.text,
+                                        address: addressCon.text,
+                                        number: mobileCon.text,
+                                        uid: widget.userId,
+                                        city: cityCon.text,
+                                        email: pEmailAddress,
+                                        file: _image!)
+                                    .then((value) {
+                                  FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(getUserId())
+                                      .get()
+                                      .then(
+                                    (value) {
+                                      if (value.get('rool') == "ADMIN") {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AdminPanelScreen()),
+                                        );
+                                      } else if (value.get('rool') == 'NGO') {
+                                        return Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                NgoDashboardScreen(),
+                                          ),
+                                        );
+                                      } else if (value.get('rool') == 'DONAR') {
+                                        return Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DonarDashboardScreen(),
+                                          ),
+                                        );
+                                      } else {
+                                        return Text("No Profile found");
+                                      }
+                                    },
+                                  );
+                                });
                               } else {
                                 userProfileUpdate(
-                                    fullName: fullNameCon.text,
-                                    address: addressCon.text,
-                                    number: mobileCon.text,
-                                    uid: widget.userId,
-                                    file: _image!);
+                                  fullName: fullNameCon.text,
+                                  address: addressCon.text,
+                                  number: mobileCon.text,
+                                  uid: widget.userId,
+                                  city: cityCon.text,
+                                  file: _image,
+                                  img: pGetImageUrl,
+                                ).then((value) => {
+                                      FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(getUserId())
+                                          .get()
+                                          .then(
+                                        (value) {
+                                          // if (value.get('rool') == 'Admin') {
+                                          //   return AdminPanelScreen();
+                                          // } else if (value.get('rool') == 'NGO') {
+                                          //   return NgoDashboardScreen();
+                                          // } else if (value.get('rool') == 'DONAR') {
+                                          //   return DonarDashboardScreen();
+                                          // }
+
+                                          if (value.get('rool') == "ADMIN") {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AdminPanelScreen()),
+                                            );
+                                          } else if (value.get('rool') ==
+                                              'NGO') {
+                                            return Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NgoDashboardScreen(),
+                                              ),
+                                            );
+                                          } else if (value.get('rool') ==
+                                              'DONAR') {
+                                            return Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DonarDashboardScreen(),
+                                              ),
+                                            );
+                                          } else {
+                                            return Text("No Profile found");
+                                          }
+                                        },
+                                      )
+                                    });
                               }
                             });
                           },

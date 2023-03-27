@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/admin/request_foods_status.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/card_dashboard.dart';
 import 'package:food_waste_management_system/widgets/list_title.dart';
@@ -29,6 +30,10 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   String? pMobileNumber;
   String? pFullName;
 
+  //get from user info
+  String? pEmailAddress;
+  String? pRoolOfUser;
+
   // FirebaseFirestore _firestore = FirebaseFirestore.instance.collection()
 
   @override
@@ -38,6 +43,17 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
 
     super.initState();
     pGet();
+    gUserData();
+  }
+
+  gUserData() async {
+    var getUserInfoNGO = await getUsersInfo(getUserId());
+
+    if (getUserInfoNGO != null) {
+      pEmailAddress = getUserInfoNGO[0]['email'];
+
+      pRoolOfUser = getUserInfoNGO[0]['rool'];
+    }
   }
 
   pGet() async {
@@ -126,10 +142,19 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text("")
+                        Text(
+                          pEmailAddress ?? "",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ],
                     ),
                   ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  pRoolOfUser ?? "",
+                  style: TextStyle(color: Colors.deepPurple),
                 ),
               ),
               Card(child: listtile("Dashboard", Icons.dashboard)),
@@ -170,8 +195,17 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 },
                 child: singleCard(Icons.done_all_outlined, "Donated Foods"),
               ),
-              singleCard(Icons.request_page, "Request"),
-              singleCard(Icons.close, "Rejected")
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReqestFoodStatusScreen(),
+                      ));
+                },
+                child: singleCard(Icons.request_page, "Requests"),
+              )
+              // singleCard(Icons.close, "Rejected")
             ],
           ),
         ),

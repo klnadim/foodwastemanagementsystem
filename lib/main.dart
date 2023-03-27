@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/admin/admin_panel_screen.dart';
+import 'package:food_waste_management_system/screens/admin/request_foods_status.dart';
 
 import 'package:food_waste_management_system/screens/dashboard/dashboard_screen2.dart';
+import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
+import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
 
 import 'package:food_waste_management_system/screens/home_screen.dart';
@@ -39,7 +43,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var DonatedFoodView;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food waste Management System',
@@ -55,7 +58,11 @@ class MyApp extends StatelessWidget {
         DonatedFoodView.routeName: (context) => DonatedFoodView(),
 
         '/profile': (context) =>
-            UserProfile(userId: FirebaseAuth.instance.currentUser!.uid)
+            UserProfile(userId: FirebaseAuth.instance.currentUser!.uid),
+        'ngoDashboard': (context) => NgoDashboardScreen(),
+        'donarDashboard': (context) => DonarDashboardScreen(),
+        'adminDashboard': (context) => AdminPanelScreen(),
+        'requestFoodScreen': (context) => ReqestFoodStatusScreen(),
       },
       // home: UserProfile(userId: getUserId()),
     );

@@ -14,50 +14,70 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+Future getUsersInfo(String pUserId) async {
+  List getUserData = [];
+  try {
+    final _user = _firestore.collection('users').doc(pUserId).get();
+
+    await _user.then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        getUserData.add(documentSnapshot.data());
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  } catch (e) {
+    print(e.toString());
+  }
+
+  return getUserData;
+}
+
 //Profile completion check
 
-checkProfileComplete() {
-  var profileData = FirebaseFirestore.instance.collection('profileData');
+// checkProfileComplete() {
+//   var profileData = FirebaseFirestore.instance.collection('profileData');
 
-  if (profileData.id.contains(FirebaseAuth.instance.currentUser!.uid)) {
-    return true;
-  } else {
-    return false;
-  }
-}
+//   var ff = profileData.count().query;
+
+//   // if (profileData.doc(FirebaseAuth.instance.currentUser!.uid).id.isNotEmpty) {
+//   //   return true;
+//   // } else {
+//   //   return false;
+//   // }
+
+//   return ff;
+// }
 
 //Request button in Food Donar View
 
-Future<void> requestForFood(String uid, String docId, DateTime dateTime,
-    String email, String userRool) {
-  CollectionReference users =
+Future<void> requestForFood({
+  required String uid,
+  required String docId,
+  required DateTime dateTime,
+  required String profilePicLink,
+  required String emailAddress,
+  required String mobileNumber,
+  String? city,
+  String? status,
+}) {
+  CollectionReference foodRequest =
       FirebaseFirestore.instance.collection('foodRequest');
 
-  return users
-      .doc('ABC123')
+  return foodRequest
+      .doc()
       .set({
         'uid': uid,
         'documentId': docId,
         'dateTime': dateTime,
-        'email': email,
+        'email': emailAddress,
+        'profilePic': profilePicLink,
+        'mobileNumber': mobileNumber,
+        'city': city,
+        'status': status
       })
       .then((value) => print("Request Successfully"))
       .catchError((error) => print("Failed to : $error"));
-}
-
-//Request For Food 'donatedfoodview'
-
-Future<void> requiestForFood(String docsID, String userId) async {
-  CollectionReference reference =
-      FirebaseFirestore.instance.collection('users');
-  return await reference
-      .add({
-        'docsId': docsID,
-        'userId': userId,
-        'dateTime': DateTime.now(),
-      })
-      .then((value) => print("User Added"))
-      .catchError(() => print("Failed to added"));
 }
 
 //Fetch all data from firebase firestore addFood document
@@ -81,7 +101,7 @@ loginPage(BuildContext context) {
 
 getUserId() {
   var userID = _firebaseAuth.currentUser?.uid;
-  return userID ?? 'null';
+  return userID ?? '';
 }
 
 Future<String> uploadToStorageMultiImg(String childName, XFile images) async {
@@ -128,6 +148,8 @@ Future<void> userProfileSave({
   required String address,
   required String number,
   required String uid,
+  required String city,
+  String? email,
   required Uint8List file,
 }) async {
   var msg = "Some error occured";
@@ -139,6 +161,8 @@ Future<void> userProfileSave({
       'address': address,
       'number': number,
       'uid': uid,
+      'city': city,
+      'email': email,
       'photoUrl': imageUrl
     });
 
@@ -153,7 +177,9 @@ Future<void> userProfileUpdate({
   required String address,
   required String number,
   required String uid,
-  required Uint8List file,
+  required String city,
+  Uint8List? file,
+  String? img,
 }) async {
 // CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -167,13 +193,20 @@ Future<void> userProfileUpdate({
 
   var msg = "Some error occured";
   try {
-    String imageUrl = await uploadToStorage("PorfilePic", file);
+    String imageUrl;
+
+    if (img != null && file != null) {
+      imageUrl = await uploadToStorage("PorfilePic", file);
+    } else {
+      imageUrl = img!;
+    }
 
     await _firestore.collection('profileData').doc(uid).update({
       'fullName': fullName,
       'address': address,
       'number': number,
       'uid': uid,
+      'city': city,
       'photoUrl': imageUrl
     });
 

@@ -58,8 +58,8 @@ Future<void> showMyDialog(BuildContext context, String title, String contains,
         title: Text(title),
         content: Text(contains),
         actions: <Widget>[
-          ElevatedButton(onPressed: button1, child: const Text("Confirm")),
-          ElevatedButton(
+          TextButton(onPressed: button1, child: const Text("Confirm")),
+          TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
