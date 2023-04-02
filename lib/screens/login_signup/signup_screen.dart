@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   File? file;
 
   // var rool = "NGO";
-  String? selectedUserType;
+  String selectedUserType = '';
   // String dropdownValue = 'NGO';
 
   @override
@@ -334,27 +334,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         //             ),
                         //           ),
 
-                        DropdownButtonFormField<String>(
-                          value: selectedUserType,
-                          hint: Text(
-                            'User Type',
-                          ),
-                          onChanged: (usertype) =>
-                              setState(() => selectedUserType = usertype!),
-                          validator: (value) =>
-                              value == null ? 'field required' : null,
-                          items: ['NGO', 'DONAR', 'ADMIN']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                        // DropdownButtonFormField<String>(
+                        //   value: selectedUserType,
+                        //   hint: Text(
+                        //     'User Type',
+                        //   ),
+                        //   onChanged: (usertype) =>
+                        //       setState(() => selectedUserType = usertype!),
+                        //   validator: (value) =>
+                        //       value == null ? 'field required' : null,
+                        //   items: ['NGO', 'DONAR', 'ADMIN']
+                        //       .map<DropdownMenuItem<String>>((String value) {
+                        //     return DropdownMenuItem<String>(
+                        //       value: value,
+                        //       child: Text(value),
+                        //     );
+                        //   }).toList(),
+                        // ),
 
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        // const SizedBox(
+                        //   height: 30,
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -404,7 +404,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   showProgress = true;
                                 });
                                 signUp(emailController.text,
-                                    passwordController.text, selectedUserType!);
+                                    passwordController.text, selectedUserType);
                               },
                               child: Text(
                                 "SignUp",
@@ -438,11 +438,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  postDetailsToFirestore(String email, String rool) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  postDetailsToFirestore(String email, String rool) {
+    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'email': emailController.text, 'rool': rool});
+    ref
+        .doc(user!.uid)
+        .set({'email': emailController.text, 'rool': selectedUserType});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }

@@ -130,12 +130,12 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                   ),
                 ),
               ),
-              Center(
-                child: Text(
-                  pRoolOfUser ?? "",
-                  style: TextStyle(color: Colors.deepPurple),
-                ),
-              ),
+              // Center(
+              //   child: Text(
+              //     pRoolOfUser ?? "",
+              //     style: TextStyle(color: Colors.deepPurple),
+              //   ),
+              // ),
               Card(child: listtile("Dashboard", Icons.dashboard)),
               const Divider(
                 color: Colors.black26,
@@ -170,9 +170,9 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 30,
-            mainAxisSpacing: 20,
+            crossAxisCount: 3,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 10,
             children: [
               // InkWell()
 
@@ -200,9 +200,15 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
 
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/indivisualDonatedList');
+                  Navigator.pushNamed(context, '/donationMode');
                 },
-                child: singleCard(Icons.list_alt_rounded, 'Donated List'),
+                child: singleCard(Icons.list_alt_rounded, 'Donation Mode'),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/requestMode');
+                },
+                child: singleCard(Icons.list, 'Request Mode'),
               ),
 
               // ElevatedButton(

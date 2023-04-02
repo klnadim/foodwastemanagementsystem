@@ -4,13 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_waste_management_system/screens/admin/admin_panel.dart';
-
+import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/home_screen.dart';
+
+import 'package:food_waste_management_system/screens/login_signup/signup_screen.dart';
 import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
-import 'package:food_waste_management_system/screens/signup_screen.dart';
+
 import 'package:food_waste_management_system/utils/styles.dart';
 
-import 'donar/donar_dashboard_screen.dart';
 // import 'Student.dart';
 // import 'Teacher.dart';
 // import 'register.dart';
@@ -276,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
-    print(user);
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
@@ -290,29 +291,15 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context) => AdminPanelScreen(),
             ),
           );
-        } else if (documentSnapshot.get('rool') == "NGO") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NgoDashboardScreen(),
-            ),
-          );
-        } else if (documentSnapshot.get('rool') == "DONAR") {
+        } else if (documentSnapshot.get('rool') == '') {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => DonarDashboardScreen(),
+                builder: (context) => HomeScreen(),
               ));
-        } else {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HomeScreen(),
-          //   ),
-          // );
         }
       } else {
-        print('Document does not exist on the database');
+        return Text("User does not exists");
       }
     });
   }

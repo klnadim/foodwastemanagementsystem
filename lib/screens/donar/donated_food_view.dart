@@ -1,12 +1,7 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/models/add_food_model.dart';
-import 'package:food_waste_management_system/utils/styles.dart';
-import 'package:food_waste_management_system/widgets/custom_snackbar.dart';
+
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../models/arguments_return.dart';
 import '../../utils/methods.dart';
@@ -26,13 +21,14 @@ class DonatedFoodView extends StatefulWidget {
 bool isDonar = false;
 
 Map? listData;
-String? vNgoName;
+
 String? vEmail;
 String? vProfilePic;
 String? vAddress;
 String? vCity;
 String? vMobile;
 String? vStatus;
+String? vUserName;
 
 vUserInfo() {
   getUsersInfo(getUserId());
@@ -41,22 +37,6 @@ vUserInfo() {
 class _DonatedFoodViewState extends State<DonatedFoodView> {
   @override
   void initState() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(getUserId())
-        .get()
-        .then((value) {
-      if (value.get('rool') == 'DONAR' || value.get('rool') == 'ADMIN') {
-        setState(() {
-          isDonar = true;
-        });
-      } else {
-        setState(() {
-          isDonar = false;
-        });
-      }
-    });
-
     gUserData();
     if (pGet() != false) {
       pGet();
@@ -87,7 +67,7 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
       listData = li;
 
       vProfilePic = listData![0]['photoUrl'];
-      vNgoName = listData![0]['fullName'];
+      vUserName = listData![0]['fullName'];
       vMobile = listData![0]['number'];
       vAddress = listData![0]['address'];
 
@@ -96,14 +76,31 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
   }
 
   bool dataAvailable = false;
+
   @override
   Widget build(BuildContext context) {
+    // FirebaseFirestore.instance
+    //     .collection('addFood')
+    //     .where('uid', isEqualTo: getUserId())
+    //     .get()
+    //     .then((value) {
+    //   if (value.docs.isNotEmpty) {
+    //     setState(() {
+    //       isDonar = true;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       isDonar = false;
+    //     });
+    //   }
+    // });
+
     CollectionReference users =
         FirebaseFirestore.instance.collection('addFood');
 
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 208, 214, 246),
+        backgroundColor: Color.fromARGB(255, 220, 238, 192),
         appBar: AppBar(
           title: Text("Food Details"),
           centerTitle: true,
@@ -132,214 +129,211 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                   children: <Widget>[
                     Container(
                         decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
-                                colors: [Colors.black, Colors.blueGrey])),
+                                colors: [
+                                  Color.fromARGB(255, 193, 240, 194),
+                                  Color.fromARGB(255, 42, 76, 2)
+                                ])),
                         child: Container(
                           width: double.infinity,
-                          height: 400.0,
-                          child: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 200,
-                                  width: double.infinity,
-                                  child: PageView.builder(
-                                    itemCount: images.length,
-                                    pageSnapping: true,
-                                    itemBuilder: (context, pagePosition) {
-                                      return Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.white, width: 4),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          margin: EdgeInsets.all(10),
-                                          child: Image.network(
-                                            images[pagePosition],
-                                            fit: BoxFit.fill,
-                                          ));
-                                    },
-                                  ),
+                          height: 380.0,
+                          child: Column(
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: PageView.builder(
+                                  itemCount: images.length,
+                                  pageSnapping: true,
+                                  itemBuilder: (context, pagePosition) {
+                                    return Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.white, width: 4),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        margin: EdgeInsets.all(10),
+                                        child: Image.network(
+                                          images[pagePosition],
+                                          fit: BoxFit.fill,
+                                        ));
+                                  },
                                 ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  data['foodItems'],
-                                  style: TextStyle(
-                                    fontSize: 22.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Card(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 5.0),
-                                  clipBehavior: Clip.antiAlias,
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                data['foodItems'],
+                                style: TextStyle(
+                                  fontSize: 22.0,
                                   color: Colors.white,
-                                  elevation: 5.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 22.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Persons",
-                                                style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 22.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Card(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 5.0),
+                                clipBehavior: Clip.antiAlias,
+                                color: Colors.white,
+                                elevation: 5.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 22.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Persons",
+                                              style: TextStyle(
+                                                color: Colors.redAccent,
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                height: 5.0,
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              data['foodPerson'].toString(),
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.pinkAccent,
                                               ),
-                                              Text(
-                                                data['foodPerson'].toString(),
-                                                style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  color: Colors.pinkAccent,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                "Valid For",
-                                                style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 22.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              "Valid For",
+                                              style: TextStyle(
+                                                color: Colors.redAccent,
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                height: 5.0,
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              data['foodValidation'],
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.pinkAccent,
                                               ),
-                                              Text(
-                                                data['foodValidation'],
-                                                style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  color: Colors.pinkAccent,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                "City",
-                                                style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 22.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              "City",
+                                              style: TextStyle(
+                                                color: Colors.redAccent,
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                height: 5.0,
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              data['city'],
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.pinkAccent,
                                               ),
-                                              Text(
-                                                data['city'],
-                                                style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  color: Colors.pinkAccent,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              )
+                            ],
                           ),
                         )),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Description:",
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 25.0),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              data['description'],
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                                letterSpacing: 2.0,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "Number:",
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 25.0),
-                            ),
-                            Text(
-                              data['contactNumber'],
-                              style: TextStyle(
-                                fontSize: 22.0,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                                letterSpacing: 2.0,
-                              ),
-                            ),
-                          ],
+                    Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Description:",
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 25.0),
                         ),
-                      ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          data['description'],
+                          // "thssssssssssssssssssnnnnnnnnnnnnnnnnnnnnn",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          "Number:",
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 25.0),
+                        ),
+                        Text(
+                          data['contactNumber'],
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 15.0,
                     ),
                     SizedBox(
                       width: 300.00,
-                      child: isDonar == true
+                      child: args.uid == getUserId()!
                           ? Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  ElevatedButton(
-                                      onPressed: () {}, child: Text("Confirm")),
-                                  ElevatedButton(
-                                      onPressed: () {}, child: Text("Reject")),
-                                ],
-                              ),
-                            )
+                              // child: Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceAround,
+                              //   children: [
+                              //     ElevatedButton(
+                              //         onPressed: () {}, child: Text("Confirm")),
+                              //     ElevatedButton(
+                              //         onPressed: () {}, child: Text("Reject")),
+                              //   ],
+                              // ),
+                              )
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -358,6 +352,7 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                           mobileNumber: vMobile!,
                                           profilePicLink: vProfilePic!,
                                           city: vCity,
+                                          userName: vUserName!,
                                           status: '')
                                       .then((value) {
                                     Navigator.pushNamed(context, '/home');

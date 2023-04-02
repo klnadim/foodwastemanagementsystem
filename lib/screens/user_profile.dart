@@ -357,15 +357,7 @@ class _UserProfileState extends State<UserProfile> {
                                               builder: (context) =>
                                                   AdminPanelScreen()),
                                         );
-                                      } else if (value.get('rool') == 'NGO') {
-                                        return Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                NgoDashboardScreen(),
-                                          ),
-                                        );
-                                      } else if (value.get('rool') == 'DONAR') {
+                                      } else {
                                         return Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -373,8 +365,6 @@ class _UserProfileState extends State<UserProfile> {
                                                 DonarDashboardScreen(),
                                           ),
                                         );
-                                      } else {
-                                        return Text("No Profile found");
                                       }
                                     },
                                   );
@@ -410,26 +400,13 @@ class _UserProfileState extends State<UserProfile> {
                                                   builder: (context) =>
                                                       AdminPanelScreen()),
                                             );
-                                          } else if (value.get('rool') ==
-                                              'NGO') {
-                                            return Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    NgoDashboardScreen(),
-                                              ),
-                                            );
-                                          } else if (value.get('rool') ==
-                                              'DONAR') {
-                                            return Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DonarDashboardScreen(),
-                                              ),
-                                            );
                                           } else {
-                                            return Text("No Profile found");
+                                            return Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DonarDashboardScreen(),
+                                                ));
                                           }
                                         },
                                       )

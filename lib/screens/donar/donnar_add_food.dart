@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class DonnarAddFood extends StatefulWidget {
   const DonnarAddFood({Key? key}) : super(key: key);
@@ -24,9 +26,23 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
   TextEditingController contactCon = TextEditingController();
   // TextEditingController foodImageCon = TextEditingController();
 
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _timeController = TextEditingController();
+
   String foodItem = "";
   String descriotion = "";
   String bodyTemp = "";
+
+//For Date and Time Picke
+  double? _height;
+  double? _width;
+  String? _setTime, _setDate;
+  String? _hour, _minute, _time;
+  String? dateTime;
+
+  DateTime selectedDate = DateTime.now();
+
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
   // Uint8List<List> _image = [];
 
   // var measure;
@@ -64,6 +80,39 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
     } catch (e) {
       print("error while picking file.");
     }
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
+    }
+  }
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
+        _hour = selectedTime.hour.toString();
+        _minute = selectedTime.minute.toString();
+        _time = _hour! + ' : ' + _minute!;
+        _timeController.text = _time!;
+        _timeController.text = formatDate(
+            DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+            [hh, ':', nn, " ", am]).toString();
+      });
   }
 
   //
@@ -173,7 +222,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
       imgUrls.add(urls);
     }
 
-    addFoodSubmit(
+    await addFoodSubmit(
         foodItemCon.text,
         descriotionCon.text,
         addressCon.text,
@@ -181,12 +230,21 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         validityHourCon.text,
         int.parse(foodPersonCon.text),
         contactCon.text,
-        publicOrPrivate,
-        DateTime.now(),
+        _dateController.text,
+        _timeController.text,
         imgUrls,
         user!.uid);
 
     clearAllField();
+  }
+
+  @override
+  void initState() {
+    _dateController.text = DateFormat.yMd().format(DateTime.now());
+    _timeController.text = formatDate(
+        DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
+        [hh, ':', nn, " ", am]).toString();
+    super.initState();
   }
 
   @override
@@ -199,483 +257,594 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
     foodPersonCon.dispose();
     contactCon.dispose();
     imagefiles!.clear();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
+    dateTime = DateFormat.yMd().format(DateTime.now());
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text("Food Added "),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: const Icon(Icons.account_circle, size: 32.0),
-        //     tooltip: 'Profile',
-        //     onPressed: () {
-        //       Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (context) => MyProfilePage(),
-        //           ));
-        //     },
-        //   ),
-        // ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text("Enter your data",
-                    style: TextStyle(
-                      fontSize: 24,
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    TextFormField(
-                      controller: foodItemCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Food Items',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // firstName = value.capitalize();
-                          // firstNameList.add(firstName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // firstName = value.capitalize();
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length < 3) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'First Name cannot contain special characters';
-                        // }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: descriotionCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Description',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'Last Name cannot contain special characters';
-                        // }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                          // lastNameList.add(lastName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: foodPersonCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Person For',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'Last Name cannot contain special characters';
-                        // }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                          // lastNameList.add(lastName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // DropdownButtonFormField<String>(
-                    //   value: selectedPerson,
-                    //   hint: Text(
-                    //     'Persons',
-                    //   ),
-                    //   onChanged: (usertype) =>
-                    //       setState(() => selectedPerson = usertype!),
-                    //   validator: (value) =>
-                    //       value == null ? 'field required' : null,
-                    //   items: ['1-5', 'DONAR']
-                    //       .map<DropdownMenuItem<String>>((String value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value,
-                    //       child: Text(value),
-                    //     );
-                    //   }).toList(),
-                    // ),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
-
-                    TextFormField(
-                      controller: addressCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Address',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'Last Name cannot contain special characters';
-                        // }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                          // lastNameList.add(lastName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    TextFormField(
-                      controller: cityCon,
-                      decoration: const InputDecoration(
-                          labelText: 'City',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'Last Name cannot contain special characters';
-                        // }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                          // lastNameList.add(lastName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: validityHourCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Validity Hours',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required and cannot be empty';
-                        }
-                        // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        //   return 'Last Name cannot contain special characters';
-                        // }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                          // lastNameList.add(lastName);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // lastName = value.capitalize();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    TextFormField(
-                      maxLength: 11,
-                      controller: contactCon,
-                      decoration: const InputDecoration(
-                          labelText: 'Contact Number',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: OutlineInputBorder()),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.contains(RegExp(r'^[a-zA-Z\-]'))) {
-                          return 'Use only numbers!';
-                        }
-                      },
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          bodyTemp = value;
-                          // bodyTempList.add(bodyTemp);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          bodyTemp = value;
-                        });
-                      },
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // DropdownButtonFormField(
-                    //     decoration: const InputDecoration(
-                    //         enabledBorder: OutlineInputBorder(
-                    //           borderRadius:
-                    //               BorderRadius.all(Radius.circular(20.0)),
-                    //           borderSide:
-                    //               BorderSide(color: Colors.grey, width: 0.0),
-                    //         ),
-                    //         border: OutlineInputBorder()),
-                    //     items:const [
-                    //        DropdownMenuItem(
-                    //         child: Text("ºC"),
-                    //         value: 1,
-                    //       ),
-                    //        DropdownMenuItem(
-                    //         child: Text("ºF"),
-                    //         value: 2,
-                    //       )
-                    //     ],
-                    //     hint: const Text("Select item"),
-                    //     onChanged: (value) {
-                    //       setState(() {
-                    //         measure = value;
-                    //         // measureList.add(measure);
-                    //       });
-                    //     },
-                    //     onSaved: (value) {
-                    //       setState(() {
-                    //         measure = value;
-                    //       });
-                    //     }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextButton.icon(
-                        onPressed: () {
-                          openImages();
-                        },
-                        icon: Icon(Icons.image),
-                        label: Text("Select Images")),
-
-                    imagefiles != null
-                        ? Wrap(
-                            children: imagefiles!.map((imageone) {
-                              return Container(
-                                  child: Card(
-                                child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  child: Image.file(File(imageone.path)),
-                                ),
-                              ));
-                            }).toList(),
-                          )
-                        : Container(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Column(children: [
-                      Text(
-                        "Will you donated privately or publicly?",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Divider(),
-                      RadioListTile(
-                        title: Text("Public"),
-                        value: "public",
-                        groupValue: publicOrPrivate,
-                        onChanged: (value) {
-                          setState(() {
-                            publicOrPrivate = value.toString();
-                          });
-                        },
-                      ),
-                      RadioListTile(
-                        title: Text("Private"),
-                        value: "private",
-                        groupValue: publicOrPrivate,
-                        onChanged: (value) {
-                          setState(() {
-                            publicOrPrivate = value.toString();
-                          });
-                        },
-                      )
-                    ]),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          // style: ElevatedButton.styleFrom(
-                          //     minimumSize: const Size.fromHeight(60)),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 35, vertical: 15),
-                              textStyle: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w400)),
-
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(' Confrimation'),
-                                    content: Text(
-                                        'Are you sure to Donating this food?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                          onPressed: () async {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              _submit(imagefiles!);
-                                            }
-
-                                            Navigator.pushNamed(
-                                                context, '/addFood');
-                                            // Navigator.push(
-                                            //     context,
-                                            //     MaterialPageRoute(
-                                            //       builder: (context) =>
-                                            //           DonnarAddFood(),
-                                            //     ));
-                                          },
-                                          child: Text('Confirm')),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context); //close Dialog
-                                        },
-                                        child: Text('Cancel'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: const Text("Submit"),
-                        ),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blueGrey,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 35, vertical: 15),
-                              textStyle: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w400),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text("Food Added "),
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: const Icon(Icons.account_circle, size: 32.0),
+          //     tooltip: 'Profile',
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) => MyProfilePage(),
+          //           ));
+          //     },
+          //   ),
+          // ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                // const Align(
+                //   alignment: Alignment.topLeft,
+                //   child: Text("Enter your data",
+                //       style: TextStyle(
+                //         fontSize: 24,
+                //       )),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      TextFormField(
+                        controller: foodItemCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Food Items',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
                             ),
+                            border: OutlineInputBorder()),
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            // firstName = value.capitalize();
+                            // firstNameList.add(firstName);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // firstName = value.capitalize();
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length < 3) {
+                            return 'This field is required and cannot be empty';
+                          }
+                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          //   return 'First Name cannot contain special characters';
+                          // }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: descriotionCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Description',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
+                          }
+                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          //   return 'Last Name cannot contain special characters';
+                          // }
+                        },
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                            // lastNameList.add(lastName);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: foodPersonCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Person For',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
+                          }
+                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          //   return 'Last Name cannot contain special characters';
+                          // }
+                        },
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                            // lastNameList.add(lastName);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // DropdownButtonFormField<String>(
+                      //   value: selectedPerson,
+                      //   hint: Text(
+                      //     'Persons',
+                      //   ),
+                      //   onChanged: (usertype) =>
+                      //       setState(() => selectedPerson = usertype!),
+                      //   validator: (value) =>
+                      //       value == null ? 'field required' : null,
+                      //   items: ['1-5', 'DONAR']
+                      //       .map<DropdownMenuItem<String>>((String value) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: value,
+                      //       child: Text(value),
+                      //     );
+                      //   }).toList(),
+                      // ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+
+                      TextFormField(
+                        controller: addressCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Address',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
+                          }
+                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          //   return 'Last Name cannot contain special characters';
+                          // }
+                        },
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                            // lastNameList.add(lastName);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      TextFormField(
+                        controller: cityCon,
+                        decoration: const InputDecoration(
+                            labelText: 'City',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required and cannot be empty';
+                          }
+                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          //   return 'Last Name cannot contain special characters';
+                          // }
+                        },
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                            // lastNameList.add(lastName);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // lastName = value.capitalize();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // InkWell(
+                          //   onTap: () {
+                          //     _selectDate(context);
+                          //   },
+                          //   child: Container(
+                          //     width: _width! / 1.7,
+                          //     margin: EdgeInsets.only(top: 30),
+                          //     alignment: Alignment.center,
+                          //     decoration:
+                          //         BoxDecoration(color: Colors.grey[200]),
+                          //     child: TextFormField(
+                          //       style: TextStyle(fontSize: 40),
+                          //       textAlign: TextAlign.center,
+                          //       enabled: false,
+                          //       keyboardType: TextInputType.text,
+                          //       controller: _dateController,
+                          //       onSaved: (String? val) {
+                          //         _setDate = val;
+                          //       },
+                          //       decoration: InputDecoration(
+                          //           disabledBorder: UnderlineInputBorder(
+                          //               borderSide: BorderSide.none),
+                          //           contentPadding: EdgeInsets.only(top: 0.0)),
+                          //     ),
+                          //   ),
+                          // ),
+                          Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            // fit: StackFit.loose,
+                            children: [
+                              SizedBox(
+                                width: _width! / 2.2,
+                                child: TextFormField(
+                                  controller: _dateController,
+                                  onSaved: (String? val) {
+                                    _setDate = val;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Validity Date',
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 0.0),
+                                      ),
+                                      border: OutlineInputBorder()),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This field is required and cannot be empty';
+                                    }
+                                    // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                    //   return 'Last Name cannot contain special characters';
+                                    // }
+                                  },
+                                  onFieldSubmitted: (value) {
+                                    setState(() {
+                                      // lastName = value.capitalize();
+                                      // lastNameList.add(lastName);
+                                    });
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // lastName = value.capitalize();
+                                    });
+                                  },
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _selectDate(context);
+                                },
+                                // highlightColor: Colors.greenAccent,
+
+                                child: Icon(Icons.calendar_month, size: 50),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            // fit: StackFit.loose,
+                            children: [
+                              SizedBox(
+                                width: _width! / 2.5,
+                                child: TextFormField(
+                                  controller: _timeController,
+                                  onSaved: (String? val) {
+                                    _setDate = val;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Time',
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 0.0),
+                                      ),
+                                      border: OutlineInputBorder()),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This field is required and cannot be empty';
+                                    }
+                                    // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                    //   return 'Last Name cannot contain special characters';
+                                    // }
+                                  },
+                                  onFieldSubmitted: (value) {
+                                    setState(() {
+                                      // lastName = value.capitalize();
+                                      // lastNameList.add(lastName);
+                                    });
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      // lastName = value.capitalize();
+                                    });
+                                  },
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _selectTime(context);
+                                },
+                                // highlightColor: Colors.greenAccent,
+
+                                child: Icon(Icons.timer, size: 50),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      TextFormField(
+                        maxLength: 11,
+                        controller: contactCon,
+                        decoration: const InputDecoration(
+                            labelText: 'Contact Number',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 0.0),
+                            ),
+                            border: OutlineInputBorder()),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.contains(RegExp(r'^[a-zA-Z\-]'))) {
+                            return 'Use only numbers!';
+                          }
+                        },
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            bodyTemp = value;
+                            // bodyTempList.add(bodyTemp);
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            bodyTemp = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // DropdownButtonFormField(
+                      //     decoration: const InputDecoration(
+                      //         enabledBorder: OutlineInputBorder(
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(20.0)),
+                      //           borderSide:
+                      //               BorderSide(color: Colors.grey, width: 0.0),
+                      //         ),
+                      //         border: OutlineInputBorder()),
+                      //     items:const [
+                      //        DropdownMenuItem(
+                      //         child: Text("ºC"),
+                      //         value: 1,
+                      //       ),
+                      //        DropdownMenuItem(
+                      //         child: Text("ºF"),
+                      //         value: 2,
+                      //       )
+                      //     ],
+                      //     hint: const Text("Select item"),
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         measure = value;
+                      //         // measureList.add(measure);
+                      //       });
+                      //     },
+                      //     onSaved: (value) {
+                      //       setState(() {
+                      //         measure = value;
+                      //       });
+                      //     }),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextButton.icon(
+                          onPressed: () {
+                            openImages();
+                          },
+                          icon: Icon(Icons.image),
+                          label: Text("Select Images")),
+
+                      imagefiles != null
+                          ? Wrap(
+                              children: imagefiles!.map((imageone) {
+                                return Container(
+                                    child: Card(
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image.file(File(imageone.path)),
+                                  ),
+                                ));
+                              }).toList(),
+                            )
+                          : Container(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // Column(children: [
+                      //   Text(
+                      //     "Will you donated privately or publicly?",
+                      //     style: TextStyle(fontSize: 18),
+                      //   ),
+                      //   Divider(),
+                      //   RadioListTile(
+                      //     title: Text("Public"),
+                      //     value: "public",
+                      //     groupValue: publicOrPrivate,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         publicOrPrivate = value.toString();
+                      //       });
+                      //     },
+                      //   ),
+                      //   RadioListTile(
+                      //     title: Text("Private"),
+                      //     value: "private",
+                      //     groupValue: publicOrPrivate,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         publicOrPrivate = value.toString();
+                      //       });
+                      //     },
+                      //   )
+                      // ]),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            // style: ElevatedButton.styleFrom(
+                            //     minimumSize: const Size.fromHeight(60)),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.purple,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 35, vertical: 15),
+                                textStyle: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w400)),
+
                             onPressed: () {
-                              setState(() {});
-                              clearAllField();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(' Confrimation'),
+                                      content: Text(
+                                          'Are you sure to Donating this food?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                            onPressed: () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                _submit(imagefiles!);
+                                              }
+
+                                              Navigator.pushNamed(
+                                                  context, '/addFood');
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //       builder: (context) =>
+                                              //           DonnarAddFood(),
+                                              //     ));
+                                            },
+                                            child: Text('Confirm')),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(
+                                                context); //close Dialog
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                      ],
+                                    );
+                                  });
                             },
-                            child: Text("Clear"))
-                      ],
-                    ),
-                  ],
+                            child: const Text("Submit"),
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blueGrey,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 35, vertical: 15),
+                                textStyle: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w400),
+                              ),
+                              onPressed: () {
+                                setState(() {});
+                                clearAllField();
+                              },
+                              child: Text("Clear"))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 
   void clearAllField() {

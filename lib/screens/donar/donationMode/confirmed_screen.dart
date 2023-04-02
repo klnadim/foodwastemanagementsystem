@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ConfirmedScreen extends StatefulWidget {
-  const ConfirmedScreen({Key? key}) : super(key: key);
+class ConfirmedDonations extends StatefulWidget {
+  const ConfirmedDonations({Key? key}) : super(key: key);
 
   @override
-  State<ConfirmedScreen> createState() => _ConfirmedScreenState();
+  State<ConfirmedDonations> createState() => _ConfirmedDonationsState();
 }
 
 final Stream<QuerySnapshot> _foodRequest = FirebaseFirestore.instance
     .collection('foodRequest')
-    .where('status', isEqualTo: 'confirmed')
+    // .where('status', isEqualTo: 'confirmed')
     .snapshots();
 
-class _ConfirmedScreenState extends State<ConfirmedScreen> {
+class _ConfirmedDonationsState extends State<ConfirmedDonations> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +36,10 @@ class _ConfirmedScreenState extends State<ConfirmedScreen> {
               // if (data['city'].toString().toLowerCase().startsWith(
               //       searchName.toLowerCase(),
               //     ))
+
+              if (data.isEmpty) {
+                print("NO DATA");
+              }
 
               {
                 return Card(

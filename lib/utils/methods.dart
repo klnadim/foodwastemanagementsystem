@@ -7,13 +7,36 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../screens/login_signup/login_screen.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+//Request data retrive from firebase
+
+Future getRequestData() async {
+  List requestData = [];
+  try {
+    final _requestData = _firestore.collection('foodRequest').doc().get();
+
+    await _requestData.then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        requestData.add(documentSnapshot.data());
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  } catch (e) {
+    print(e.toString());
+  }
+
+  return requestData;
+}
+
+//get user email and rool from firebase
 Future getUsersInfo(String pUserId) async {
   List getUserData = [];
   try {
@@ -58,6 +81,7 @@ Future<void> requestForFood({
   required String profilePicLink,
   required String emailAddress,
   required String mobileNumber,
+  required String userName,
   String? city,
   String? status,
 }) {
@@ -245,8 +269,9 @@ Future<void> addFoodSubmit(
   String foodValidation,
   int foodPerson,
   String contactNumber,
-  String publicOrPrivate,
-  DateTime dateTime,
+  // String publicOrPrivate,
+  String date,
+  String time,
   List<String> imagesUrls,
   String uid,
 ) async {
@@ -261,8 +286,9 @@ Future<void> addFoodSubmit(
       'foodValidation': foodValidation,
       'foodPerson': foodPerson,
       'contactNumber': contactNumber,
-      'publicOrPrivate': publicOrPrivate,
-      'timeDate': dateTime,
+      // 'publicOrPrivate': publicOrPrivate,
+      'date': date,
+      'time': time,
       'imagesUrls': imagesUrls,
       'uid': uid
     });

@@ -51,7 +51,8 @@ class IndivisualDonatedList extends StatelessWidget {
                   trailing: InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, DonatedFoodView.routeName,
-                            arguments: ScreenArguments(document.id));
+                            arguments:
+                                ScreenArguments(document.id, data['uid']));
                       },
                       child: Icon(Icons.keyboard_arrow_right_rounded)),
                 ),

@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/admin/request_foods_status.dart';
+
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/card_dashboard.dart';
 import 'package:food_waste_management_system/widgets/list_title.dart';
@@ -184,10 +184,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 30,
-            mainAxisSpacing: 20,
-            childAspectRatio: 10 / 9,
+            crossAxisCount: 3,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 10,
             children: [
               InkWell(
                 onTap: () {
@@ -195,16 +194,16 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 },
                 child: singleCard(Icons.done_all_outlined, "Donated Foods"),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReqestFoodStatusScreen(),
-                      ));
-                },
-                child: singleCard(Icons.request_page, "Requests"),
-              )
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => ReqestFoodStatusScreen(),
+              //         ));
+              //   },
+              //   child: singleCard(Icons.request_page, "Requests"),
+              // )
               // singleCard(Icons.close, "Rejected")
             ],
           ),

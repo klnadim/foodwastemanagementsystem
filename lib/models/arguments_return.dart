@@ -1,5 +1,6 @@
 class ScreenArguments {
   final String documentId;
+  final String uid;
 
-  ScreenArguments(this.documentId);
+  ScreenArguments(this.documentId, this.uid);
 }

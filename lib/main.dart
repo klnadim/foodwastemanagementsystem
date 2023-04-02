@@ -3,23 +3,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/admin/admin_panel_screen.dart';
-import 'package:food_waste_management_system/screens/admin/request_foods_status.dart';
 
 import 'package:food_waste_management_system/screens/dashboard/dashboard_screen2.dart';
 import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
+import 'package:food_waste_management_system/screens/donar/donationMode/donation_mode.dart';
+import 'package:food_waste_management_system/screens/donar/requestMode/request_mode.dart';
 
 import 'package:food_waste_management_system/screens/home_screen.dart';
 
-import 'package:food_waste_management_system/screens/login_screen.dart';
 import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
-import 'package:food_waste_management_system/screens/signup_screen.dart';
+
 import 'package:food_waste_management_system/screens/splash_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 import 'screens/donar/donnar_add_food.dart';
+import 'screens/login_signup/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,10 +60,11 @@ class MyApp extends StatelessWidget {
 
         '/profile': (context) =>
             UserProfile(userId: FirebaseAuth.instance.currentUser!.uid),
-        'ngoDashboard': (context) => NgoDashboardScreen(),
-        'donarDashboard': (context) => DonarDashboardScreen(),
-        'adminDashboard': (context) => AdminPanelScreen(),
-        'requestFoodScreen': (context) => ReqestFoodStatusScreen(),
+        // 'ngoDashboard': (context) => NgoDashboardScreen(),
+        '/donarDashboard': (context) => DonarDashboardScreen(),
+        '/adminDashboard': (context) => AdminPanelScreen(),
+        '/donationMode': (context) => DonationMode(),
+        '/requestMode': (context) => RequestMode(),
       },
       // home: UserProfile(userId: getUserId()),
     );

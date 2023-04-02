@@ -65,35 +65,13 @@ class _AllReqestedScreenState extends State<AllReqestedScreen> {
                         onTap: () {
                           Navigator.pushNamed(
                               context, DonatedFoodView.routeName,
-                              arguments: ScreenArguments(data['documentId']));
+                              arguments: ScreenArguments(
+                                  data['documentId'], data['uid']));
                         },
                         child: Icon(Icons.keyboard_arrow_right_rounded)),
                   ),
                 );
               }
-              return Card(
-                  // elevation: 6,
-                  // margin: const EdgeInsets.all(10),
-                  // child: ListTile(
-                  //   leading: CircleAvatar(
-                  //     radius: 30.0,
-                  //     backgroundColor: Colors.transparent,
-                  //     // backgroundColor: Colors.purple,
-                  //     backgroundImage: NetworkImage(
-                  //       data['imagesUrls'][0],
-                  //     ),
-                  //   ),
-                  //   title: Text(data['foodItems']),
-                  //   subtitle: Text(data['city']),
-                  //   trailing: InkWell(
-                  //       onTap: () {
-                  //         Navigator.pushNamed(
-                  //             context, DonatedFoodView.routeName,
-                  //             arguments: ScreenArguments(document.id));
-                  //       },
-                  //       child: Icon(Icons.keyboard_arrow_right_rounded)),
-                  // ),
-                  );
             }).toList(),
           );
         },
