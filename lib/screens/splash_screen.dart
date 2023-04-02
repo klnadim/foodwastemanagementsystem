@@ -79,12 +79,19 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
           backgroundColor: Colors.green[50],
           floatingActionButton: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
-                  ));
+            onPressed: () async {
+              isDeviceConnected =
+                  await InternetConnectionChecker().hasConnection;
+
+              if (!isDeviceConnected) {
+                showDialogBox();
+              } else {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ));
+              }
             },
             icon: Icon(Icons.arrow_forward_rounded),
             label: Text(""),
