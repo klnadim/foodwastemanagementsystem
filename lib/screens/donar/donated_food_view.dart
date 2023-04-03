@@ -5,6 +5,7 @@ import 'package:food_waste_management_system/widgets/dialog_box.dart';
 
 import '../../models/arguments_return.dart';
 import '../../utils/methods.dart';
+import '../../widgets/custom_snackbar.dart';
 
 class DonatedFoodView extends StatefulWidget {
   // final String id;
@@ -345,7 +346,8 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                 showMyDialog(context, "Request!!!!",
                                     "Are you sure to Request?", () async {
                                   await requestForFood(
-                                          uid: getUserId(),
+                                          requestUid: getUserId(),
+                                          donatedUid: data['uid'],
                                           docId: args.documentId,
                                           dateTime: DateTime.now(),
                                           emailAddress: vEmail!,
@@ -355,6 +357,11 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                           userName: vUserName!,
                                           status: '')
                                       .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        snackBar(
+                                            "Your Request Successfully Send!!",
+                                            "",
+                                            () {}));
                                     Navigator.pushNamed(context, '/home');
                                   });
                                 });

@@ -72,10 +72,72 @@ Future getUsersInfo(String pUserId) async {
 //   return ff;
 // }
 
+//Confrimation
+
+Future<void> updateConInAddFoodStatus({
+  required String status,
+  required String addFoodDocId,
+}) {
+  CollectionReference addFood =
+      FirebaseFirestore.instance.collection('addFood');
+
+  return addFood.doc(addFoodDocId).update({
+    'status': status,
+  }).catchError((error) => print("Failed to : $error"));
+}
+
+Future<void> confirmationFood({
+  required String requestUid,
+  required String donatedUid,
+  required String foodDocId,
+  required DateTime dateTime,
+  String? status,
+}) {
+  CollectionReference confrimFood =
+      FirebaseFirestore.instance.collection('confirmationFoods');
+
+  return confrimFood
+      .doc()
+      .set({
+        'donatedUid': donatedUid,
+        'requestUid': requestUid,
+        'foodDocId': foodDocId,
+        'dateTime': dateTime,
+        'status': status
+      })
+      .then((value) => print("confirmed"))
+      .catchError((error) => print("Failed to : $error"));
+}
+
+//Rejection
+Future<void> rejectionFood({
+  required String requestUid,
+  required String donatedUid,
+  required String foodDocId,
+  required String rejectReason,
+  required DateTime dateTime,
+}) {
+  CollectionReference rejectFoods =
+      FirebaseFirestore.instance.collection('rejectFoods');
+
+  return rejectFoods
+      .doc()
+      .set({
+        'donatedUid': donatedUid,
+        'requestUid': requestUid,
+        'foodDocId': foodDocId,
+        'rejectReason': rejectReason,
+        'dateTime': dateTime,
+      })
+      .then((value) => print("Request Successfully"))
+      .catchError((error) => print("Failed to : $error"));
+}
+
 //Request button in Food Donar View
 
 Future<void> requestForFood({
-  required String uid,
+  required String requestUid,
+  required String donatedUid,
   required String docId,
   required DateTime dateTime,
   required String profilePicLink,
@@ -91,7 +153,8 @@ Future<void> requestForFood({
   return foodRequest
       .doc()
       .set({
-        'uid': uid,
+        'donatedUid': donatedUid,
+        'requestUid': requestUid,
         'documentId': docId,
         'dateTime': dateTime,
         'email': emailAddress,
@@ -274,6 +337,7 @@ Future<void> addFoodSubmit(
   String time,
   List<String> imagesUrls,
   String uid,
+  String status,
 ) async {
   var msg = "Some error occured";
 
@@ -290,7 +354,8 @@ Future<void> addFoodSubmit(
       'date': date,
       'time': time,
       'imagesUrls': imagesUrls,
-      'uid': uid
+      'uid': uid,
+      'status': status
     });
   } catch (e) {
     msg = e.toString();

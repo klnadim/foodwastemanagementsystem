@@ -10,6 +10,7 @@ import 'package:food_waste_management_system/screens/donar/donated_food_view.dar
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
 import 'package:food_waste_management_system/screens/donar/donationMode/donation_mode.dart';
 import 'package:food_waste_management_system/screens/donar/requestMode/request_mode.dart';
+import 'package:food_waste_management_system/screens/donar/requestMode/request_view.dart';
 
 import 'package:food_waste_management_system/screens/home_screen.dart';
 
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         '/indivisualDonatedList': (context) => IndivisualDonatedList(),
         // '/donatedFoodView': ((context) => DonatedFoodView(id: ,)),
         DonatedFoodView.routeName: (context) => DonatedFoodView(),
+        RequestFoodView.routeName: (context) => RequestFoodView(),
 
         '/profile': (context) =>
             UserProfile(userId: FirebaseAuth.instance.currentUser!.uid),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/arguments_return.dart';
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
+import 'package:food_waste_management_system/screens/donar/requestMode/request_view.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 class AllReqestedScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _AllReqestedScreenState extends State<AllReqestedScreen> {
 
   final Stream<QuerySnapshot> _foodRequest = FirebaseFirestore.instance
       .collection('foodRequest')
-      // .where('publicOrPrivate', isEqualTo: 'public')
+      .where('donatedUid', isEqualTo: getUserId())
       .snapshots();
 
   @override
@@ -64,9 +65,9 @@ class _AllReqestedScreenState extends State<AllReqestedScreen> {
                     trailing: InkWell(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, DonatedFoodView.routeName,
+                              context, RequestFoodView.routeName,
                               arguments: ScreenArguments(
-                                  data['documentId'], data['uid']));
+                                  data['documentId'], data['requestUid']));
                         },
                         child: Icon(Icons.keyboard_arrow_right_rounded)),
                   ),

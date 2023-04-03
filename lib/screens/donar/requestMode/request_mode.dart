@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:food_waste_management_system/screens/donar/requestMode/all_reqested.dart';
-import 'package:food_waste_management_system/screens/donar/requestMode/rejected_screen.dart';
 import 'package:food_waste_management_system/screens/donar/requestMode/request_confirmed.dart';
 import 'package:food_waste_management_system/screens/donar/requestMode/request_for.dart';
 
@@ -27,7 +26,7 @@ class RequestMode extends StatelessWidget {
               ),
             ],
           ),
-          title: Text('Donations'),
+          title: Text('Requests'),
         ),
         body: TabBarView(
           children: const [

@@ -7,6 +7,8 @@ import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../widgets/custom_snackbar.dart';
+
 class DonnarAddFood extends StatefulWidget {
   const DonnarAddFood({Key? key}) : super(key: key);
 
@@ -233,7 +235,8 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         _dateController.text,
         _timeController.text,
         imgUrls,
-        user!.uid);
+        user!.uid,
+        "");
 
     clearAllField();
   }
@@ -797,9 +800,13 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                                   .validate()) {
                                                 _submit(imagefiles!);
                                               }
-
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar(
+                                                      "Add Your Food Successfully.",
+                                                      "",
+                                                      () {}));
                                               Navigator.pushNamed(
-                                                  context, '/addFood');
+                                                  context, '/home');
                                               // Navigator.push(
                                               //     context,
                                               //     MaterialPageRoute(
