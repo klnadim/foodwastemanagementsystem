@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/home_screen.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -335,6 +336,7 @@ Future<void> addFoodSubmit(
   // String publicOrPrivate,
   String date,
   String time,
+  String convertTime,
   List<String> imagesUrls,
   String uid,
   String status,
@@ -355,6 +357,7 @@ Future<void> addFoodSubmit(
       'time': time,
       'imagesUrls': imagesUrls,
       'uid': uid,
+      'convertTime': convertTime,
       'status': status
     });
   } catch (e) {
@@ -367,6 +370,6 @@ void logOut(BuildContext context) async {
   Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => HomeScreen(),
       ));
 }

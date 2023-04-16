@@ -42,6 +42,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
   String? _hour, _minute, _time;
   String? dateTime;
 
+  String? _vTime;
+  String? _vDateTime;
+
   DateTime selectedDate = DateTime.now();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
@@ -114,6 +117,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         _timeController.text = formatDate(
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, " ", am]).toString();
+
+        print(_vTime =
+            formatDate(DateTime.now(), [HH, ':', nn, ':', ss]).toString());
       });
   }
 
@@ -234,6 +240,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         contactCon.text,
         _dateController.text,
         _timeController.text,
+        _vTime!,
         imgUrls,
         user!.uid,
         "");
