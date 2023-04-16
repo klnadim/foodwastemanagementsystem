@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/models/arguments_return.dart';
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
-import 'package:food_waste_management_system/screens/donar/requestMode/request_view.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/request_view.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 
 class AllReqestedScreen extends StatefulWidget {

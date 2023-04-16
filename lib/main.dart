@@ -8,9 +8,9 @@ import 'package:food_waste_management_system/screens/dashboard/dashboard_screen2
 import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
-import 'package:food_waste_management_system/screens/donar/donationMode/donation_mode.dart';
-import 'package:food_waste_management_system/screens/donar/requestMode/request_mode.dart';
-import 'package:food_waste_management_system/screens/donar/requestMode/request_view.dart';
+import 'package:food_waste_management_system/screens/donar/donationMade/donation_mode.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/request_mode.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/request_view.dart';
 
 import 'package:food_waste_management_system/screens/home_screen.dart';
 

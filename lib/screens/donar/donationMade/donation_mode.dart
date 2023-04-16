@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/donar/donationMode/all_donation.dart';
-import 'package:food_waste_management_system/screens/donar/donationMode/confirmed_screen.dart';
+import 'package:food_waste_management_system/screens/donar/donationMade/all_donation.dart';
+import 'package:food_waste_management_system/screens/donar/donationMade/confirmed_screen.dart';
 
 class DonationMode extends StatelessWidget {
   const DonationMode({Key? key}) : super(key: key);

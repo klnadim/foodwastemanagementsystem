@@ -20,6 +20,7 @@ class DonatedFoodView extends StatefulWidget {
 }
 
 bool isDonar = false;
+bool alreadyRequestOrNot = false;
 
 Map? listData;
 
@@ -342,29 +343,52 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                 elevation: 0.0,
                                 padding: EdgeInsets.all(0.0),
                               ),
-                              onPressed: () {
-                                showMyDialog(context, "Request!!!!",
-                                    "Are you sure to Request?", () async {
-                                  await requestForFood(
-                                          requestUid: getUserId(),
-                                          donatedUid: data['uid'],
-                                          docId: args.documentId,
-                                          dateTime: DateTime.now(),
-                                          emailAddress: vEmail!,
-                                          mobileNumber: vMobile!,
-                                          profilePicLink: vProfilePic!,
-                                          city: vCity,
-                                          userName: vUserName!,
-                                          status: '')
-                                      .then((value) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        snackBar(
-                                            "Your Request Successfully Send!!",
-                                            "",
-                                            () {}));
-                                    Navigator.pushNamed(context, '/home');
+                              onPressed: () async {
+                                var aadfdfd = await FirebaseFirestore.instance
+                                    .collection('foodRequest')
+                                    .get()
+                                    .then((QuerySnapshot querySnapshot) {
+                                  querySnapshot.docs.forEach((element) {
+                                    if (element['documentId'] ==
+                                            args.documentId &&
+                                        element['donatedUid'] == data['uid']) {
+                                      setState(() {
+                                        alreadyRequestOrNot = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        alreadyRequestOrNot = false;
+                                      });
+                                    }
                                   });
                                 });
+
+                                alreadyRequestOrNot != false
+                                    ? Text("Already Requested")
+                                    : showMyDialog(context, "Request!!!!",
+                                        "Are you sure to Request?", () async {
+                                        await requestForFood(
+                                                requestUid: getUserId(),
+                                                donatedUid: data['uid'],
+                                                docId: args.documentId,
+                                                dateTime: DateTime.now(),
+                                                emailAddress: vEmail!,
+                                                mobileNumber: vMobile!,
+                                                profilePicLink: vProfilePic!,
+                                                city: vCity,
+                                                userName: vUserName!,
+                                                date: data['date'],
+                                                time: data['time'],
+                                                status: '')
+                                            .then((value) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar(
+                                                  "Your Request Successfully Send!!",
+                                                  "",
+                                                  () {}));
+                                          Navigator.pushNamed(context, '/home');
+                                        });
+                                      });
                               },
                               child: Ink(
                                 decoration: BoxDecoration(
