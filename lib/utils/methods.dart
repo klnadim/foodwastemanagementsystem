@@ -83,6 +83,10 @@ Future<void> updateConInAddFoodStatus({
 }) {
   CollectionReference addFood =
       FirebaseFirestore.instance.collection('addFood');
+  // CollectionReference foodRequest = FirebaseFirestore.instance
+  //     .collection('foodRequest')
+  //     .doc()
+  //     .update({status: status});
 
   return addFood.doc(addFoodDocId).update({
     'status': status,
@@ -94,6 +98,7 @@ Future<void> confirmationFood({
   required String donatedUid,
   required String foodDocId,
   required DateTime dateTime,
+  required String foodName,
   String? status,
 }) {
   CollectionReference confrimFood =
@@ -106,6 +111,7 @@ Future<void> confirmationFood({
         'requestUid': requestUid,
         'foodDocId': foodDocId,
         'dateTime': dateTime,
+        'foodName': foodName,
         'status': status
       })
       .then((value) => print("confirmed"))

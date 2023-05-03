@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_waste_management_system/screens/admin/admin_panel.dart';
 import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
-import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
+
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/custom_wigets.dart';
 import 'package:food_waste_management_system/widgets/dialog_box.dart';

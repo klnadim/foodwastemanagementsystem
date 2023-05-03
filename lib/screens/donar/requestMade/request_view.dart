@@ -119,6 +119,10 @@ class _RequestFoodViewState extends State<RequestFoodView> {
 
               List images = data['imagesUrls'];
 
+              String? vDate = data['date'];
+
+              String _vTime = data['time'];
+
               return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
@@ -146,6 +150,7 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                         donatedUid: data['uid'],
                                         foodDocId: args.documentId,
                                         status: "confirmed",
+                                        foodName: data['foodItems'],
                                         dateTime: DateTime.now());
                                     await updateConInAddFoodStatus(
                                             addFoodDocId: args.documentId,
@@ -320,9 +325,9 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                               height: 5.0,
                                             ),
                                             Text(
-                                              data['foodValidation'],
+                                              "[$vDate" + " " + "$_vTime ]",
                                               style: TextStyle(
-                                                fontSize: 20.0,
+                                                fontSize: 15,
                                                 color: Colors.pinkAccent,
                                               ),
                                             )

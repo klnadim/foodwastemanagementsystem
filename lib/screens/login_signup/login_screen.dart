@@ -8,7 +8,6 @@ import 'package:food_waste_management_system/screens/donar/donar_dashboard_scree
 import 'package:food_waste_management_system/screens/home_screen.dart';
 
 import 'package:food_waste_management_system/screens/login_signup/signup_screen.dart';
-import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
 
 import 'package:food_waste_management_system/utils/styles.dart';
 

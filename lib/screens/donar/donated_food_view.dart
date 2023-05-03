@@ -125,6 +125,10 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
 
               List images = data['imagesUrls'];
 
+              String? vDate = data['date'];
+
+              String _vTime = data['time'];
+
               return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
@@ -231,9 +235,9 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                               height: 5.0,
                                             ),
                                             Text(
-                                              data['foodValidation'],
+                                              "[$vDate" + " " + "$_vTime ]",
                                               style: TextStyle(
-                                                fontSize: 20.0,
+                                                fontSize: 15.0,
                                                 color: Colors.pinkAccent,
                                               ),
                                             )

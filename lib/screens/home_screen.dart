@@ -38,14 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
       .where('date',
           isGreaterThanOrEqualTo:
               DateFormat('yyyy-MM-dd').format(DateTime.now()).toString())
+      // .where('date', isGreaterThanOrEqualTo: getUserId())
       // .orderBy('date', descending: true)
       // .orderBy('time', descending: true)
+
       .snapshots();
 
-  final Stream<QuerySnapshot> _foodCollection1 = FirebaseFirestore.instance
+  var foodCollection1 = FirebaseFirestore.instance
       .collection('addFood')
-      .where('uid', isNotEqualTo: getUserId())
-      .snapshots();
+      .where('date',
+          isGreaterThanOrEqualTo:
+              DateFormat('yyyy-MM-dd').format(DateTime.now()).toString())
+      // .where('date', isGreaterThanOrEqualTo: getUserId())
+      // .orderBy('date', descending: true)
+      // .orderBy('time', descending: true)
+
+      .get()
+      .then((value) {});
 
   bool foodDataAvailble = false;
   TextStyle myText = TextStyle(
@@ -181,8 +190,12 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
+              return Center(child: Text("Loading"));
             }
+
+            // print(snapshot.data!.docs.where(
+            //   (element) => element['uid'],
+            // ));
 
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -245,41 +258,45 @@ class _HomeScreenState extends State<HomeScreen> {
                       searchName.toLowerCase(),
                     )) {
                   // if (dt1.compareTo(dt2) > 0) {
-                  return Card(
-                    elevation: 6,
-                    margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30.0,
-                        backgroundColor: Colors.transparent,
-                        // backgroundColor: Colors.purple,
-                        backgroundImage: NetworkImage(
-                          data['imagesUrls'][0],
-                        ),
-                      ),
-                      title: Text(data['foodItems']),
-                      subtitle: Row(
-                        children: [
-                          Text(data['city']),
-                          SizedBox(
-                            width: 5,
+                  return data['uid'] == getUserId()
+                      ? Container()
+                      : Card(
+                          elevation: 6,
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 30.0,
+                              backgroundColor: Colors.transparent,
+                              // backgroundColor: Colors.purple,
+                              backgroundImage: NetworkImage(
+                                data['imagesUrls'][0],
+                              ),
+                            ),
+                            title: Text(data['foodItems']),
+                            subtitle: Row(
+                              children: [
+                                Text(data['city']),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "[$vDate" + " " + "$_vTime ]",
+                                  style:
+                                      TextStyle(backgroundColor: Colors.green),
+                                ),
+                              ],
+                            ),
+                            trailing: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, DonatedFoodView.routeName,
+                                      arguments: ScreenArguments(
+                                          document.id, data['uid']));
+                                },
+                                child:
+                                    Icon(Icons.keyboard_arrow_right_rounded)),
                           ),
-                          Text(
-                            "[$vDate" + " " + "$_vTime ]",
-                            style: TextStyle(backgroundColor: Colors.green),
-                          ),
-                        ],
-                      ),
-                      trailing: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, DonatedFoodView.routeName,
-                                arguments:
-                                    ScreenArguments(document.id, data['uid']));
-                          },
-                          child: Icon(Icons.keyboard_arrow_right_rounded)),
-                    ),
-                  );
+                        );
                   // }
                 }
                 return Card(

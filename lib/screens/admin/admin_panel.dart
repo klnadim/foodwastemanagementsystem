@@ -10,6 +10,8 @@ import 'package:food_waste_management_system/widgets/card_dashboard.dart';
 import 'package:food_waste_management_system/widgets/list_title.dart';
 
 import '../../utils/methods.dart';
+import '../donar/donnar_add_food.dart';
+import '../home_screen.dart';
 import '../user_profile.dart';
 
 class AdminPanelScreen extends StatefulWidget {
@@ -188,23 +190,50 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             crossAxisSpacing: 15,
             mainAxisSpacing: 10,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/donatedFoodView');
-                },
-                child: singleCard(Icons.done_all_outlined, "Donated Foods"),
-              ),
+              // InkWell()
+
               // InkWell(
               //   onTap: () {
               //     Navigator.push(
               //         context,
               //         MaterialPageRoute(
-              //           builder: (context) => ReqestFoodStatusScreen(),
+              //           builder: (context) => HomeScreen(),
               //         ));
               //   },
-              //   child: singleCard(Icons.request_page, "Requests"),
-              // )
-              // singleCard(Icons.close, "Rejected")
+              //   child: singleCard(Icons.home, 'Home'),
+              // ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DonnarAddFood(),
+                      ));
+                },
+                child: singleCard(Icons.food_bank_outlined, 'Add Food'),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/adminDonationScreen');
+                },
+                child: singleCard(Icons.list_alt_rounded, 'Donation Made'),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/adminRequestMade');
+                },
+                child: singleCard(Icons.list, 'Request Made'),
+              ),
+
+              // ElevatedButton(
+              //     onPressed: () {
+              //       setState(() {
+              //         pGet();
+              //       });
+              //     },
+              //     child: Text("Click"))
             ],
           ),
         ),

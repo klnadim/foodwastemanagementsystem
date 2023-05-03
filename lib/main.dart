@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/admin/admin_panel_screen.dart';
+import 'package:food_waste_management_system/screens/admin/admin_all_donation.dart';
 
-import 'package:food_waste_management_system/screens/dashboard/dashboard_screen2.dart';
+import 'package:food_waste_management_system/screens/admin/request/admin_request_mode.dart';
+
 import 'package:food_waste_management_system/screens/donar/donar_dashboard_screen.dart';
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
 import 'package:food_waste_management_system/screens/donar/donationMade/donation_mode.dart';
 import 'package:food_waste_management_system/screens/donar/requestMade/request_mode.dart';
 import 'package:food_waste_management_system/screens/donar/requestMade/request_view.dart';
-
 import 'package:food_waste_management_system/screens/home_screen.dart';
-
-import 'package:food_waste_management_system/screens/ngo/ngo_dashboard.dart';
-
 import 'package:food_waste_management_system/screens/splash_screen.dart';
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
@@ -37,7 +35,15 @@ void main() async {
 
       );
 
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgoundHandler);
+
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgoundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
 }
 
 class MyApp extends StatelessWidget {
@@ -64,9 +70,11 @@ class MyApp extends StatelessWidget {
             UserProfile(userId: FirebaseAuth.instance.currentUser!.uid),
         // 'ngoDashboard': (context) => NgoDashboardScreen(),
         '/donarDashboard': (context) => DonarDashboardScreen(),
-        '/adminDashboard': (context) => AdminPanelScreen(),
+
         '/donationMode': (context) => DonationMode(),
         '/requestMode': (context) => RequestMode(),
+        '/adminDonationScreen': (context) => AdminDonationScreen(),
+        '/adminRequestMade': (context) => AdminRequestMode()
       },
       // home: UserProfile(userId: getUserId()),
     );

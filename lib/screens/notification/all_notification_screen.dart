@@ -1,32 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/notification/notifications.dart';
+import 'package:food_waste_management_system/utils/methods.dart';
 
-import '../../../utils/methods.dart';
-
-class RequestConfirmedSreen extends StatefulWidget {
-  const RequestConfirmedSreen({Key? key}) : super(key: key);
+class AllNotificationScreen extends StatefulWidget {
+  AllNotificationScreen({Key? key}) : super(key: key);
 
   @override
-  State<RequestConfirmedSreen> createState() => _RequestConfirmedSreenState();
+  State<AllNotificationScreen> createState() => _AllNotificationScreenState();
 }
 
-Stream<QuerySnapshot>? foodCollection;
+class _AllNotificationScreenState extends State<AllNotificationScreen> {
+  NotificationServices noti = NotificationServices();
 
-class _RequestConfirmedSreenState extends State<RequestConfirmedSreen> {
+  final Stream<QuerySnapshot> _foodRequest = FirebaseFirestore.instance
+      .collection('foodRequest')
+      .where('donatedUid', isEqualTo: getUserId())
+      .snapshots();
+
   @override
   void initState() {
-    foodCollection = FirebaseFirestore.instance
-        .collection('confirmationFoods')
-        .where('requestUid', isEqualTo: getUserId())
-        .snapshots();
+    // TODO: implement initState
+    // noti.listenToCollection(getUserId());
+    // noti.sendNotificationToUser(getUserId(), "title", "body");
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("All Notifications"),
+      ),
       body: StreamBuilder(
-        stream: foodCollection,
+        stream: _foodRequest,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -58,8 +66,8 @@ class _RequestConfirmedSreenState extends State<RequestConfirmedSreen> {
                     //     data['profilePic'],
                     //   ),
                     // ),
-                    title: Text(data['foodName']),
-                    // subtitle: Text(data['city']),
+                    title: Text(data['email']),
+                    subtitle: Text(data['city']),
                     trailing: InkWell(
                         onTap: () {
                           // Navigator.pushNamed(
@@ -75,6 +83,20 @@ class _RequestConfirmedSreenState extends State<RequestConfirmedSreen> {
           );
         },
       ),
+      // body: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Center(child: Text("Notication Screen")),
+      //     Center(
+      //         child: ElevatedButton(
+      //             onPressed: () async {
+      //               // var token = await noti.getDeviceToken();
+      //               // // print(token);
+      //               // noti.saveFCMToken(getUserId(), token);
+      //             },
+      //             child: Text("data")))
+      //   ],
+      // ),
     );
   }
 }

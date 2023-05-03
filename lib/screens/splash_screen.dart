@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/home_screen.dart';
+import 'package:food_waste_management_system/screens/notification/notifications.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,6 +14,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  NotificationServices notificationServices = NotificationServices();
+
   late StreamSubscription subscription;
   var isDeviceConnected = false;
   bool isAlertSet = false;
@@ -20,6 +23,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     getConnectivity();
+    notificationServices.requestNotificationPermission();
+    notificationServices.firebaseInit();
+
+    notificationServices.getDeviceToken().then((value) {
+      print('user token');
+      print(value);
+    });
+
+    notificationServices.isTokenRefresh();
     super.initState();
   }
 

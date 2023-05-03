@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/donar/donnar_add_food.dart';
 
 import 'package:food_waste_management_system/screens/home_screen.dart';
+import 'package:food_waste_management_system/screens/notification/all_notification_screen.dart';
 
 import 'package:food_waste_management_system/screens/user_profile.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
@@ -148,8 +149,18 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                     //       builder: (context) => AdminPanelScreen(),
                     //     ));
                   }),
-                  child:
-                      Card(child: listtile("Notification", Icons.dashboard))),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllNotificationScreen(),
+                          ));
+                    },
+                    child: Card(
+                        child: listtile("Notification",
+                            Icons.notification_important_outlined)),
+                  )),
               const Divider(
                 color: Colors.black26,
               ),
@@ -161,7 +172,7 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                           builder: (context) => UserProfile(userId: user!.uid),
                         ));
                   },
-                  child: Card(child: listtile("Profile", Icons.dashboard))),
+                  child: Card(child: listtile("Profile", Icons.people))),
               ElevatedButton(
                   onPressed: () => logOut(context), child: Text("LogOut"))
             ],
@@ -202,13 +213,13 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, '/donationMode');
                 },
-                child: singleCard(Icons.list_alt_rounded, 'Donation Mode'),
+                child: singleCard(Icons.list_alt_rounded, 'Donation Made'),
               ),
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/requestMode');
                 },
-                child: singleCard(Icons.list, 'Request Mode'),
+                child: singleCard(Icons.list, 'Request Made'),
               ),
 
               // ElevatedButton(

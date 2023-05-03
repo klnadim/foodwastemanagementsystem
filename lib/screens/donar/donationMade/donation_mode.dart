@@ -8,7 +8,7 @@ class DonationMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -16,9 +16,9 @@ class DonationMode extends StatelessWidget {
               Tab(
                 text: "All Donations",
               ),
-              Tab(
-                text: "Confirmed Donations",
-              ),
+              // Tab(
+              //   text: "Confirmed Donations",
+              // ),
             ],
           ),
           title: Text('Donations'),
@@ -26,7 +26,7 @@ class DonationMode extends StatelessWidget {
         body: TabBarView(
           children: const [
             AllDonationScreen(),
-            ConfirmedDonations(),
+            // ConfirmedDonations(),
           ],
         ),
       ),

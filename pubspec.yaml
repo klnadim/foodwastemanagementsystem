@@ -49,6 +49,9 @@ dependencies:
   internet_connection_checker: ^0.0.1+4
   intl: ^0.17.0
   date_format: ^2.0.7
+  firebase_messaging: ^14.3.0
+  app_settings: ^4.1.6
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   flutter_test:
