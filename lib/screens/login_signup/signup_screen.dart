@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
+import 'package:food_waste_management_system/widgets/my_snack_bar.dart';
 import 'login_screen.dart';
 // import 'model.dart';
 
@@ -32,6 +33,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // var rool = "NGO";
   String selectedUserType = '';
   // String dropdownValue = 'NGO';
+
+  void signUp(String email, String password, String rool) async {
+    CircularProgressIndicator();
+    if (_formkey.currentState!.validate()) {
+      try {
+        await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => {postDetailsToFirestore(email, rool)})
+            .catchError((e) {});
+      } on FirebaseAuthException catch (e) {
+        // Handle FirebaseAuthException
+        print('FirebaseAuthException: ${e.code} - ${e.message}');
+      } catch (e) {}
+    }
+  }
+
+  postDetailsToFirestore(String email, String rool) {
+    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var user = _auth.currentUser;
+    CollectionReference ref = FirebaseFirestore.instance.collection('users');
+    ref
+        .doc(user!.uid)
+        .set({'email': emailController.text, 'rool': selectedUserType});
+
+    CustomSnackBar.show(
+        context: context,
+        message: "SignUp SuccessFully..",
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        duration: Duration(seconds: 3));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (value!.length == 0) {
                               return "Email cannot be empty";
                             }
+
                             if (!RegExp(
                                     "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                 .hasMatch(value)) {
@@ -109,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return null;
                             }
                           },
-                          onChanged: (value) {},
+                          onChanged: (value) async {},
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(
@@ -399,12 +434,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               //         BorderRadius.all(Radius.circular(20.0))),
                               // elevation: 5.0,
                               // height: 40,
-                              onPressed: () {
+                              onPressed: () async {
                                 setState(() {
                                   showProgress = true;
                                 });
-                                signUp(emailController.text,
-                                    passwordController.text, selectedUserType);
+
+                                List<String> signInMethods = await FirebaseAuth
+                                    .instance
+                                    .fetchSignInMethodsForEmail(
+                                        emailController.text);
+                                if (signInMethods.isNotEmpty) {
+                                  // Email already exists, show error message
+                                  // throw FirebaseAuthException(
+                                  //     code: 'email-already-in-use',
+                                  //     message:
+                                  //         'The email address is already in use.');
+
+                                  CustomSnackBar.show(
+                                      context: context,
+                                      message: "Email Already Used",
+                                      backgroundColor: Colors.red.shade200,
+                                      textColor: Colors.black,
+                                      duration: Duration(seconds: 3));
+                                } else {
+                                  signUp(
+                                      emailController.text,
+                                      passwordController.text,
+                                      selectedUserType);
+                                }
                               },
                               child: Text(
                                 "SignUp",
@@ -426,26 +483,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-
-  void signUp(String email, String password, String rool) async {
-    CircularProgressIndicator();
-    if (_formkey.currentState!.validate()) {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(email, rool)})
-          .catchError((e) {});
-    }
-  }
-
-  postDetailsToFirestore(String email, String rool) {
-    // FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    var user = _auth.currentUser;
-    CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref
-        .doc(user!.uid)
-        .set({'email': emailController.text, 'rool': selectedUserType});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }

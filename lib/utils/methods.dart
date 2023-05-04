@@ -16,7 +16,28 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-//Get request exists or not
+// //Get data from foodRequest collections
+
+// getDataFoodRequested(args) async {
+//     await FirebaseFirestore.instance
+//         .collection('foodRequest')
+//         .where('requestUid', isEqualTo: getUserId())
+//         .get()
+//         .then((QuerySnapshot querySnapshot) {
+//       querySnapshot.docs.forEach(
+//         (element) {
+//           // print(element['requestUid']);
+//           if (element['documentId'] == args.documentId) {
+//             alreadyRequestOrNot = true;
+//           } else {
+//             // setState(() {});
+//             alreadyRequestOrNot = false;
+//           }
+//         },
+//       );
+//       return alreadyRequestOrNot;
+//     });
+//   }
 
 //Request data retrive from firebase
 
@@ -92,6 +113,50 @@ Future<void> updateConInAddFoodStatus({
     'status': status,
   }).catchError((error) => print("Failed to : $error"));
 }
+//Confrimation foodRequest
+
+Future<void> updateConInFoodRequestStatus({
+  required String status,
+  required String addFoodDocId,
+  required String requesterUserId,
+}) async {
+  CollectionReference foodRequest =
+      FirebaseFirestore.instance.collection('foodRequest');
+
+  Query query = foodRequest
+      .where('requestUid', isEqualTo: requesterUserId)
+      .where('documentId', isEqualTo: addFoodDocId);
+  QuerySnapshot querySnapshot = await query.get();
+  querySnapshot.docs.forEach((documentSnapshot) {
+    foodRequest.doc(documentSnapshot.id).update({'status': status});
+  });
+  // return addFood.up.update({
+  //   'status': status,
+  // }).catchError((error) => print("Failed to : $error"));
+}
+
+Future<void> updateConInFoodRequestStatusReject({
+  required String status,
+  required String addFoodDocId,
+  required String requesterUserId,
+  required String rejectionReason,
+}) async {
+  CollectionReference foodRequest =
+      FirebaseFirestore.instance.collection('foodRequest');
+
+  Query query = foodRequest
+      .where('requestUid', isEqualTo: requesterUserId)
+      .where('documentId', isEqualTo: addFoodDocId);
+  QuerySnapshot querySnapshot = await query.get();
+  querySnapshot.docs.forEach((documentSnapshot) {
+    foodRequest
+        .doc(documentSnapshot.id)
+        .update({'status': status, 'rejectionReason': rejectionReason});
+  });
+  // return addFood.up.update({
+  //   'status': status,
+  // }).catchError((error) => print("Failed to : $error"));
+}
 
 Future<void> confirmationFood({
   required String requestUid,
@@ -155,6 +220,8 @@ Future<void> requestForFood({
   required String userName,
   required String date,
   required String time,
+  required String foodItems,
+  required String donnarMobileNumber,
   String? city,
   String? status,
 }) {
@@ -171,6 +238,11 @@ Future<void> requestForFood({
         'email': emailAddress,
         'profilePic': profilePicLink,
         'mobileNumber': mobileNumber,
+        'userName': userName,
+        'foodItems': foodItems,
+        'donnarMobileNumber': donnarMobileNumber,
+        'foodDate': date,
+        'foodTime': time,
         'city': city,
         'status': status
       })

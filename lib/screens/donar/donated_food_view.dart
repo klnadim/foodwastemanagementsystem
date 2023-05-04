@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
+import 'package:food_waste_management_system/widgets/my_snack_bar.dart';
 
 import '../../models/arguments_return.dart';
 import '../../utils/methods.dart';
+import '../../widgets/blinking_text.dart';
 import '../../widgets/custom_snackbar.dart';
+import '../user_profile.dart';
 
 class DonatedFoodView extends StatefulWidget {
   // final String id;
@@ -22,7 +25,7 @@ class DonatedFoodView extends StatefulWidget {
 bool isDonar = false;
 bool alreadyRequestOrNot = false;
 
-Map? listData;
+Map listData = {};
 
 String? vEmail;
 String? vProfilePic;
@@ -40,15 +43,8 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
   @override
   void initState() {
     gUserData();
-    if (pGet() != false) {
-      pGet();
-    } else {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => UserProfile(userId: widget.userId),
-      //     ));
-    }
+    pGet();
+
     super.initState();
   }
 
@@ -60,21 +56,70 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
     }
   }
 
+  // profileDataCheck() {
+  //   if (pGet() != null) {
+  //     pGet();
+  //   } else {
+  //     CustomSnackBar.show(
+  //         context: context,
+  //         message: "Please First complete your Profile",
+  //         backgroundColor: Colors.green,
+  //         textColor: Colors.white,
+  //         duration: Duration(seconds: 5));
+
+  //     // Navigator.pushNamed(context, '/profile');
+  //   }
+  // }
+
   pGet() async {
-    var li = await retriveProfileData(getUserId());
+    Map li = await retriveProfileData(getUserId());
 
-    print(li);
+    listData = li;
+    print(listData.isEmpty);
+    if (listData.isNotEmpty) {
+      // listData = li;
+      vProfilePic = listData[0]['photoUrl'];
+      vUserName = listData[0]['fullName'];
+      vMobile = listData[0]['number'];
+      vAddress = listData[0]['address'];
 
-    if (li != null) {
-      listData = li;
-
-      vProfilePic = listData![0]['photoUrl'];
-      vUserName = listData![0]['fullName'];
-      vMobile = listData![0]['number'];
-      vAddress = listData![0]['address'];
-
-      vCity = listData![0]['city'];
+      vCity = listData[0]['city'];
     }
+    return listData;
+
+    // if (li != null) {
+    //   listData = li;
+
+    //   vProfilePic = listData![0]['photoUrl'];
+    //   vUserName = listData![0]['fullName'];
+    //   vMobile = listData![0]['number'];
+    //   vAddress = listData![0]['address'];
+
+    //   vCity = listData![0]['city'];
+    // } else {
+    //   return null;
+    // }
+  }
+
+  checkAlreadyRequested(args) async {
+    await FirebaseFirestore.instance
+        .collection('foodRequest')
+        .where('requestUid', isEqualTo: getUserId())
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach(
+        (element) {
+          // print(element['requestUid']);
+          if (element['documentId'] == args.documentId) {
+            alreadyRequestOrNot = true;
+          } else {
+            // setState(() {});
+            alreadyRequestOrNot = false;
+          }
+        },
+      );
+      return alreadyRequestOrNot;
+    });
   }
 
   bool dataAvailable = false;
@@ -222,6 +267,10 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                       ),
                                       Expanded(
                                         child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
                                           children: <Widget>[
                                             Text(
                                               "Valid For",
@@ -234,13 +283,24 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                             SizedBox(
                                               height: 5.0,
                                             ),
-                                            Text(
-                                              "[$vDate" + " " + "$_vTime ]",
-                                              style: TextStyle(
-                                                fontSize: 15.0,
-                                                color: Colors.pinkAccent,
-                                              ),
-                                            )
+                                            BlinkingText(
+                                                text: "$vDate" +
+                                                    " " +
+                                                    "  $_vTime",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.purple,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            // Text(
+                                            //   "[$vDate" + " " + "$_vTime ]",
+                                            //   style: TextStyle(
+                                            //     fontSize: 15.0,
+                                            //     color: Colors.pinkAccent,
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -327,19 +387,8 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                     ),
                     SizedBox(
                       width: 300.00,
-                      child: args.uid == getUserId()!
-                          ? Container(
-                              // child: Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceAround,
-                              //   children: [
-                              //     ElevatedButton(
-                              //         onPressed: () {}, child: Text("Confirm")),
-                              //     ElevatedButton(
-                              //         onPressed: () {}, child: Text("Reject")),
-                              //   ],
-                              // ),
-                              )
+                      child: data['uid'] == getUserId()
+                          ? Container()
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -347,52 +396,106 @@ class _DonatedFoodViewState extends State<DonatedFoodView> {
                                 elevation: 0.0,
                                 padding: EdgeInsets.all(0.0),
                               ),
-                              onPressed: () async {
-                                var aadfdfd = await FirebaseFirestore.instance
-                                    .collection('foodRequest')
-                                    .get()
-                                    .then((QuerySnapshot querySnapshot) {
-                                  querySnapshot.docs.forEach((element) {
-                                    if (element['documentId'] ==
-                                            args.documentId &&
-                                        element['donatedUid'] == data['uid']) {
-                                      setState(() {
-                                        alreadyRequestOrNot = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        alreadyRequestOrNot = false;
-                                      });
-                                    }
-                                  });
-                                });
+                              onPressed: () {
+                                // print(checkAlreadyRequested(args));
 
-                                alreadyRequestOrNot != false
-                                    ? Text("Already Requested")
-                                    : showMyDialog(context, "Request!!!!",
-                                        "Are you sure to Request?", () async {
-                                        await requestForFood(
-                                                requestUid: getUserId(),
-                                                donatedUid: data['uid'],
-                                                docId: args.documentId,
-                                                dateTime: DateTime.now(),
-                                                emailAddress: vEmail!,
-                                                mobileNumber: vMobile!,
-                                                profilePicLink: vProfilePic!,
-                                                city: vCity,
-                                                userName: vUserName!,
-                                                date: data['date'],
-                                                time: data['time'],
-                                                status: '')
-                                            .then((value) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar(
-                                                  "Your Request Successfully Send!!",
-                                                  "",
-                                                  () {}));
-                                          Navigator.pushNamed(context, '/home');
-                                        });
+                                if (listData.isEmpty) {
+                                  // print(true);
+                                  CustomSnackBar.show(
+                                      context: context,
+                                      message:
+                                          "Please First complete your Profile",
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                      duration: Duration(seconds: 7),
+                                      snackbarFunctionLabel: "Profile",
+                                      snackbarFunction: () {
+                                        Navigator.pushNamed(
+                                            context, '/profile');
                                       });
+                                }
+
+                                checkAlreadyRequested(args);
+
+                                if (alreadyRequestOrNot == true) {
+                                  CustomSnackBar.show(
+                                      context: context,
+                                      message:
+                                          "Already Requested For This Food.",
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      duration: Duration(seconds: 5),
+                                      snackbarFunction: () {},
+                                      snackbarFunctionLabel: "");
+                                } else {
+                                  showMyDialog(context, "Request!!!!",
+                                      "Are you sure to Request?", () async {
+                                    await requestForFood(
+                                            requestUid: getUserId(),
+                                            donatedUid: data['uid'],
+                                            docId: args.documentId,
+                                            dateTime: DateTime.now(),
+                                            emailAddress: vEmail!,
+                                            mobileNumber: vMobile!,
+                                            profilePicLink: vProfilePic!,
+                                            city: vCity,
+                                            userName: vUserName!,
+                                            date: data['date'],
+                                            time: data['time'],
+                                            foodItems: data['foodItems'],
+                                            donnarMobileNumber:
+                                                data['contactNumber'],
+                                            status: '')
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar(
+                                              "Your Request Successfully Send!!",
+                                              "",
+                                              () {}));
+                                      Navigator.pushNamed(context, '/home');
+                                    });
+                                  });
+                                  // Navigator.pop(context);
+                                }
+
+                                // if (checkAlreadyRequested(args) == true) {
+                                //   print("Already Requested");
+                                // } else if (llll.isEmpty) {
+                                //   print("Profile not COmplete");
+                                // } else {
+                                //   // showMyDialog(context, "Request!!!!",
+                                //   //     "Are you sure to Request?", () async {
+                                //   //   await requestForFood(
+                                //   //           requestUid: getUserId(),
+                                //   //           donatedUid: data['uid'],
+                                //   //           docId: args.documentId,
+                                //   //           dateTime: DateTime.now(),
+                                //   //           emailAddress: vEmail!,
+                                //   //           mobileNumber: vMobile!,
+                                //   //           profilePicLink: vProfilePic!,
+                                //   //           city: vCity,
+                                //   //           userName: vUserName!,
+                                //   //           date: data['date'],
+                                //   //           time: data['time'],
+                                //   //           status: '')
+                                //   //       .then((value) {
+                                //   //     ScaffoldMessenger.of(context)
+                                //   //         .showSnackBar(snackBar(
+                                //   //             "Your Request Successfully Send!!",
+                                //   //             "",
+                                //   //             () {}));
+                                //   //     Navigator.pushNamed(context, '/home');
+                                //   //   });
+                                //   // });
+                                // }
+
+                                // // print(alreadyRequestOrNot);
+
+                                // // alreadyRequestOrNot != false
+                                // //     ? Text("Already Requested")
+                                // //     : pGet() == null
+                                // //         ? print("Profile not COmplete")
+                                // //         :
                               },
                               child: Ink(
                                 decoration: BoxDecoration(

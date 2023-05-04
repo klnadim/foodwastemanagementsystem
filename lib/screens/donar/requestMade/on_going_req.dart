@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../models/arguments_return.dart';
 import '../../../utils/styles.dart';
+import '../../../widgets/blinking_text.dart';
 import '../donated_food_view.dart';
 
 class OnGoingRequestSreen extends StatefulWidget {
@@ -157,205 +158,208 @@ class _OnGoingRequestSreenState extends State<OnGoingRequestSreen> {
             }
 
             return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+              children: snapshot.data!.docs.map(
+                (DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
 
-                String? vDate = data['date'];
+                  String? vDate = data['date'];
 
-                String _vTime = data['time'];
-                DateTime _timeee = DateFormat.jm().parse(_vTime);
-                var _t = DateFormat("HH:mm:ss").format(_timeee);
+                  String _vTime = data['time'];
+                  DateTime _timeee = DateFormat.jm().parse(_vTime);
+                  var _t = DateFormat("HH:mm:ss").format(_timeee);
 
-                var datTime = vDate! + " " + _t;
+                  var datTime = vDate! + " " + _t;
 
-                // DateTime _time = DateTime.parse(_t);
+                  // DateTime _time = DateTime.parse(_t);
 
-                // var _todayDate = DateFormat("yyyy-MM-dd").format(timeSelect);
+                  // var _todayDate = DateFormat("yyyy-MM-dd").format(timeSelect);
 
-                // var convertedDays =
-                //     DateTime.parse(vDate!).difference(DateTime.now()).inDays;
+                  // var convertedDays =
+                  //     DateTime.parse(vDate!).difference(DateTime.now()).inDays;
 
-                DateTime dt1 = DateTime.parse(datTime);
-                DateTime dt2 = selectedDate;
+                  DateTime dt1 = DateTime.parse(datTime);
+                  DateTime dt2 = selectedDate;
 
-                if (dt1.compareTo(dt2) == 0) {
-                  print("Both date time are at same moment.");
-                }
+                  if (dt1.compareTo(dt2) == 0) {
+                    print("Both date time are at same moment.");
+                  }
 
-                if (dt1.compareTo(dt2) < 0) {
-                  print("DT1 is before DT2");
-                }
+                  if (dt1.compareTo(dt2) < 0) {
+                    print("DT1 is before DT2");
+                  }
 
-                if (dt1.compareTo(dt2) > 0) {
-                  print("DT1 is after DT2");
-                }
+                  if (dt1.compareTo(dt2) > 0) {
+                    print("DT1 is after DT2");
+                  }
 
-                // getcountRRRR(document.id);
-                // print(document.id);
+                  // getcountRRRR(document.id);
+                  // print(document.id);
 
-                // print(selectedDate.difference(DateTime.parse(vDate!)).inDays);
+                  // print(selectedDate.difference(DateTime.parse(vDate!)).inDays);
 
-                // print(vDate == _todayDate ? "True" : "False");
+                  // print(vDate == _todayDate ? "True" : "False");
 
-                // print(_vTime =
-                //     formatDate( )
-                //         .toString());
+                  // print(_vTime =
+                  //     formatDate( )
+                  //         .toString());
 
-                // print(
-                //     DateFormat.yMEd().add_jms().format(DateTime.parse(vTime)));
+                  // print(
+                  //     DateFormat.yMEd().add_jms().format(DateTime.parse(vTime)));
 
-                // print(DateTime.parse(vDate!));
+                  // print(DateTime.parse(vDate!));
 
-                // String? nowDate = DateFormat('yyyy-MM-dd').format(selectedDate);
-                // print(nowDate);
+                  // String? nowDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                  // print(nowDate);
 
-                // if (vDate == null) {
-                //   return Text("erorr");
-                // } else {
-                //   print(DateTime.parse(vDate));
-                // }
+                  // if (vDate == null) {
+                  //   return Text("erorr");
+                  // } else {
+                  //   print(DateTime.parse(vDate));
+                  // }
 
-                // if (dt1.compareTo(dt2) > 0) {
-
-                return Stack(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  children: [
-                    Card(
-                      elevation: 6,
-                      margin: const EdgeInsets.all(10),
-                      child: ListTile(
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Row(
-                                  children: [
-                                    Icon(Icons.warning, color: Colors.red),
-                                    SizedBox(width: 8),
-                                    Text("Delete Item"),
-                                  ],
-                                ),
-                                content: Text(
-                                    "Are you sure you want to delete this Item?"),
-                                actions: [
-                                  TextButton(
-                                    child: Text("CANCEL"),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                  ),
-                                  TextButton(
-                                    child: Text("DELETE"),
-                                    onPressed: () {
-                                      FirebaseFirestore.instance
-                                          .collection('addFood')
-                                          .doc(document.id)
-                                          .delete()
-                                          .then(
-                                        (value) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                            builder: (context) {
-                                              return OnGoingRequestSreen();
+                  if (dt1.compareTo(dt2) > 0) {
+                    return Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        Card(
+                          elevation: 6,
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.warning, color: Colors.red),
+                                        SizedBox(width: 8),
+                                        Text("Delete Item"),
+                                      ],
+                                    ),
+                                    content: Text(
+                                        "Are you sure you want to delete this Item?"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      ),
+                                      TextButton(
+                                        child: Text("DELETE"),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('addFood')
+                                              .doc(document.id)
+                                              .delete()
+                                              .then(
+                                            (value) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                builder: (context) {
+                                                  return OnGoingRequestSreen();
+                                                },
+                                              ));
                                             },
-                                          ));
+                                          );
                                         },
-                                      );
-                                    },
-                                  ),
-                                ],
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        // onExpansionChanged: (value) {
-                        //   // getDocumentIdFromFoodAdd();
-                        //   setState(() {
-                        //     print(document.id);
-                        //     // if (allDocId.contains(document.id)) {
-                        //     //   print(document.id);
-                        //     //   print(true);
-                        //     // }
+                            // onExpansionChanged: (value) {
+                            //   // getDocumentIdFromFoodAdd();
+                            //   setState(() {
+                            //     print(document.id);
+                            //     // if (allDocId.contains(document.id)) {
+                            //     //   print(document.id);
+                            //     //   print(true);
+                            //     // }
 
-                        //     setState(() {
-                        //       countDocumentsWithSameUserID(
-                        //           getUserId(), document.id);
-                        //       print(count);
-                        //     });
-                        //   });
-                        //   // getDocumentIdFromFoodAdd();
-                        // },
-                        leading: CircleAvatar(
-                          radius: 30.0,
-                          backgroundColor: Colors.transparent,
-                          // backgroundColor: Colors.purple,
-                          backgroundImage: NetworkImage(
-                            data['imagesUrls'][0],
+                            //     setState(() {
+                            //       countDocumentsWithSameUserID(
+                            //           getUserId(), document.id);
+                            //       print(count);
+                            //     });
+                            //   });
+                            //   // getDocumentIdFromFoodAdd();
+                            // },
+                            leading: CircleAvatar(
+                              radius: 30.0,
+                              backgroundColor: Colors.transparent,
+                              // backgroundColor: Colors.purple,
+                              backgroundImage: NetworkImage(
+                                data['imagesUrls'][0],
+                              ),
+                            ),
+                            title: Text(data['foodItems']),
+                            subtitle: BlinkingText(
+                                text: "$vDate" + " " + "$_vTime",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    backgroundColor: Colors.purple,
+                                    fontWeight: FontWeight.bold)),
+                            trailing: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationScreen(
+                                                getDocID: document.id),
+                                      ));
+                                },
+                                child: Icon(Icons.request_page)),
+                            // children: [
+                            //   // Text("$count"),
+                            //   // Text("$email"),
+                            //   // Text("$email"),
+                            //   Row(
+                            //     children: [
+                            //       TextButton(
+                            //           onPressed: () {
+                            //             // print(document.id);
+                            //             Navigator.push(
+                            //                 context,
+                            //                 MaterialPageRoute(
+                            //                   builder: (context) =>
+                            //                       NotificationScreen(
+                            //                           getDocID: document.id),
+                            //                 ));
+                            //           },
+                            //           child: Text("See all"))
+                            //     ],
+                            //   )
+                            // ListTile(
+
+                            //   trailing: InkWell(
+                            //       onTap: () {
+                            //         Navigator.pushNamed(
+                            //             context, DonatedFoodView.routeName,
+                            //             arguments: ScreenArguments(
+                            //                 document.id, data['uid']));
+                            //       },
+                            //       child:
+                            //           Icon(Icons.keyboard_arrow_right_rounded)),
+                            // ),
+                            // ],
                           ),
                         ),
-                        title: Text(data['foodItems']),
-                        subtitle: Text(
-                          "[$vDate" + " " + "$_vTime ]",
-                          style: TextStyle(
-                            color: Colors.black,
-                            backgroundColor: Colors.green,
-                          ),
-                        ),
-                        trailing: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NotificationScreen(
-                                        getDocID: document.id),
-                                  ));
-                            },
-                            child: Icon(Icons.request_page)),
-                        // children: [
-                        //   // Text("$count"),
-                        //   // Text("$email"),
-                        //   // Text("$email"),
-                        //   Row(
-                        //     children: [
-                        //       TextButton(
-                        //           onPressed: () {
-                        //             // print(document.id);
-                        //             Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                   builder: (context) =>
-                        //                       NotificationScreen(
-                        //                           getDocID: document.id),
-                        //                 ));
-                        //           },
-                        //           child: Text("See all"))
-                        //     ],
-                        //   )
-                        // ListTile(
+                        // InkWell(
+                        //     onTap: () {},
+                        //     child: Icon(Icons.notification_important_outlined))
+                      ],
+                    );
+                  }
 
-                        //   trailing: InkWell(
-                        //       onTap: () {
-                        //         Navigator.pushNamed(
-                        //             context, DonatedFoodView.routeName,
-                        //             arguments: ScreenArguments(
-                        //                 document.id, data['uid']));
-                        //       },
-                        //       child:
-                        //           Icon(Icons.keyboard_arrow_right_rounded)),
-                        // ),
-                        // ],
-                      ),
-                    ),
-                    // InkWell(
-                    //     onTap: () {},
-                    //     child: Icon(Icons.notification_important_outlined))
-                  ],
-                );
-                // }
-              }).toList(),
+                  return Card();
+                },
+              ).toList(),
             );
           },
         ),

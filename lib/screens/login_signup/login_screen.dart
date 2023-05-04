@@ -10,6 +10,7 @@ import 'package:food_waste_management_system/screens/home_screen.dart';
 import 'package:food_waste_management_system/screens/login_signup/signup_screen.dart';
 
 import 'package:food_waste_management_system/utils/styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'Student.dart';
 // import 'Teacher.dart';
@@ -23,17 +24,40 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure3 = true;
   bool visible = false;
+  bool _rememberMe = false;
   final _formkey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
+  Future<void> _loadSavedCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      emailController.text = prefs.getString('email') ?? '';
+      passwordController.text = prefs.getString('password') ?? '';
+      _rememberMe = prefs.getBool('rememberMe') ?? false;
+    });
+  }
+
+  Future<void> _saveCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', emailController.text);
+    await prefs.setString('password', passwordController.text);
+    await prefs.setBool('rememberMe', _rememberMe);
+  }
+
+  @override
+  void initState() {
+    _loadSavedCredentials();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                           TextFormField(
-                            autofillHints: [AutofillHints.email],
+                            // autofillHints: [AutofillHints.email],
                             controller: emailController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -114,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                           TextFormField(
-                            autofillHints: [AutofillHints.password],
+                            // autofillHints: [AutofillHints.password],
                             controller: passwordController,
                             obscureText: _isObscure3,
                             decoration: InputDecoration(
@@ -163,6 +187,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _rememberMe = value ?? false;
+                                    print(_rememberMe);
+                                  });
+                                },
+                              ),
+                              Text('Remember me'),
+                            ],
+                          ),
                           ElevatedButton(
                             style: ButtonStyle(
                               elevation: MaterialStateProperty.all(5),
@@ -181,6 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                               signIn(emailController.text.trim(),
                                   passwordController.text.trim());
+                              await _saveCredentials();
                             },
                             child: Text(
                               "Login",

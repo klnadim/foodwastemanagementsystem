@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:food_waste_management_system/screens/donar/requestMade/all_reqested.dart';
 import 'package:food_waste_management_system/screens/donar/requestMade/on_going_req.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/out_going_requests.dart';
 import 'package:food_waste_management_system/screens/donar/requestMade/request_confirmed.dart';
 
 class RequestMode extends StatelessWidget {
@@ -19,11 +20,14 @@ class RequestMode extends StatelessWidget {
                 text: "OnGoing",
               ),
               Tab(
-                text: "All Request",
+                text: "Incoming Requests",
               ),
               Tab(
-                text: "Confirmed Request",
+                text: "OutGoing Requests",
               ),
+              // Tab(
+              //   text: "Confirmed Requests",
+              // ),
             ],
           ),
           title: Text('Requests'),
@@ -32,7 +36,8 @@ class RequestMode extends StatelessWidget {
           children: const [
             OnGoingRequestSreen(),
             AllReqestedScreen(),
-            RequestConfirmedSreen()
+            OutGoingRequestScreen()
+            // RequestConfirmedSreen()
           ],
         ),
       ),

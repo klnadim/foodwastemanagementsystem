@@ -132,29 +132,65 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                       color: Colors.white,
                       child: Column(
                         children: [
-                          Center(
-                              child: Text(
-                            "Requested From:::",
-                            style: textstyle(),
-                          )),
-                          Text(vUserName!),
-                          Text(vEmail!),
-                          Text(vMobile!),
+                          Container(
+                            color: Colors.grey[300],
+                            height: 330,
+                            child: Column(
+                              children: [
+                                Center(
+                                    child: Text(
+                                  "Requested From:::",
+                                  style: textstyle(),
+                                )),
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage('$vProfilePic'),
+                                  radius: 50,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  ' $vUserName',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  '$vEmail',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Card(
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  child: ListTile(
+                                    leading: Icon(Icons.phone),
+                                    title: Text('$vMobile'),
+                                  ),
+                                ),
+                                Card(
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  child: ListTile(
+                                    leading: Icon(Icons.location_on),
+                                    title: Text('$vAddress'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Text(vUserName!),
+                          // Text(vEmail!),
+                          // Text(vMobile!),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ElevatedButton(
                                   onPressed: () async {
-                                    await confirmationFood(
-                                        requestUid: args.uid,
-                                        donatedUid: data['uid'],
-                                        foodDocId: args.documentId,
-                                        status: "confirmed",
-                                        foodName: data['foodItems'],
-                                        dateTime: DateTime.now());
-                                    await updateConInAddFoodStatus(
+                                    await updateConInFoodRequestStatus(
+                                            status: "confirmed",
                                             addFoodDocId: args.documentId,
-                                            status: "confirmed")
+                                            requesterUserId: args.uid)
                                         .then((value) {
                                       Navigator.pushNamed(
                                           context, '/donarDashboard');
@@ -164,6 +200,25 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                               "",
                                               () {}));
                                     });
+                                    // await confirmationFood(
+                                    //     requestUid: args.uid,
+                                    //     donatedUid: data['uid'],
+                                    //     foodDocId: args.documentId,
+                                    //     status: "confirmed",
+                                    //     foodName: data['foodItems'],
+                                    //     dateTime: DateTime.now());
+                                    // await updateConInAddFoodStatus(
+                                    //         addFoodDocId: args.documentId,
+                                    //         status: "confirmed")
+                                    //     .then((value) {
+                                    //   Navigator.pushNamed(
+                                    //       context, '/donarDashboard');
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(snackBar(
+                                    //           "Your Request Confirmed",
+                                    //           "",
+                                    //           () {}));
+                                    // });
                                   },
                                   child: Text("Confirm")),
                               ElevatedButton(
@@ -191,16 +246,14 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                                   child: Text("Cancel")),
                                               TextButton(
                                                 onPressed: () {
-                                                  rejectionFood(
-                                                          requestUid: args.uid,
-                                                          donatedUid:
-                                                              data['uid'],
-                                                          foodDocId:
+                                                  updateConInFoodRequestStatusReject(
+                                                          status: "rejected",
+                                                          addFoodDocId:
                                                               args.documentId,
-                                                          rejectReason:
-                                                              _rejectCon.text,
-                                                          dateTime:
-                                                              DateTime.now())
+                                                          requesterUserId:
+                                                              args.uid,
+                                                          rejectionReason:
+                                                              _rejectCon.text)
                                                       .then((value) {
                                                     Navigator.pushNamed(context,
                                                         '/donarDashboard');
@@ -211,6 +264,26 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                                             "",
                                                             () {}));
                                                   });
+                                                  // rejectionFood(
+                                                  //         requestUid: args.uid,
+                                                  //         donatedUid:
+                                                  //             data['uid'],
+                                                  //         foodDocId:
+                                                  //             args.documentId,
+                                                  //         rejectReason:
+                                                  //             _rejectCon.text,
+                                                  //         dateTime:
+                                                  //             DateTime.now())
+                                                  //     .then((value) {
+                                                  //   Navigator.pushNamed(context,
+                                                  //       '/donarDashboard');
+                                                  //   ScaffoldMessenger.of(
+                                                  //           context)
+                                                  //       .showSnackBar(snackBar(
+                                                  //           "Rejected Done",
+                                                  //           "",
+                                                  //           () {}));
+                                                  // });
                                                 },
                                                 child: Text("Submit"),
                                               ),

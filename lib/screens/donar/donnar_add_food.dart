@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/on_going_req.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';
@@ -250,7 +251,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
 
   @override
   void initState() {
-    _dateController.text = DateFormat.yMd().format(DateTime.now());
+    _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
     _timeController.text = formatDate(
         DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
         [hh, ':', nn, " ", am]).toString();
@@ -267,6 +268,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
     foodPersonCon.dispose();
     contactCon.dispose();
     imagefiles!.clear();
+
     super.dispose();
   }
 
@@ -813,7 +815,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                                       "",
                                                       () {}));
                                               Navigator.pushNamed(
-                                                  context, '/home');
+                                                  context, '/requestMode');
                                               // Navigator.push(
                                               //     context,
                                               //     MaterialPageRoute(
@@ -832,6 +834,8 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                       ],
                                     );
                                   });
+
+                              // Navigator.pop(context);
                             },
                             child: const Text("Submit"),
                           ),

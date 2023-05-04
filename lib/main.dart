@@ -11,7 +11,8 @@ import 'package:food_waste_management_system/screens/donar/donar_dashboard_scree
 import 'package:food_waste_management_system/screens/donar/donated_food_view.dart';
 import 'package:food_waste_management_system/screens/donar/indivisual_donated_list.dart';
 import 'package:food_waste_management_system/screens/donar/donationMade/donation_mode.dart';
-import 'package:food_waste_management_system/screens/donar/requestMade/request_mode.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/on_going_req.dart';
+import 'package:food_waste_management_system/screens/donar/requestMade/request_made.dart';
 import 'package:food_waste_management_system/screens/donar/requestMade/request_view.dart';
 import 'package:food_waste_management_system/screens/home_screen.dart';
 import 'package:food_waste_management_system/screens/splash_screen.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
         '/donarDashboard': (context) => DonarDashboardScreen(),
 
         '/donationMode': (context) => DonationMode(),
+        '/onGoingRequest': (context) => OnGoingRequestSreen(),
         '/requestMode': (context) => RequestMode(),
         '/adminDonationScreen': (context) => AdminDonationScreen(),
         '/adminRequestMade': (context) => AdminRequestMode()

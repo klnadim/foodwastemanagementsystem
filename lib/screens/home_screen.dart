@@ -5,6 +5,7 @@ import 'package:food_waste_management_system/models/arguments_return.dart';
 
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
+import 'package:food_waste_management_system/widgets/blinking_text.dart';
 import 'package:food_waste_management_system/widgets/custom_snackbar.dart';
 import 'package:intl/intl.dart';
 
@@ -257,47 +258,55 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (data['city'].toString().toLowerCase().startsWith(
                       searchName.toLowerCase(),
                     )) {
-                  // if (dt1.compareTo(dt2) > 0) {
-                  return data['uid'] == getUserId()
-                      ? Container()
-                      : Card(
-                          elevation: 6,
-                          margin: const EdgeInsets.all(10),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 30.0,
-                              backgroundColor: Colors.transparent,
-                              // backgroundColor: Colors.purple,
-                              backgroundImage: NetworkImage(
-                                data['imagesUrls'][0],
+                  if (dt1.compareTo(dt2) > 0) {
+                    return data['uid'] == getUserId()
+                        ? Container()
+                        : Card(
+                            elevation: 6,
+                            margin: const EdgeInsets.all(10),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 30.0,
+                                backgroundColor: Colors.transparent,
+                                // backgroundColor: Colors.purple,
+                                backgroundImage: NetworkImage(
+                                  data['imagesUrls'][0],
+                                ),
                               ),
+                              title: Text(data['foodItems']),
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(data['city']),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  // Text(
+                                  //   BlinkingText(text: "f",style: TextStyle(),),
+                                  //   style:
+                                  //       TextStyle(backgroundColor: Colors.green),
+                                  // ),
+                                  BlinkingText(
+                                      text: "$vDate" + " " + "$_vTime",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          backgroundColor: Colors.purple,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                              trailing: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, DonatedFoodView.routeName,
+                                        arguments: ScreenArguments(
+                                            document.id, data['uid']));
+                                  },
+                                  child:
+                                      Icon(Icons.keyboard_arrow_right_rounded)),
                             ),
-                            title: Text(data['foodItems']),
-                            subtitle: Row(
-                              children: [
-                                Text(data['city']),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "[$vDate" + " " + "$_vTime ]",
-                                  style:
-                                      TextStyle(backgroundColor: Colors.green),
-                                ),
-                              ],
-                            ),
-                            trailing: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, DonatedFoodView.routeName,
-                                      arguments: ScreenArguments(
-                                          document.id, data['uid']));
-                                },
-                                child:
-                                    Icon(Icons.keyboard_arrow_right_rounded)),
-                          ),
-                        );
-                  // }
+                          );
+                  }
                 }
                 return Card(
                     // child: Text("ssss"),
