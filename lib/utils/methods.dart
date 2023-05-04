@@ -271,7 +271,7 @@ loginPage(BuildContext context) {
 
 getUserId() {
   var userID = _firebaseAuth.currentUser?.uid;
-  return userID ?? '';
+  return userID;
 }
 
 Future<String> uploadToStorageMultiImg(String childName, XFile images) async {

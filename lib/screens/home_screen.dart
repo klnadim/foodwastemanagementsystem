@@ -7,6 +7,7 @@ import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/utils/styles.dart';
 import 'package:food_waste_management_system/widgets/blinking_text.dart';
 import 'package:food_waste_management_system/widgets/custom_snackbar.dart';
+import 'package:food_waste_management_system/widgets/my_snack_bar.dart';
 import 'package:intl/intl.dart';
 
 import 'admin/admin_panel.dart';
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Color(0xff6ae792),
           )),
           onPressed: () {
-            getUserId() == ''
+            getUserId() == null
                 ? ScaffoldMessenger.of(context).showSnackBar(
                     snackBar("Please Login or SignUp!!", "Login", () {
                     Navigator.pushNamed(context, '/login');
@@ -297,10 +298,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               trailing: InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, DonatedFoodView.routeName,
-                                        arguments: ScreenArguments(
-                                            document.id, data['uid']));
+                                    getUserId() == null
+                                        ? CustomSnackBar.show(
+                                            context: context,
+                                            message: "Login First",
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            duration: Duration(seconds: 5),
+                                            snackbarFunctionLabel: "Login",
+                                            snackbarFunction: () {
+                                              Navigator.pushNamed(
+                                                  context, "/login");
+                                            })
+                                        : Navigator.pushNamed(
+                                            context, DonatedFoodView.routeName,
+                                            arguments: ScreenArguments(
+                                                document.id, data['uid']));
                                   },
                                   child:
                                       Icon(Icons.keyboard_arrow_right_rounded)),

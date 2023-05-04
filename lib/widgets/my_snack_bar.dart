@@ -23,6 +23,7 @@ class CustomSnackBar {
         ),
         action: SnackBarAction(
           label: snackbarFunctionLabel!,
+          textColor: Colors.white,
           onPressed: snackbarFunction!,
         ),
       ),
