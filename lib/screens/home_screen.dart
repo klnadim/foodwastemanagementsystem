@@ -145,15 +145,22 @@ class _HomeScreenState extends State<HomeScreen> {
           //     },
           //     child: Text("ff")),
           InkWell(
-            onTap: () => basedOfLogin(),
+            onTap: () {
+              getUserId() == null
+                  ? ScaffoldMessenger.of(context).showSnackBar(
+                      snackBar("Please Login or SignUp!!", "Login", () {
+                      Navigator.pushNamed(context, '/login');
+                    }))
+                  : basedOfLogin();
+            },
             child: Icon(Icons.person_outline_rounded),
           ),
           TextButton(
               // ignore: unnecessary_null_comparison
-              onPressed: () => getUserId() == ''
+              onPressed: () => getUserId() == null
                   ? Navigator.pushNamed(context, '/login')
                   : logOut(context),
-              child: Text(getUserId() == '' ? "Login" : "Logout"))
+              child: Text(getUserId() == null ? "Login" : "Logout"))
         ],
         title: Card(
           child: TextField(

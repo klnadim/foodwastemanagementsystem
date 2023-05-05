@@ -30,6 +30,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         .collection('foodRequest')
         // .where('donatedUid', isEqualTo: getUserId())
         .where('documentId', isEqualTo: docId)
+        .where('status', isEqualTo: "")
         .snapshots();
 
     print(docId ?? "null");

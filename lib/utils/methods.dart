@@ -158,6 +158,29 @@ Future<void> updateConInFoodRequestStatusReject({
   // }).catchError((error) => print("Failed to : $error"));
 }
 
+Future<void> updateConInFoodAddStatusReject({
+  required String status,
+  required String addFoodDocId,
+  required String requesterUserId,
+  required String rejectionReason,
+}) async {
+  CollectionReference foodRequest =
+      FirebaseFirestore.instance.collection('addFood');
+
+  Query query = foodRequest
+      .where('requestUid', isEqualTo: requesterUserId)
+      .where('documentId', isEqualTo: addFoodDocId);
+  QuerySnapshot querySnapshot = await query.get();
+  querySnapshot.docs.forEach((documentSnapshot) {
+    foodRequest
+        .doc(documentSnapshot.id)
+        .update({'status': status, 'rejectionReason': rejectionReason});
+  });
+  // return addFood.up.update({
+  //   'status': status,
+  // }).catchError((error) => print("Failed to : $error"));
+}
+
 Future<void> confirmationFood({
   required String requestUid,
   required String donatedUid,

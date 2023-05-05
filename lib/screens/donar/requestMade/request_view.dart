@@ -182,118 +182,139 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                           // Text(vUserName!),
                           // Text(vEmail!),
                           // Text(vMobile!),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    await updateConInFoodRequestStatus(
-                                            status: "confirmed",
-                                            addFoodDocId: args.documentId,
-                                            requesterUserId: args.uid)
-                                        .then((value) {
-                                      Navigator.pushNamed(
-                                          context, '/donarDashboard');
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar(
-                                              "Your Request Confirmed",
-                                              "",
-                                              () {}));
-                                    });
-                                    // await confirmationFood(
-                                    //     requestUid: args.uid,
-                                    //     donatedUid: data['uid'],
-                                    //     foodDocId: args.documentId,
-                                    //     status: "confirmed",
-                                    //     foodName: data['foodItems'],
-                                    //     dateTime: DateTime.now());
-                                    // await updateConInAddFoodStatus(
-                                    //         addFoodDocId: args.documentId,
-                                    //         status: "confirmed")
-                                    //     .then((value) {
-                                    //   Navigator.pushNamed(
-                                    //       context, '/donarDashboard');
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(snackBar(
-                                    //           "Your Request Confirmed",
-                                    //           "",
-                                    //           () {}));
-                                    // });
-                                  },
-                                  child: Text("Confirm")),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                              "Enter Rejection reason!",
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                            content: TextField(
-                                              controller: _rejectCon,
-                                              keyboardType: TextInputType.text,
-                                              decoration: InputDecoration(
-                                                  hintText: "Reject Purpose"),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Cancel")),
-                                              TextButton(
-                                                onPressed: () {
-                                                  updateConInFoodRequestStatusReject(
-                                                          status: "rejected",
-                                                          addFoodDocId:
-                                                              args.documentId,
-                                                          requesterUserId:
-                                                              args.uid,
-                                                          rejectionReason:
-                                                              _rejectCon.text)
-                                                      .then((value) {
-                                                    Navigator.pushNamed(context,
-                                                        '/donarDashboard');
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(snackBar(
-                                                            "Rejected Done",
-                                                            "",
-                                                            () {}));
-                                                  });
-                                                  // rejectionFood(
-                                                  //         requestUid: args.uid,
-                                                  //         donatedUid:
-                                                  //             data['uid'],
-                                                  //         foodDocId:
-                                                  //             args.documentId,
-                                                  //         rejectReason:
-                                                  //             _rejectCon.text,
-                                                  //         dateTime:
-                                                  //             DateTime.now())
-                                                  //     .then((value) {
-                                                  //   Navigator.pushNamed(context,
-                                                  //       '/donarDashboard');
-                                                  //   ScaffoldMessenger.of(
-                                                  //           context)
-                                                  //       .showSnackBar(snackBar(
-                                                  //           "Rejected Done",
-                                                  //           "",
-                                                  //           () {}));
-                                                  // });
-                                                },
-                                                child: Text("Submit"),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: Text("Reject"))
-                            ],
-                          )
+                          data['status'] != ""
+                              ? Container()
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          await updateConInFoodRequestStatus(
+                                              status: "confirmed",
+                                              addFoodDocId: args.documentId,
+                                              requesterUserId: args.uid);
+                                          //     .then((value) {
+                                          //   Navigator.pushNamed(
+                                          //       context, '/donarDashboard');
+                                          //   ScaffoldMessenger.of(context)
+                                          //       .showSnackBar(snackBar(
+                                          //           "Your Request Confirmed",
+                                          //           "",
+                                          //           () {}));
+                                          // });
+
+                                          // await confirmationFood(
+                                          //     requestUid: args.uid,
+                                          //     donatedUid: data['uid'],
+                                          //     foodDocId: args.documentId,
+                                          //     status: "confirmed",
+                                          //     foodName: data['foodItems'],
+                                          //     dateTime: DateTime.now());
+                                          await updateConInAddFoodStatus(
+                                                  addFoodDocId: args.documentId,
+                                                  status: "confirmed")
+                                              .then((value) {
+                                            Navigator.pushNamed(
+                                                context, '/donarDashboard');
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar(
+                                                    "Your Request Confirmed",
+                                                    "",
+                                                    () {}));
+                                          });
+                                        },
+                                        child: Text("Confirm")),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    "Enter Rejection reason!",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  content: TextField(
+                                                    controller: _rejectCon,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            "Reject Purpose"),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text("Cancel")),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        await updateConInFoodAddStatusReject(
+                                                            status: "rejected",
+                                                            addFoodDocId:
+                                                                args.documentId,
+                                                            requesterUserId:
+                                                                args.uid,
+                                                            rejectionReason:
+                                                                _rejectCon
+                                                                    .text);
+
+                                                        await updateConInFoodRequestStatusReject(
+                                                                status:
+                                                                    "rejected",
+                                                                addFoodDocId: args
+                                                                    .documentId,
+                                                                requesterUserId:
+                                                                    args.uid,
+                                                                rejectionReason:
+                                                                    _rejectCon
+                                                                        .text)
+                                                            .then((value) {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              '/donarDashboard');
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar(
+                                                                      "Rejected Done",
+                                                                      "",
+                                                                      () {}));
+                                                        });
+                                                        // rejectionFood(
+                                                        //         requestUid: args.uid,
+                                                        //         donatedUid:
+                                                        //             data['uid'],
+                                                        //         foodDocId:
+                                                        //             args.documentId,
+                                                        //         rejectReason:
+                                                        //             _rejectCon.text,
+                                                        //         dateTime:
+                                                        //             DateTime.now())
+                                                        //     .then((value) {
+                                                        //   Navigator.pushNamed(context,
+                                                        //       '/donarDashboard');
+                                                        //   ScaffoldMessenger.of(
+                                                        //           context)
+                                                        //       .showSnackBar(snackBar(
+                                                        //           "Rejected Done",
+                                                        //           "",
+                                                        //           () {}));
+                                                        // });
+                                                      },
+                                                      child: Text("Submit"),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        child: Text("Reject"))
+                                  ],
+                                )
                         ],
                       ),
                     ),

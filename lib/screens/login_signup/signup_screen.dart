@@ -55,16 +55,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref
         .doc(user!.uid)
-        .set({'email': emailController.text, 'rool': selectedUserType});
-
-    CustomSnackBar.show(
-        context: context,
-        message: "SignUp SuccessFully..",
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        duration: Duration(seconds: 3));
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        .set({'email': emailController.text, 'rool': selectedUserType}).then(
+            (value) {
+      CustomSnackBar.show(
+          context: context,
+          message: "SignUp SuccessFully..",
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          duration: Duration(seconds: 3),
+          snackbarFunction: () {},
+          snackbarFunctionLabel: "");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    });
   }
 
   @override
@@ -455,7 +458,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       message: "Email Already Used",
                                       backgroundColor: Colors.red.shade200,
                                       textColor: Colors.black,
-                                      duration: Duration(seconds: 3));
+                                      duration: Duration(seconds: 3),
+                                      snackbarFunction: () {},
+                                      snackbarFunctionLabel: "");
                                 } else {
                                   signUp(
                                       emailController.text,
