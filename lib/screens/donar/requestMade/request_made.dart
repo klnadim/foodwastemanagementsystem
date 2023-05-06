@@ -11,7 +11,7 @@ class RequestMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -20,14 +20,14 @@ class RequestMode extends StatelessWidget {
                 text: "OnGoing",
               ),
               Tab(
+                text: "OutGoing Requests",
+              ),
+              Tab(
                 text: "Incoming Requests",
               ),
               Tab(
-                text: "OutGoing Requests",
+                text: "In Req Confirmed ",
               ),
-              // Tab(
-              //   text: "Confirmed Requests",
-              // ),
             ],
           ),
           title: Text('Requests'),
@@ -35,9 +35,9 @@ class RequestMode extends StatelessWidget {
         body: TabBarView(
           children: const [
             OnGoingRequestSreen(),
+            OutGoingRequestScreen(),
             AllReqestedScreen(),
-            OutGoingRequestScreen()
-            // RequestConfirmedSreen()
+            RequestConfirmedSreen(),
           ],
         ),
       ),

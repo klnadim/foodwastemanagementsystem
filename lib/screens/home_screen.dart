@@ -303,27 +303,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontWeight: FontWeight.bold)),
                                 ],
                               ),
-                              trailing: InkWell(
-                                  onTap: () {
-                                    getUserId() == null
-                                        ? CustomSnackBar.show(
-                                            context: context,
-                                            message: "Login First",
-                                            backgroundColor: Colors.green,
-                                            textColor: Colors.white,
-                                            duration: Duration(seconds: 5),
-                                            snackbarFunctionLabel: "Login",
-                                            snackbarFunction: () {
-                                              Navigator.pushNamed(
-                                                  context, "/login");
-                                            })
-                                        : Navigator.pushNamed(
-                                            context, DonatedFoodView.routeName,
-                                            arguments: ScreenArguments(
-                                                document.id, data['uid']));
-                                  },
-                                  child:
-                                      Icon(Icons.keyboard_arrow_right_rounded)),
+                              trailing: data['status'] == 'confirmed'
+                                  ? Icon(
+                                      Icons.check_circle_outline,
+                                      color: Colors.green,
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        getUserId() == null
+                                            ? CustomSnackBar.show(
+                                                context: context,
+                                                message: "Login First",
+                                                backgroundColor: Colors.green,
+                                                textColor: Colors.white,
+                                                duration: Duration(seconds: 5),
+                                                snackbarFunctionLabel: "Login",
+                                                snackbarFunction: () {
+                                                  Navigator.pushNamed(
+                                                      context, "/login");
+                                                })
+                                            : Navigator.pushNamed(context,
+                                                DonatedFoodView.routeName,
+                                                arguments: ScreenArguments(
+                                                    document.id, data['uid']));
+                                      },
+                                      child: Icon(
+                                          Icons.keyboard_arrow_right_rounded)),
                             ),
                           );
                   }
