@@ -814,6 +814,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                                       "Add Your Food Successfully.",
                                                       "",
                                                       () {}));
+                                              Navigator.pop(
+                                                  context); //close Dialog
+
                                               Navigator.pushNamed(
                                                   context, '/requestMode');
                                               // Navigator.push(

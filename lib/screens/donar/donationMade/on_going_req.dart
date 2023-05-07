@@ -257,6 +257,7 @@ class _OnGoingRequestSreenState extends State<OnGoingRequestSreen> {
                                             (value) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(snackBar);
+
                                               Navigator.push(context,
                                                   MaterialPageRoute(
                                                 builder: (context) {
