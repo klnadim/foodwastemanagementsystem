@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_waste_management_system/screens/donar/donationMade/all_donation.dart';
 import 'package:food_waste_management_system/screens/donar/donationMade/confirmed_screen.dart';
+import 'package:food_waste_management_system/screens/donar/donationMade/on_going_req.dart';
 
 class DonationMode extends StatelessWidget {
   const DonationMode({Key? key}) : super(key: key);
@@ -8,11 +9,14 @@ class DonationMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
             tabs: const [
+              Tab(
+                text: "OnGoing",
+              ),
               Tab(
                 text: "All Donations",
               ),
@@ -25,6 +29,7 @@ class DonationMode extends StatelessWidget {
         ),
         body: TabBarView(
           children: const [
+            OnGoingRequestSreen(),
             AllDonationScreen(),
             // ConfirmedDonations(),
           ],

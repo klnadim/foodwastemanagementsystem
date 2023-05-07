@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_waste_management_system/screens/donar/requestMade/on_going_req.dart';
+import 'package:food_waste_management_system/screens/donar/donationMade/on_going_req.dart';
 import 'package:food_waste_management_system/utils/methods.dart';
 import 'package:food_waste_management_system/widgets/dialog_box.dart';
 import 'package:image_picker/image_picker.dart';

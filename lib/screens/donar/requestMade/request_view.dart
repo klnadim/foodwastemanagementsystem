@@ -50,16 +50,19 @@ class _RequestFoodViewState extends State<RequestFoodView> {
     var foodRequest = FirebaseFirestore.instance
         .collection('foodRequest')
         .where('documentId', isEqualTo: docId)
-        .where('confirmed');
+        .where('status', isEqualTo: 'confirmed');
 
     foodRequest.get().then((value) {
       if (value.docs.isNotEmpty) {
         isFoodConfirmed = true;
+      } else {
+        isFoodConfirmed = false;
       }
       // value.docs.forEach((element) {
 
       // });
     });
+    print(isFoodConfirmed);
   }
 
   gUserData() async {
