@@ -113,16 +113,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             hintText: 'Email',
                             enabled: true,
-                            // contentPadding: const EdgeInsets.only(
-                            //     left: 14.0, bottom: 8.0, top: 8.0),
-                            // focusedBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.white),
-                            //   borderRadius: BorderRadius.circular(20),
-                            // ),
-                            // enabledBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.white),
-                            //   borderRadius: BorderRadius.circular(20),
-                            // ),
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
                             focusedBorder: OutlineInputBorder(
@@ -170,16 +160,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             hintText: 'Password',
                             enabled: true,
-                            // contentPadding: const EdgeInsets.only(
-                            //     left: 14.0, bottom: 8.0, top: 15.0),
-                            // focusedBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.white),
-                            //   borderRadius: BorderRadius.circular(20),
-                            // ),
-                            // enabledBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.white),
-                            //   borderRadius: BorderRadius.circular(20),
-                            // ),
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
                             focusedBorder: OutlineInputBorder(
@@ -248,166 +228,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     const Text(
-                        //       "Rool : ",
-                        //       style: TextStyle(
-                        //         fontSize: 20,
-                        //         fontWeight: FontWeight.bold,
-                        //         color: Colors.white,
-                        //       ),
-                        //     ),
-                        //     DropdownButton<String>(
-                        //       dropdownColor: Colors.blue[900],
-                        //       isDense: true,
-                        //       isExpanded: false,
-                        //       iconEnabledColor: Colors.white,
-                        //       focusColor: Colors.white,
-                        //       items: options.map((String dropDownStringItem) {
-                        //         return DropdownMenuItem<String>(
-                        //           value: dropDownStringItem,
-                        //           child: Text(
-                        //             dropDownStringItem,
-                        //             style: const TextStyle(
-                        //               color: Colors.white,
-                        //               fontWeight: FontWeight.bold,
-                        //               fontSize: 20,
-                        //             ),
-                        //           ),
-                        //         );
-                        //       }).toList(),
-                        //
-                        //         setSonChanged: (newValueSelected) {tate(() {
-                        //           _currentItemSelected = newValueSelected!;
-                        //           rool = newValueSelected;
-                        //         });
-                        //       },
-                        //       value: _currentItemSelected,
-                        //     ),
-                        //   ],
-                        // ),
-
-                        // DropdownButtonFormField(
-                        //     style: TextStyle(backgroundColor: Colors.white),
-                        //     decoration: const InputDecoration(
-                        //         enabledBorder: OutlineInputBorder(
-                        //           borderRadius:
-                        //               BorderRadius.all(Radius.circular(20.0)),
-                        //           borderSide: BorderSide(
-                        //               color: Colors.grey, width: 0.0),
-                        //         ),
-                        //         border: OutlineInputBorder()),
-                        //     items: const [
-                        //       DropdownMenuItem(
-                        //         child: Text("Donar"),
-                        //         value: 1,
-                        //       ),
-                        //       DropdownMenuItem(
-                        //         child: Text("NGO"),
-                        //         value: 2,
-                        //       )
-                        //     ],
-                        //     hint: const Text("Select item"),
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         roolName = value;
-                        //         // measureList.add(measure);
-                        //       });
-                        //     },
-                        //     onSaved: (value) {
-                        //       setState(() {
-                        //         roolName = value;
-                        //       });
-                        //     }),
-
-                        //           SizedBox(
-                        //             // height: 45,
-                        //             width: 100,
-                        //             child: DropdownButtonFormField(
-                        //               // itemHeight: 50,
-
-                        //               decoration: InputDecoration(
-                        //                 enabledBorder: OutlineInputBorder(
-                        //                   borderSide: BorderSide(color: Colors.white),
-                        //                   borderRadius: BorderRadius.circular(20),
-                        //                 ),
-                        //                 focusedBorder: UnderlineInputBorder(
-                        //                   borderSide: BorderSide(color: Colors.white),
-                        //                   borderRadius: BorderRadius.circular(20),
-                        //                 ),
-                        //                 filled: true,
-                        //                 fillColor: Colors.white,
-                        //               ),
-                        //               dropdownColor: Colors.white,
-                        //               isDense: true,
-                        //               onChanged: (salutation) =>
-                        //     setState(() => selectedSalutation = salutation),
-                        // validator: (value) => value == null ? 'field required' : null,
-
-                        //               // isExpanded: true,
-                        //               value: dropdownValue,
-                        //               onChanged: (String? newValue) {
-                        //                 setState(() {
-                        //                   dropdownValue = newValue!;
-                        //                 });
-                        //               },
-                        //               items: <String>[
-                        //                 'NGO',
-                        //                 'DONAR',
-                        //               ].map<DropdownMenuItem<String>>((String value) {
-                        //                 return DropdownMenuItem<String>(
-                        //                   value: value,
-                        //                   onTap: () {
-                        //                     rool = value.toUpperCase();
-                        //                     print(rool);
-                        //                   },
-                        //                   child: Text(
-                        //                     value,
-                        //                     style: TextStyle(fontSize: 15),
-                        //                   ),
-                        //                 );
-                        //               }).toList(),
-                        //             ),
-                        //           ),
-
-                        // DropdownButtonFormField<String>(
-                        //   value: selectedUserType,
-                        //   hint: Text(
-                        //     'User Type',
-                        //   ),
-                        //   onChanged: (usertype) =>
-                        //       setState(() => selectedUserType = usertype!),
-                        //   validator: (value) =>
-                        //       value == null ? 'field required' : null,
-                        //   items: ['NGO', 'DONAR', 'ADMIN']
-                        //       .map<DropdownMenuItem<String>>((String value) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: value,
-                        //       child: Text(value),
-                        //     );
-                        //   }).toList(),
-                        // ),
-
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              // shape: const RoundedRectangleBorder(
-                              //     borderRadius:
-                              //         BorderRadius.all(Radius.circular(20.0))),
-                              // elevation: 5.0,
-                              // height: 40,
                               style: ButtonStyle(
                                 elevation: MaterialStateProperty.all(5),
                                 backgroundColor: MaterialStateProperty.all(
                                     Color.fromARGB(255, 58, 93, 109)),
-                                // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))))
                               ),
                               onPressed: () {
                                 const CircularProgressIndicator();
@@ -432,11 +261,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Color.fromARGB(255, 58, 93, 109)),
                                 // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))))
                               ),
-                              // shape: RoundedRectangleBorder(
-                              //     borderRadius:
-                              //         BorderRadius.all(Radius.circular(20.0))),
-                              // elevation: 5.0,
-                              // height: 40,
+
                               onPressed: () async {
                                 setState(() {
                                   showProgress = true;
@@ -447,12 +272,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     .fetchSignInMethodsForEmail(
                                         emailController.text);
                                 if (signInMethods.isNotEmpty) {
-                                  // Email already exists, show error message
-                                  // throw FirebaseAuthException(
-                                  //     code: 'email-already-in-use',
-                                  //     message:
-                                  //         'The email address is already in use.');
-
                                   CustomSnackBar.show(
                                       context: context,
                                       message: "Email Already Used",

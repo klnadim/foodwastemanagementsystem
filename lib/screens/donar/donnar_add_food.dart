@@ -282,35 +282,12 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
         appBar: AppBar(
           centerTitle: false,
           title: const Text("Food Added "),
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: const Icon(Icons.account_circle, size: 32.0),
-          //     tooltip: 'Profile',
-          //     onPressed: () {
-          //       Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => MyProfilePage(),
-          //           ));
-          //     },
-          //   ),
-          // ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // const Align(
-                //   alignment: Alignment.topLeft,
-                //   child: Text("Enter your data",
-                //       style: TextStyle(
-                //         fontSize: 24,
-                //       )),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -327,12 +304,7 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                   BorderSide(color: Colors.grey, width: 0.0),
                             ),
                             border: OutlineInputBorder()),
-                        onFieldSubmitted: (value) {
-                          setState(() {
-                            // firstName = value.capitalize();
-                            // firstNameList.add(firstName);
-                          });
-                        },
+                        onFieldSubmitted: (value) {},
                         onChanged: (value) {
                           setState(() {
                             // firstName = value.capitalize();
@@ -344,9 +316,6 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                               value.length < 3) {
                             return 'This field is required and cannot be empty';
                           }
-                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                          //   return 'First Name cannot contain special characters';
-                          // }
                         },
                       ),
                       const SizedBox(
@@ -367,21 +336,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           if (value == null || value.isEmpty) {
                             return 'This field is required and cannot be empty';
                           }
-                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                          //   return 'Last Name cannot contain special characters';
-                          // }
                         },
-                        onFieldSubmitted: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                            // lastNameList.add(lastName);
-                          });
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                          });
-                        },
+                        onFieldSubmitted: (value) {},
+                        onChanged: (value) {},
                       ),
                       const SizedBox(
                         height: 20,
@@ -405,42 +362,12 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           //   return 'Last Name cannot contain special characters';
                           // }
                         },
-                        onFieldSubmitted: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                            // lastNameList.add(lastName);
-                          });
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                          });
-                        },
+                        onFieldSubmitted: (value) {},
+                        onChanged: (value) {},
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      // DropdownButtonFormField<String>(
-                      //   value: selectedPerson,
-                      //   hint: Text(
-                      //     'Persons',
-                      //   ),
-                      //   onChanged: (usertype) =>
-                      //       setState(() => selectedPerson = usertype!),
-                      //   validator: (value) =>
-                      //       value == null ? 'field required' : null,
-                      //   items: ['1-5', 'DONAR']
-                      //       .map<DropdownMenuItem<String>>((String value) {
-                      //     return DropdownMenuItem<String>(
-                      //       value: value,
-                      //       child: Text(value),
-                      //     );
-                      //   }).toList(),
-                      // ),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
-
                       TextFormField(
                         controller: addressCon,
                         decoration: const InputDecoration(
@@ -456,26 +383,13 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           if (value == null || value.isEmpty) {
                             return 'This field is required and cannot be empty';
                           }
-                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                          //   return 'Last Name cannot contain special characters';
-                          // }
                         },
-                        onFieldSubmitted: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                            // lastNameList.add(lastName);
-                          });
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                          });
-                        },
+                        onFieldSubmitted: (value) {},
+                        onChanged: (value) {},
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-
                       TextFormField(
                         controller: cityCon,
                         decoration: const InputDecoration(
@@ -491,55 +405,15 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           if (value == null || value.isEmpty) {
                             return 'This field is required and cannot be empty';
                           }
-                          // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                          //   return 'Last Name cannot contain special characters';
-                          // }
                         },
-                        onFieldSubmitted: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                            // lastNameList.add(lastName);
-                          });
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            // lastName = value.capitalize();
-                          });
-                        },
+                        onFieldSubmitted: (value) {},
+                        onChanged: (value) {},
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // InkWell(
-                          //   onTap: () {
-                          //     _selectDate(context);
-                          //   },
-                          //   child: Container(
-                          //     width: _width! / 1.7,
-                          //     margin: EdgeInsets.only(top: 30),
-                          //     alignment: Alignment.center,
-                          //     decoration:
-                          //         BoxDecoration(color: Colors.grey[200]),
-                          //     child: TextFormField(
-                          //       style: TextStyle(fontSize: 40),
-                          //       textAlign: TextAlign.center,
-                          //       enabled: false,
-                          //       keyboardType: TextInputType.text,
-                          //       controller: _dateController,
-                          //       onSaved: (String? val) {
-                          //         _setDate = val;
-                          //       },
-                          //       decoration: InputDecoration(
-                          //           disabledBorder: UnderlineInputBorder(
-                          //               borderSide: BorderSide.none),
-                          //           contentPadding: EdgeInsets.only(top: 0.0)),
-                          //     ),
-                          //   ),
-                          // ),
                           Stack(
                             alignment: AlignmentDirectional.topEnd,
                             // fit: StackFit.loose,
@@ -565,21 +439,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                     if (value == null || value.isEmpty) {
                                       return 'This field is required and cannot be empty';
                                     }
-                                    // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                                    //   return 'Last Name cannot contain special characters';
-                                    // }
                                   },
-                                  onFieldSubmitted: (value) {
-                                    setState(() {
-                                      // lastName = value.capitalize();
-                                      // lastNameList.add(lastName);
-                                    });
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      // lastName = value.capitalize();
-                                    });
-                                  },
+                                  onFieldSubmitted: (value) {},
+                                  onChanged: (value) {},
                                 ),
                               ),
                               InkWell(
@@ -620,21 +482,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                                     if (value == null || value.isEmpty) {
                                       return 'This field is required and cannot be empty';
                                     }
-                                    // else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                                    //   return 'Last Name cannot contain special characters';
-                                    // }
                                   },
-                                  onFieldSubmitted: (value) {
-                                    setState(() {
-                                      // lastName = value.capitalize();
-                                      // lastNameList.add(lastName);
-                                    });
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      // lastName = value.capitalize();
-                                    });
-                                  },
+                                  onFieldSubmitted: (value) {},
+                                  onChanged: (value) {},
                                 ),
                               ),
                               InkWell(
@@ -652,7 +502,6 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                       const SizedBox(
                         height: 20,
                       ),
-
                       TextFormField(
                         maxLength: 11,
                         controller: contactCon,
@@ -685,41 +534,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           });
                         },
                       ),
-
                       const SizedBox(
                         height: 20,
                       ),
-                      // DropdownButtonFormField(
-                      //     decoration: const InputDecoration(
-                      //         enabledBorder: OutlineInputBorder(
-                      //           borderRadius:
-                      //               BorderRadius.all(Radius.circular(20.0)),
-                      //           borderSide:
-                      //               BorderSide(color: Colors.grey, width: 0.0),
-                      //         ),
-                      //         border: OutlineInputBorder()),
-                      //     items:const [
-                      //        DropdownMenuItem(
-                      //         child: Text("ºC"),
-                      //         value: 1,
-                      //       ),
-                      //        DropdownMenuItem(
-                      //         child: Text("ºF"),
-                      //         value: 2,
-                      //       )
-                      //     ],
-                      //     hint: const Text("Select item"),
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         measure = value;
-                      //         // measureList.add(measure);
-                      //       });
-                      //     },
-                      //     onSaved: (value) {
-                      //       setState(() {
-                      //         measure = value;
-                      //       });
-                      //     }),
                       const SizedBox(
                         height: 20,
                       ),
@@ -729,7 +546,6 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                           },
                           icon: Icon(Icons.image),
                           label: Text("Select Images")),
-
                       imagefiles != null
                           ? Wrap(
                               children: imagefiles!.map((imageone) {
@@ -747,40 +563,9 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
                       const SizedBox(
                         height: 20,
                       ),
-
                       const SizedBox(
                         height: 20,
                       ),
-                      // Column(children: [
-                      //   Text(
-                      //     "Will you donated privately or publicly?",
-                      //     style: TextStyle(fontSize: 18),
-                      //   ),
-                      //   Divider(),
-                      //   RadioListTile(
-                      //     title: Text("Public"),
-                      //     value: "public",
-                      //     groupValue: publicOrPrivate,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         publicOrPrivate = value.toString();
-                      //       });
-                      //     },
-                      //   ),
-                      //   RadioListTile(
-                      //     title: Text("Private"),
-                      //     value: "private",
-                      //     groupValue: publicOrPrivate,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         publicOrPrivate = value.toString();
-                      //       });
-                      //     },
-                      //   )
-                      // ]),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -819,12 +604,6 @@ class _DonnarAddFoodState extends State<DonnarAddFood> {
 
                                               Navigator.pushNamed(
                                                   context, '/requestMode');
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //       builder: (context) =>
-                                              //           DonnarAddFood(),
-                                              //     ));
                                             },
                                             child: Text('Confirm')),
                                         TextButton(

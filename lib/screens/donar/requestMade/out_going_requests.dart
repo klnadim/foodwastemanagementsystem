@@ -122,28 +122,10 @@ class _OutGoingRequestScreenState extends State<OutGoingRequestScreen> {
                               color: Colors.white,
                               backgroundColor: Colors.purple,
                               fontWeight: FontWeight.bold)),
-                      //
-                      // CircleAvatar(
-                      //   radius: 30.0,
-                      //   backgroundColor: Colors.transparent,
-                      //   // backgroundColor: Colors.purple,
-                      //   backgroundImage: NetworkImage(
-                      //     data['profilePic'],
-                      //   ),
-                      // ),
                       title: Text(data['foodItems']),
                       subtitle: Text(
                           "${data['donnarMobileNumber']} \n\n ${data['status'] == 'rejected' ? data['rejectionReason'] : ""}"),
-
                       trailing: Text(data['status'], style: textstyle()),
-                      // trailing: InkWell(
-                      //     onTap: () {
-                      //       Navigator.pushNamed(
-                      //           context, RequestFoodView.routeName,
-                      //           arguments: ScreenArguments(
-                      //               data['documentId'], data['requestUid']));
-                      //     },
-                      //     child: Icon(Icons.keyboard_arrow_right_rounded)),
                     ),
                   ),
                 );

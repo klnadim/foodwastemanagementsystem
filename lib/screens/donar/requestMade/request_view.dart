@@ -94,22 +94,6 @@ class _RequestFoodViewState extends State<RequestFoodView> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseFirestore.instance
-    //     .collection('addFood')
-    //     .where('uid', isEqualTo: getUserId())
-    //     .get()
-    //     .then((value) {
-    //   if (value.docs.isNotEmpty) {
-    //     setState(() {
-    //       isDonar = true;
-    //     });
-    //   } else {
-    //     setState(() {
-    //       isDonar = false;
-    //     });
-    //   }
-    // });
-
     CollectionReference users =
         FirebaseFirestore.instance.collection('addFood');
 
@@ -225,23 +209,7 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                               status: "confirmed",
                                               addFoodDocId: args.documentId,
                                               requesterUserId: args.uid);
-                                          //     .then((value) {
-                                          //   Navigator.pushNamed(
-                                          //       context, '/donarDashboard');
-                                          //   ScaffoldMessenger.of(context)
-                                          //       .showSnackBar(snackBar(
-                                          //           "Your Request Confirmed",
-                                          //           "",
-                                          //           () {}));
-                                          // });
 
-                                          // await confirmationFood(
-                                          //     requestUid: args.uid,
-                                          //     donatedUid: data['uid'],
-                                          //     foodDocId: args.documentId,
-                                          //     status: "confirmed",
-                                          //     foodName: data['foodItems'],
-                                          //     dateTime: DateTime.now());
                                           await updateConInAddFoodStatus(
                                                   addFoodDocId: args.documentId,
                                                   status: "confirmed")
@@ -316,26 +284,6 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                                                                       "",
                                                                       () {}));
                                                         });
-                                                        // rejectionFood(
-                                                        //         requestUid: args.uid,
-                                                        //         donatedUid:
-                                                        //             data['uid'],
-                                                        //         foodDocId:
-                                                        //             args.documentId,
-                                                        //         rejectReason:
-                                                        //             _rejectCon.text,
-                                                        //         dateTime:
-                                                        //             DateTime.now())
-                                                        //     .then((value) {
-                                                        //   Navigator.pushNamed(context,
-                                                        //       '/donarDashboard');
-                                                        //   ScaffoldMessenger.of(
-                                                        //           context)
-                                                        //       .showSnackBar(snackBar(
-                                                        //           "Rejected Done",
-                                                        //           "",
-                                                        //           () {}));
-                                                        // });
                                                       },
                                                       child: Text("Submit"),
                                                     ),
@@ -352,13 +300,6 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                     Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          // gradient: LinearGradient(
-                          //     begin: Alignment.topCenter,
-                          //     end: Alignment.bottomCenter,
-                          //     colors: [
-                          //       Color.fromARGB(255, 255, 255, 255),
-                          //       Color.fromARGB(255, 67, 67, 67)
-                          //     ]),
                         ),
                         child: Container(
                           width: double.infinity,
@@ -517,96 +458,11 @@ class _RequestFoodViewState extends State<RequestFoodView> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        // Text(
-                        //   "Number:",
-                        //   style: TextStyle(
-                        //       color: Colors.redAccent,
-                        //       fontStyle: FontStyle.normal,
-                        //       fontSize: 25.0),
-                        // ),
-                        // Text(
-                        //   data['contactNumber'],
-                        //   style: TextStyle(
-                        //     fontSize: 22.0,
-                        //     fontStyle: FontStyle.italic,
-                        //     fontWeight: FontWeight.w300,
-                        //     color: Colors.black,
-                        //     letterSpacing: 2.0,
-                        //   ),
-                        // ),
                       ],
                     ),
                     SizedBox(
                       height: 15.0,
                     ),
-                    // SizedBox(
-                    //   width: 300.00,
-
-                    // child: args.uid == getUserId()!
-                    //     ? Container(
-                    //         // child: Row(
-                    //         //   mainAxisAlignment:
-                    //         //       MainAxisAlignment.spaceAround,
-                    //         //   children: [
-                    //         //     ElevatedButton(
-                    //         //         onPressed: () {}, child: Text("Confirm")),
-                    //         //     ElevatedButton(
-                    //         //         onPressed: () {}, child: Text("Reject")),
-                    //         //   ],
-                    //         // ),
-                    //         )
-                    //     : ElevatedButton(
-                    //         style: ElevatedButton.styleFrom(
-                    //           shape: RoundedRectangleBorder(
-                    //               borderRadius: BorderRadius.circular(80.0)),
-                    //           elevation: 0.0,
-                    //           padding: EdgeInsets.all(0.0),
-                    //         ),
-                    //         onPressed: () {
-                    //           // showMyDialog(context, "Request!!!!",
-                    //           //     "Are you sure to Request?", () async {
-                    //           //   await requestForFood(
-                    //           //           requestUid: getUserId(),
-                    //           //           donatedUid: data['uid'],
-                    //           //           docId: args.documentId,
-                    //           //           dateTime: DateTime.now(),
-                    //           //           emailAddress: vEmail!,
-                    //           //           mobileNumber: vMobile!,
-                    //           //           profilePicLink: vProfilePic!,
-                    //           //           city: vCity,
-                    //           //           userName: vUserName!,
-                    //           //           status: '')
-                    //           //       .then((value) {
-                    //           //     Navigator.pushNamed(context, '/home');
-                    //           //   });
-                    //           // });
-                    //         },
-                    //         child: Ink(
-                    //           decoration: BoxDecoration(
-                    //             gradient: LinearGradient(
-                    //                 begin: Alignment.centerRight,
-                    //                 end: Alignment.centerLeft,
-                    //                 colors: const [
-                    //                   Color.fromARGB(68, 238, 190, 102),
-                    //                   Color.fromARGB(255, 149, 204, 66)
-                    //                 ]),
-                    //             borderRadius: BorderRadius.circular(30.0),
-                    //           ),
-                    //           child: Container(
-                    //             constraints: BoxConstraints(
-                    //                 maxWidth: 300.0, minHeight: 50.0),
-                    //             alignment: Alignment.center,
-                    //             child: Text(
-                    //               "Request",
-                    //               style: TextStyle(
-                    //                   color: Colors.white,
-                    //                   fontSize: 26.0,
-                    //                   fontWeight: FontWeight.w300),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    // ),
                     SizedBox(
                       height: 15.0,
                     ),

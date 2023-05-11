@@ -33,10 +33,6 @@ class _ConfirmedDonationsState extends State<ConfirmedDonations> {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
 
-              // if (data['city'].toString().toLowerCase().startsWith(
-              //       searchName.toLowerCase(),
-              //     ))
-
               if (data.isEmpty) {
                 print("NO DATA");
               }
@@ -56,13 +52,6 @@ class _ConfirmedDonationsState extends State<ConfirmedDonations> {
                     ),
                     title: Text(data['email']),
                     subtitle: Text(data['city']),
-                    // trailing: InkWell(
-                    //     onTap: () {
-                    //       Navigator.pushNamed(
-                    //           context, DonatedFoodView.routeName,
-                    //           arguments: ScreenArguments(document.id));
-                    //     },
-                    //     child: Icon(Icons.keyboard_arrow_right_rounded)),
                   ),
                 );
               }

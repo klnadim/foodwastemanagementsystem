@@ -174,18 +174,6 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 25,
                       ),
-                      // myFormField(
-                      //   fullNameCon,
-                      //   "Full Name",
-                      //   TextInputType.name,
-
-                      //   (valueKey) {
-                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
-                      //       return "This field is required and cannot be empty";
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
 
                       TextFormField(
                         controller: fullNameCon,
@@ -207,17 +195,6 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 20,
                       ),
-                      // myFormField(
-                      //   addressCon,
-                      //   "Address",
-                      //   TextInputType.name,
-                      //   (valueKey) {
-                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
-                      //       return "This field is required and cannot be empty";
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
 
                       TextFormField(
                         controller: addressCon,
@@ -260,18 +237,6 @@ class _UserProfileState extends State<UserProfile> {
                         height: 20,
                       ),
 
-                      // myFormField(
-                      //   mobileCon,
-                      //   "Mobile Number",
-                      //   TextInputType.name,
-                      //   (valueKey) {
-                      //     if (valueKey!.isEmpty || valueKey.length < 3) {
-                      //       return "This field is required and cannot be empty";
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
-
                       TextFormField(
                         maxLength: 11,
                         controller: mobileCon,
@@ -297,37 +262,6 @@ class _UserProfileState extends State<UserProfile> {
                       SizedBox(
                         height: 20,
                       ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     setState(() {
-                      //       CustomDialogBox(
-                      //         title: "Are you Sure?",
-                      //         contains: saveUpdate != true
-                      //             ? "For Save"
-                      //             : "For Update",
-                      //         button1: () {
-                      //           if (saveUpdate != true) {
-                      //             userProfileSave(
-                      //                 fullName: fullNameCon.text,
-                      //                 address: addressCon.text,
-                      //                 number: mobileCon.text,
-                      //                 uid: widget.userId,
-                      //                 file: _image!);
-                      //           } else {
-                      //             userProfileUpdate(
-                      //                 fullName: fullNameCon.text,
-                      //                 address: addressCon.text,
-                      //                 number: mobileCon.text,
-                      //                 uid: widget.userId,
-                      //                 file: _image!);
-                      //           }
-                      //         },
-                      //       );
-                      //     });
-                      //   },
-                      //   child:
-                      //       saveUpdate != true ? Text("Save") : Text("Update"),
-                      // ),
 
                       ElevatedButton(
                           onPressed: () {
@@ -385,14 +319,6 @@ class _UserProfileState extends State<UserProfile> {
                                           .get()
                                           .then(
                                         (value) {
-                                          // if (value.get('rool') == 'Admin') {
-                                          //   return AdminPanelScreen();
-                                          // } else if (value.get('rool') == 'NGO') {
-                                          //   return NgoDashboardScreen();
-                                          // } else if (value.get('rool') == 'DONAR') {
-                                          //   return DonarDashboardScreen();
-                                          // }
-
                                           if (value.get('rool') == "ADMIN") {
                                             Navigator.pushReplacement(
                                               context,

@@ -73,12 +73,6 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
     }
   }
 
-  // ImageProvider imagePro= getImageUrl != null
-  //                               ? Image.network("$getImageUrl")
-  //                               : Image.network(
-  //                                       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
-  //                                   .image);
-
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -114,10 +108,6 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                               ? NetworkImage("$pGetImageUrl")
                               : NetworkImage(
                                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
-
-                          // Image.network(
-                          //             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
-                          //         .image
                         ),
                         const SizedBox(
                           height: 5,
@@ -131,24 +121,12 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                   ),
                 ),
               ),
-              // Center(
-              //   child: Text(
-              //     pRoolOfUser ?? "",
-              //     style: TextStyle(color: Colors.deepPurple),
-              //   ),
-              // ),
               Card(child: listtile("Dashboard", Icons.dashboard)),
               const Divider(
                 color: Colors.black26,
               ),
               InkWell(
-                  onTap: (() {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => AdminPanelScreen(),
-                    //     ));
-                  }),
+                  onTap: (() {}),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -221,14 +199,6 @@ class _DonarDashboardScreenState extends State<DonarDashboardScreen> {
                 },
                 child: singleCard(Icons.list, 'Request Made'),
               ),
-
-              // ElevatedButton(
-              //     onPressed: () {
-              //       setState(() {
-              //         pGet();
-              //       });
-              //     },
-              //     child: Text("Click"))
             ],
           ),
         ),

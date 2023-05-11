@@ -24,14 +24,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Stream<DocumentSnapshot<Map<String, dynamic>>> documentStream =
-  //     FirebaseFirestore.instance
-  //         .collection('addFood')
-  //         .doc(FirebaseAuth.instance.currentUser!.uid)
-  //         .snapshots();.
-
-  // final Stream<QuerySnapshot> _usersStream =
-  //     FirebaseFirestore.instance.collection('addFood').snapshots();
   DateTime selectedDate = DateTime.now();
   var _vDd = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
 
@@ -40,10 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
       .where('date',
           isGreaterThanOrEqualTo:
               DateFormat('yyyy-MM-dd').format(DateTime.now()).toString())
-      // .where('date', isGreaterThanOrEqualTo: getUserId())
-      // .orderBy('date', descending: true)
-      // .orderBy('time', descending: true)
-
       .snapshots();
 
   var foodCollection1 = FirebaseFirestore.instance
@@ -51,10 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       .where('date',
           isGreaterThanOrEqualTo:
               DateFormat('yyyy-MM-dd').format(DateTime.now()).toString())
-      // .where('date', isGreaterThanOrEqualTo: getUserId())
-      // .orderBy('date', descending: true)
-      // .orderBy('time', descending: true)
-
       .get()
       .then((value) {});
 
@@ -88,22 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // checkLoginOrNot();
     super.initState();
-
-    // Future.delayed(Duration(seconds: 3));
-    // var vUserId = user!.uid;
-    // if (vUserId.isEmpty) {
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => LoginScreen(),
-    //       ));
-    // } else {
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => HomeScreen(),
-    //       ));
-    // }
   }
 
   String searchName = "";
@@ -139,11 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: const Color(0xff6ae792),
         actions: [
-          // ElevatedButton(
-          //     onPressed: () {
-          //       print(_vDd);
-          //     },
-          //     child: Text("ff")),
           InkWell(
             onTap: () {
               getUserId() == null
@@ -178,19 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Center(
-        child:
-            // mainAxisAlignment: MainAxisAlignment.center,
-
-            // Text("SignIn with \n ${getUserId() ?? 'null'}"),
-            // TextButton(
-            //     onPressed: () {
-            //       basedOfLogin();
-            //     },
-            //     child: Text("Profile")),
-
-            // color: Colors.cyan,
-
-            StreamBuilder(
+        child: StreamBuilder(
           stream: _foodCollection,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -201,10 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: Text("Loading"));
             }
-
-            // print(snapshot.data!.docs.where(
-            //   (element) => element['uid'],
-            // ));
 
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -218,13 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 var _t = DateFormat("HH:mm:ss").format(_timeee);
 
                 var datTime = vDate! + " " + _t;
-
-                // DateTime _time = DateTime.parse(_t);
-
-                // var _todayDate = DateFormat("yyyy-MM-dd").format(timeSelect);
-
-                // var convertedDays =
-                //     DateTime.parse(vDate!).difference(DateTime.now()).inDays;
 
                 DateTime dt1 = DateTime.parse(datTime);
                 DateTime dt2 = selectedDate;
@@ -240,28 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (dt1.compareTo(dt2) > 0) {
                   print("DT1 is after DT2");
                 }
-
-                // print(selectedDate.difference(DateTime.parse(vDate!)).inDays);
-
-                // print(vDate == _todayDate ? "True" : "False");
-
-                // print(_vTime =
-                //     formatDate( )
-                //         .toString());
-
-                // print(
-                //     DateFormat.yMEd().add_jms().format(DateTime.parse(vTime)));
-
-                // print(DateTime.parse(vDate!));
-
-                // String? nowDate = DateFormat('yyyy-MM-dd').format(selectedDate);
-                // print(nowDate);
-
-                // if (vDate == null) {
-                //   return Text("erorr");
-                // } else {
-                //   print(DateTime.parse(vDate));
-                // }
 
                 if (data['city'].toString().toLowerCase().startsWith(
                       searchName.toLowerCase(),
@@ -290,11 +208,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  // Text(
-                                  //   BlinkingText(text: "f",style: TextStyle(),),
-                                  //   style:
-                                  //       TextStyle(backgroundColor: Colors.green),
-                                  // ),
                                   BlinkingText(
                                       text: "$vDate" + " " + "$_vTime",
                                       style: TextStyle(

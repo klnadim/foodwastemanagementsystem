@@ -207,13 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               elevation: MaterialStateProperty.all(5),
                               backgroundColor: MaterialStateProperty.all(
                                   Color.fromARGB(255, 58, 93, 109)),
-                              // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))))
                             ),
-                            // shape:  border(
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(20.0))),
-                            // elevation: 5.0,
-                            // height: 40,
+
                             onPressed: () async {
                               setState(() {
                                 visible = true;
@@ -260,7 +255,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 20,
                     ),
-
                     ElevatedButton(
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(5),
@@ -283,31 +277,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     )
-                    // MaterialButton(
-                    //   shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.all(
-                    //       Radius.circular(20.0),
-                    //     ),
-                    //   ),
-                    //   elevation: 5.0,
-                    //   height: 40,
-                    //   onPressed: () {
-                    //     Navigator.pushReplacement(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => SignUpScreen(),
-                    //       ),
-                    //     );
-                    //   },
-                    //   color: Colors.blue[900],
-                    //   child: Text(
-                    //     "Register Now",
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 20,
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

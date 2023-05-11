@@ -57,51 +57,6 @@ class _RequestConfirmedSreenState extends State<RequestConfirmedSreen> {
                   // elevation: 6,
                   margin: const EdgeInsets.all(10),
                   child: InkWell(
-                    // onLongPress: () {
-                    //   showDialog(
-                    //     context: context,
-                    //     builder: (BuildContext context) {
-                    //       return AlertDialog(
-                    //         title: Row(
-                    //           children: [
-                    //             Icon(Icons.warning, color: Colors.red),
-                    //             SizedBox(width: 8),
-                    //             Text("Delete Item"),
-                    //           ],
-                    //         ),
-                    //         content: Text(
-                    //             "Are you sure you want to Cancel your Request?"),
-                    //         actions: [
-                    //           TextButton(
-                    //             child: Text("CANCEL"),
-                    //             onPressed: () => Navigator.of(context).pop(),
-                    //           ),
-                    //           TextButton(
-                    //             child: Text("DELETE"),
-                    //             onPressed: () {
-                    //               FirebaseFirestore.instance
-                    //                   .collection('foodRequest')
-                    //                   .doc(document.id)
-                    //                   .delete()
-                    //                   .then(
-                    //                 (value) {
-                    //                   ScaffoldMessenger.of(context)
-                    //                       .showSnackBar(snackBar);
-                    //                   Navigator.push(context, MaterialPageRoute(
-                    //                     builder: (context) {
-                    //                       return DonarDashboardScreen();
-                    //                     },
-                    //                   ));
-                    //                 },
-                    //               );
-                    //             },
-                    //           ),
-                    //         ],
-                    //       );
-                    //     },
-                    //   );
-                    //   // Navigator.pop(context);
-                    // },
                     child: ListTile(
                       leading: BlinkingText(
                           text: "${data['foodDate']}\n ${data['foodTime']}",
@@ -109,27 +64,9 @@ class _RequestConfirmedSreenState extends State<RequestConfirmedSreen> {
                               color: Colors.white,
                               backgroundColor: Colors.purple,
                               fontWeight: FontWeight.bold)),
-                      //
-                      // CircleAvatar(
-                      //   radius: 30.0,
-                      //   backgroundColor: Colors.transparent,
-                      //   // backgroundColor: Colors.purple,
-                      //   backgroundImage: NetworkImage(
-                      //     data['profilePic'],
-                      //   ),
-                      // ),
                       title: Text(data['foodItems']),
                       subtitle: Text("${'Req Mob:' + data['mobileNumber']} "),
-
                       trailing: Text(data['status'], style: textstyle()),
-                      // trailing: InkWell(
-                      //     onTap: () {
-                      //       Navigator.pushNamed(
-                      //           context, RequestFoodView.routeName,
-                      //           arguments: ScreenArguments(
-                      //               data['documentId'], data['requestUid']));
-                      //     },
-                      //     child: Icon(Icons.keyboard_arrow_right_rounded)),
                     ),
                   ),
                 );

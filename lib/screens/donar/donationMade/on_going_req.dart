@@ -273,23 +273,6 @@ class _OnGoingRequestSreenState extends State<OnGoingRequestSreen> {
                                 },
                               );
                             },
-                            // onExpansionChanged: (value) {
-                            //   // getDocumentIdFromFoodAdd();
-                            //   setState(() {
-                            //     print(document.id);
-                            //     // if (allDocId.contains(document.id)) {
-                            //     //   print(document.id);
-                            //     //   print(true);
-                            //     // }
-
-                            //     setState(() {
-                            //       countDocumentsWithSameUserID(
-                            //           getUserId(), document.id);
-                            //       print(count);
-                            //     });
-                            //   });
-                            //   // getDocumentIdFromFoodAdd();
-                            // },
                             leading: CircleAvatar(
                               radius: 30.0,
                               backgroundColor: Colors.transparent,
@@ -316,44 +299,8 @@ class _OnGoingRequestSreenState extends State<OnGoingRequestSreen> {
                                       ));
                                 },
                                 child: Icon(Icons.request_page)),
-                            // children: [
-                            //   // Text("$count"),
-                            //   // Text("$email"),
-                            //   // Text("$email"),
-                            //   Row(
-                            //     children: [
-                            //       TextButton(
-                            //           onPressed: () {
-                            //             // print(document.id);
-                            //             Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                   builder: (context) =>
-                            //                       NotificationScreen(
-                            //                           getDocID: document.id),
-                            //                 ));
-                            //           },
-                            //           child: Text("See all"))
-                            //     ],
-                            //   )
-                            // ListTile(
-
-                            //   trailing: InkWell(
-                            //       onTap: () {
-                            //         Navigator.pushNamed(
-                            //             context, DonatedFoodView.routeName,
-                            //             arguments: ScreenArguments(
-                            //                 document.id, data['uid']));
-                            //       },
-                            //       child:
-                            //           Icon(Icons.keyboard_arrow_right_rounded)),
-                            // ),
-                            // ],
                           ),
                         ),
-                        // InkWell(
-                        //     onTap: () {},
-                        //     child: Icon(Icons.notification_important_outlined))
                       ],
                     );
                   }

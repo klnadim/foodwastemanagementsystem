@@ -1,7 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-
-import 'package:awesome_icons/awesome_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -80,18 +76,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     } catch (e) {
       Text(e.toString());
     }
-
-    // if (li != null) {
-    //   setState(() {
-    //     listData = li;
-
-    //     pGetImageUrl = listData![0]['photoUrl'];
-    //     pFullName = listData![0]['fullName'];
-    //     pMobileNumber = listData![0]['number'];
-    //   });
-    // } else {
-    //   print("unable data retrive");
-    // }
   }
 
   User? user = FirebaseAuth.instance.currentUser;
@@ -190,19 +174,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             crossAxisSpacing: 15,
             mainAxisSpacing: 10,
             children: [
-              // InkWell()
-
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => HomeScreen(),
-              //         ));
-              //   },
-              //   child: singleCard(Icons.home, 'Home'),
-              // ),
-
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -213,7 +184,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 },
                 child: singleCard(Icons.food_bank_outlined, 'Add Food'),
               ),
-
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/adminDonationScreen');
@@ -226,14 +196,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 },
                 child: singleCard(Icons.list, 'Request Made'),
               ),
-
-              // ElevatedButton(
-              //     onPressed: () {
-              //       setState(() {
-              //         pGet();
-              //       });
-              //     },
-              //     child: Text("Click"))
             ],
           ),
         ),

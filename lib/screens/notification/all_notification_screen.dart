@@ -58,23 +58,10 @@ class _AllNotificationScreenState extends State<AllNotificationScreen> {
                   elevation: 6,
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    // leading: CircleAvatar(
-                    //   radius: 30.0,
-                    //   backgroundColor: Colors.transparent,
-                    //   // backgroundColor: Colors.purple,
-                    //   backgroundImage: NetworkImage(
-                    //     data['profilePic'],
-                    //   ),
-                    // ),
                     title: Text(data['email']),
                     subtitle: Text(data['city']),
                     trailing: InkWell(
-                        onTap: () {
-                          // Navigator.pushNamed(
-                          //     context, RequestFoodView.routeName,
-                          //     arguments: ScreenArguments(
-                          //         data['documentId'], data['requestUid']));
-                        },
+                        onTap: () {},
                         child: Icon(Icons.keyboard_arrow_right_rounded)),
                   ),
                 );
@@ -83,20 +70,6 @@ class _AllNotificationScreenState extends State<AllNotificationScreen> {
           );
         },
       ),
-      // body: Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Center(child: Text("Notication Screen")),
-      //     Center(
-      //         child: ElevatedButton(
-      //             onPressed: () async {
-      //               // var token = await noti.getDeviceToken();
-      //               // // print(token);
-      //               // noti.saveFCMToken(getUserId(), token);
-      //             },
-      //             child: Text("data")))
-      //   ],
-      // ),
     );
   }
 }

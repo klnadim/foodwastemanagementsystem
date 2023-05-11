@@ -24,17 +24,7 @@ import 'screens/login_signup/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      // options: FirebaseOptions(
-      //     apiKey: "AIzaSyCW1ePGZ59uspUs_dlinhOz9yzeb1BW6l0",
-      //     authDomain: "fwms-d6bd4.firebaseapp.com",
-      //     projectId: "fwms-d6bd4",
-      //     storageBucket: "fwms-d6bd4.appspot.com",
-      //     messagingSenderId: "506712614677",
-      //     appId: "1:506712614677:web:c92747caaa9ab99c6a6b1c",
-      //     measurementId: "G-XTM0P7ESC0"),
-
-      );
+  await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgoundHandler);
 
@@ -57,105 +47,22 @@ class MyApp extends StatelessWidget {
       title: 'Food waste Management System',
       theme: ThemeData(fontFamily: 'Lato'),
       home: SplashScreen(),
-
       routes: {
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/addFood': (context) => DonnarAddFood(),
         '/indivisualDonatedList': (context) => IndivisualDonatedList(),
-        // '/donatedFoodView': ((context) => DonatedFoodView(id: ,)),
         DonatedFoodView.routeName: (context) => DonatedFoodView(),
         RequestFoodView.routeName: (context) => RequestFoodView(),
-
         '/profile': (context) =>
             UserProfile(userId: FirebaseAuth.instance.currentUser!.uid),
-        // 'ngoDashboard': (context) => NgoDashboardScreen(),
         '/donarDashboard': (context) => DonarDashboardScreen(),
-
         '/donationMode': (context) => DonationMode(),
         '/onGoingRequest': (context) => OnGoingRequestSreen(),
         '/requestMode': (context) => RequestMode(),
         '/adminDonationScreen': (context) => AdminDonationScreen(),
         '/adminRequestMade': (context) => AdminRequestMode()
       },
-      // home: UserProfile(userId: getUserId()),
     );
   }
 }
-
-// class MainPage extends StatelessWidget {
-//   const MainPage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: StreamBuilder<User?>(
-//             stream: FirebaseAuth.instance.authStateChanges(),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return Center(child: CircularProgressIndicator());
-
-//                 // return HomeScreen();
-//               } else if (snapshot.hasError) {
-//                 return Text("Something went Wrong.");
-//               } else if (snapshot.hasData) {
-//                 // FirebaseFirestore.instance
-//                 //     .collection('users')
-//                 //     .doc(user!.uid)
-//                 //     .get()
-//                 //     .then(
-//                 //   (value) {
-//                 //     if (value.get('rool') == 'Admin') {
-//                 //       return AdminPanelScreen();
-//                 //     } else if (value.get('rool') == 'NGO') {
-//                 //       return NgoDashboardScreen();
-//                 //     } else if (value.get('rool') == 'DONAR') {
-//                 //       return DonarDashboardScreen();
-//                 //     }
-//                 //   },
-//                 // );
-//                 // var kk = FirebaseFirestore.instance
-//                 //     .collection('users')
-//                 //     .doc(user!.uid)
-//                 //     .get()
-//                 //     .then((DocumentSnapshot documentSnapshot) {
-//                 //   if (documentSnapshot.exists) {
-//                 //     if (documentSnapshot.get('rool') == "Admin") {
-//                 //       Navigator.pushReplacement(
-//                 //         context,
-//                 //         MaterialPageRoute(
-//                 //           builder: (context) => AdminPanelScreen(),
-//                 //         ),
-//                 //       );
-//                 //     } else if (documentSnapshot.get('rool') == "NGO") {
-//                 //       Navigator.pushReplacement(
-//                 //         context,
-//                 //         MaterialPageRoute(
-//                 //           builder: (context) => NgoDashboardScreen(),
-//                 //         ),
-//                 //       );
-//                 //     } else if (documentSnapshot.get('rool') == "DONAR") {
-//                 //       Navigator.pushReplacement(
-//                 //         context,
-//                 //         MaterialPageRoute(
-//                 //           builder: (context) => DonarDashboardScreen(),
-//                 //         ),
-//                 //       );
-//                 //     } else {
-//                 //       Navigator.pushReplacement(
-//                 //         context,
-//                 //         MaterialPageRoute(
-//                 //           builder: (context) => HomeScreen(),
-//                 //         ),
-//                 //       );
-//                 //     }
-//                 //   }
-//                 // });
-
-//                 return HomeScreen();
-//               } else {
-//                 return LoginScreen();
-//               }
-//             }));
-//   }
-// }

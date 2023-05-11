@@ -50,10 +50,6 @@ class _AllDonationScreenState extends State<AllDonationScreen> {
                     leading: CircleAvatar(
                       radius: 30.0,
                       backgroundColor: Colors.transparent,
-                      // backgroundColor: Colors.purple,
-                      // backgroundImage: NetworkImage(
-                      //   data[0]['imagesUrls'] ?? "",
-                      // ),
                     ),
                     title: Text(data['foodItems'] ?? ""),
                     subtitle: Text(data['city'] ?? ""),

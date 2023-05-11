@@ -107,23 +107,9 @@ class _AdminRequestConfirmedSreenState
                         },
                       );
                     },
-                    // leading: CircleAvatar(
-                    //   radius: 30.0,
-                    //   backgroundColor: Colors.transparent,
-                    //   // backgroundColor: Colors.purple,
-                    //   backgroundImage: NetworkImage(
-                    //     data['profilePic'],
-                    //   ),
-                    // ),
                     title: Text(data['foodName']),
-                    // subtitle: Text(data['city']),
                     trailing: InkWell(
-                        onTap: () {
-                          // Navigator.pushNamed(
-                          //     context, RequestFoodView.routeName,
-                          //     arguments: ScreenArguments(
-                          //         data['documentId'], data['requestUid']));
-                        },
+                        onTap: () {},
                         child: Icon(Icons.keyboard_arrow_right_rounded)),
                   ),
                 );
